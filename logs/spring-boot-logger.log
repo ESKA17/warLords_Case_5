@@ -1,0 +1,40 @@
+2022-06-23 13:46:22,342 INFO org.springframework.boot.StartupInfoLogger [main] Starting MyCliApplication using Java 17.0.3 on Sabits-MacBook-Air.local with PID 75080 (/Users/sabitkurmashev/IdeaProjects/Avada_Codeavra_Case_1/target/classes started by sabitkurmashev in /Users/sabitkurmashev/IdeaProjects/Avada_Codeavra_Case_1)
+2022-06-23 13:46:22,345 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2022-06-23 13:46:23,570 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-06-23 13:46:23,667 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 88 ms. Found 3 JPA repository interfaces.
+2022-06-23 13:46:24,515 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8087 (http)
+2022-06-23 13:46:24,522 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8087"]
+2022-06-23 13:46:24,523 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2022-06-23 13:46:24,523 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.62]
+2022-06-23 13:46:24,633 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2022-06-23 13:46:24,633 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2193 ms
+2022-06-23 13:46:24,699 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2022-06-23 13:46:24,850 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2022-06-23 13:46:24,889 INFO org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration [main] H2 console available at '/h2-console'. Database available at 'jdbc:h2:~/home/sabit.kurmashev/test'
+2022-06-23 13:46:25,086 INFO org.flywaydb.core.internal.logging.slf4j.Slf4jLog [main] Flyway Community Edition 8.5.11 by Redgate
+2022-06-23 13:46:25,087 INFO org.flywaydb.core.internal.logging.slf4j.Slf4jLog [main] See what's new here: https://flywaydb.org/documentation/learnmore/releaseNotes#8.5.11
+2022-06-23 13:46:25,087 INFO org.flywaydb.core.internal.logging.slf4j.Slf4jLog [main] 
+2022-06-23 13:46:25,097 INFO org.flywaydb.core.internal.logging.slf4j.Slf4jLog [main] Database: jdbc:h2:~/home/sabit.kurmashev/test (H2 1.4)
+2022-06-23 13:46:25,175 INFO org.flywaydb.core.internal.logging.slf4j.Slf4jLog [main] Successfully validated 1 migration (execution time 00:00.039s)
+2022-06-23 13:46:25,218 INFO org.flywaydb.core.internal.logging.slf4j.Slf4jLog [main] Current version of schema "PUBLIC": 1
+2022-06-23 13:46:25,225 INFO org.flywaydb.core.internal.logging.slf4j.Slf4jLog [main] Schema "PUBLIC" is up to date. No migration necessary.
+2022-06-23 13:46:25,363 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-06-23 13:46:25,389 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.8.Final
+2022-06-23 13:46:25,475 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-06-23 13:46:25,622 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.H2Dialect
+2022-06-23 13:46:26,219 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-06-23 13:46:26,230 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-06-23 13:46:27,960 INFO org.springframework.security.web.DefaultSecurityFilterChain [main] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@608c2042, org.springframework.security.web.context.SecurityContextPersistenceFilter@272c5abd, org.springframework.security.web.header.HeaderWriterFilter@1bfafce1, org.springframework.web.filter.CorsFilter@7e84a52b, org.springframework.security.web.authentication.logout.LogoutFilter@5737d116, com.example.mycli.web.JwtFilter@3921135e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@70ad0854, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@19540247, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@40199d5e, org.springframework.security.web.session.SessionManagementFilter@767cc126, org.springframework.security.web.access.ExceptionTranslationFilter@37344d31, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@446981a4]
+2022-06-23 13:46:28,426 INFO org.apache.juli.logging.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8087"]
+2022-06-23 13:46:28,470 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8087 (http) with context path ''
+2022-06-23 13:46:28,523 INFO org.springframework.boot.StartupInfoLogger [main] Started MyCliApplication in 6.788 seconds (JVM running for 7.606)
+2022-06-23 13:46:43,958 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8087-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-06-23 13:46:43,961 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8087-exec-1] Initializing Servlet 'dispatcherServlet'
+2022-06-23 13:46:43,965 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8087-exec-1] Completed initialization in 4 ms
+2022-06-23 13:46:44,016 INFO com.example.mycli.web.JwtFilter [http-nio-8087-exec-1] do filter...
+2022-06-23 13:46:44,276 INFO com.example.mycli.web.JwtFilter [http-nio-8087-exec-1] do filter...
+2022-06-23 13:46:59,408 INFO com.example.mycli.web.JwtFilter [http-nio-8087-exec-5] do filter...
+2022-06-23 13:46:59,421 INFO com.example.mycli.web.JwtFilter [http-nio-8087-exec-5] do filter...
+2022-06-23 13:53:20,399 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-06-23 13:53:20,401 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2022-06-23 13:53:20,405 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.

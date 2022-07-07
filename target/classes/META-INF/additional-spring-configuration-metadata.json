@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "hibernate.dialect",
+      "type": "java.lang.String",
+      "description": "Description for hibernate.dialect."
+    },
+    {
+      "name": "spring.jpa.hibernate.naming-strategy",
+      "type": "java.lang.String",
+      "description": "Description for spring.jpa.hibernate.naming-strategy."
+    }
+  ] }
