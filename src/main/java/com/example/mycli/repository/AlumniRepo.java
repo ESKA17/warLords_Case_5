@@ -8,9 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AlumniRepo extends JpaRepository<Alumni, Long> {
 
-    Alumni findByEmail(String email);
-
-    void deleteById(Long id);
 
 
 }

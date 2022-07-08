@@ -29,9 +29,9 @@ public class ExceptionsAdviser {
     }
 
     @ResponseBody
-    @ExceptionHandler(AccountCheckLoginPassword.class)
+    @ExceptionHandler(PasswordFailed.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    String checkLoginPassword(AccountCheckLoginPassword ex) {
+    String checkLoginPassword(PasswordFailed ex) {
         return ex.getMessage();
     }
 
@@ -66,6 +66,13 @@ public class ExceptionsAdviser {
     @ExceptionHandler(FolderInit.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     String folderInit(FolderInit ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(RoleNotFound.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    String roleNotFound(RoleNotFound ex) {
         return ex.getMessage();
     }
 

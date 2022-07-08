@@ -20,15 +20,15 @@ public class UserEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "full_name", nullable = false)
+    @Column(name = "full_name")
     private String fullName;
 
     @OneToOne
-    @JoinColumn(name = "auth_data", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "auth_data", referencedColumnName = "id")
     private AuthData authdata;
 
     @ElementCollection
-    @Column(name = "subjects", nullable = false)
+    @Column(name = "subjects")
     @Enumerated(EnumType.STRING)
     private List<SubjectType> subjectTypeList;
 
@@ -37,10 +37,17 @@ public class UserEntity {
     private List<UserEntity> connections;
 
     @OneToOne
-    @JoinColumn(name = "user_information", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "user_information", referencedColumnName = "id")
     private UserInformation userInformation;
 
     @Column(name = "rating")
     private Integer rating;
 
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                '}';
+    }
 }

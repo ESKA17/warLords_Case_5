@@ -6,7 +6,7 @@ import com.example.mycli.services.AccountAuthenticationService;
 import com.example.mycli.services.AccountRegistrationService;
 import com.example.mycli.model.AuthRequest;
 import com.example.mycli.model.RegRequest;
-import com.example.mycli.services.UserStatusService;
+//import com.example.mycli.services.UserStatusService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +23,7 @@ public class AuthController {
     private final UserEntityRepo userEntityRepo;
     private final AccountRegistrationService accountRegistrationService;
     private final AccountAuthenticationService accountAuthenticationService;
-    private final UserStatusService userStatusService;
+//    private final UserStatusService userStatusService;
 
     @PostMapping("/register")
     public void registerUser(@RequestBody @Valid RegRequest registrationRequest) {

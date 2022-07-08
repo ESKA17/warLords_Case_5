@@ -20,7 +20,7 @@ public class News {
     private Integer id;
 
     @OneToOne
-    @JoinColumn(name = "mentor", referencedColumnName = "id")
+    @JoinColumn(name = "user", referencedColumnName = "id")
     private UserEntity userEntity;
 
     @Column(name = "news")

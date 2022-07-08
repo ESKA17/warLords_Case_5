@@ -4,8 +4,10 @@ import com.example.mycli.entity.AuthData;
 import com.example.mycli.entity.RoleEntity;
 import com.example.mycli.exceptions.AccountConflict;
 import com.example.mycli.entity.UserEntity;
+import com.example.mycli.exceptions.RoleNotFound;
 import com.example.mycli.repository.AlumniRepo;
 import com.example.mycli.repository.AuthDataRepo;
+import com.example.mycli.repository.RoleEntityRepo;
 import com.example.mycli.repository.UserEntityRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -18,24 +20,35 @@ public class AccountRegistrationServiceImpl implements AccountRegistrationServic
 
     private final UserEntityRepo userEntityRepo;
     private final AuthDataRepo authDataRepo;
-    private final AlumniRepo alumniRepo;
-    private final UserService userService;
+    private final RoleEntityRepo roleEntityRepo;
 
     @Override
     public void registerAccount(String email, String password, int role) {
         AuthData authData = authDataRepo.findByEmail(email);
-        if (authData == null) {
-
-            UserEntity user = new UserEntity();
-            authData = AuthData.builder()
-                    .email(email)
-                    .password(password)
-                    .build();
-            userService.saveUser(user, role);
-            log.info("email created");
-        } else {
+        if (authData != null) {
             log.info("email taken");
             throw new AccountConflict(email);
         }
+        String roleName;
+        if (role == 1) {
+            log.info("role mentor");
+            roleName = "ROLE_MENTOR";
+        } else if (role == 2) {
+            log.info("role mentee");
+            roleName = "ROLE_MENTEE";
+        } else {
+            throw new RoleNotFound(role);
+        }
+        RoleEntity userRoleEntity = roleEntityRepo.findByName(roleName);
+        UserEntity user = new UserEntity();
+        authData = AuthData.builder()
+                .email(email)
+                .password(password)
+                .roleEntity(userRoleEntity)
+                .build();
+        user.setAuthdata(authData);
+        authDataRepo.save(authData);
+        UserEntity userEntity = userEntityRepo.save(user);
+        log.info("user created: " + userEntity);
     }
 }

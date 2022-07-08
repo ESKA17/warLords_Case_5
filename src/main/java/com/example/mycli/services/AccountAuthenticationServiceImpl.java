@@ -14,27 +14,19 @@ import javax.servlet.http.HttpServletResponse;
 @Service
 @Log
 public class AccountAuthenticationServiceImpl implements AccountAuthenticationService{
-
-    private final UserEntityRepo userEntityRepo;
     private final UserService userService;
     private final JwtProvider jwtProvider;
 
     @Override
     public String authenticateAccount(String email, String password,
                                                       HttpServletResponse httpServletResponse) {
-        if (userEntityRepo.findByEmail(email) == null) throw new AccountNotFound(email);
         UserEntity userEntity = userService.findByLoginAndPassword(email, password);
         if (userEntity != null) {
             String token = jwtProvider.generateToken(email);
-//            Cookie cookie = new Cookie("token", token);
-//            cookie.setHttpOnly(true);
-//            httpServletResponse.addCookie(cookie);
             httpServletResponse.addHeader("token", token);
-            log.info("Authenticated");
+            log.info("Authenticated, token: " + token);
             return token;
-        } else {
-            log.info("bad request of email or password");
-            throw new AccountCheckLoginPassword();
         }
+        return "";
     }
 }

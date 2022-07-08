@@ -1,10 +1,7 @@
 package com.example.mycli.entity;
 
 import com.example.mycli.model.StudyDegree;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,6 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "user_info_table")
 public class UserInformation {
     @Id
@@ -20,35 +18,43 @@ public class UserInformation {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "phone_number", nullable = false)
-    private Integer phoneNumber;
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
-    @Column(name = "city", nullable = false)
+    @Column(name = "city")
     private String city;
 
-    @Column(name = "school", nullable = false)
+    @Column(name = "school" )
     private String school;
 
-    @Column(name = "university", nullable = false)
+    @Column(name = "university")
     private String university;
 
-    @Column(name = "graduation_year", nullable = false)
+    @Column(name = "graduation_year")
     private String graduationYear;
 
-    @Column(name = "age", nullable = false)
+    @Column(name = "age")
     private Integer age;
 
     @Column(name = "IIN")
     private Integer IIN;
 
-    @Column(name = "study_degree", nullable = false)
+    @Column(name = "study_degree")
     @Enumerated(EnumType.STRING)
     private StudyDegree studyDegree;
 
-    @Column(name = "bachelor_spec")
-    private String bachelor;
-
-    @Column(name = "master_spec")
-    private String master;
-
+    @Override
+    public String toString() {
+        return "UserInformation{" +
+                "id=" + id +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", city='" + city + '\'' +
+                ", school='" + school + '\'' +
+                ", university='" + university + '\'' +
+                ", graduationYear='" + graduationYear + '\'' +
+                ", age=" + age +
+                ", IIN=" + IIN +
+                ", studyDegree=" + studyDegree +
+                '}';
+    }
 }
