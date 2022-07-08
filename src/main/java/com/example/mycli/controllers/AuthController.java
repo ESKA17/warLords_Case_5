@@ -1,7 +1,7 @@
 package com.example.mycli.controllers;
 
-import com.example.mycli.model.UserEntity;
-import com.example.mycli.repository.UserEntityRepository;
+import com.example.mycli.entity.UserEntity;
+import com.example.mycli.repository.UserEntityRepo;
 import com.example.mycli.services.AccountAuthenticationService;
 import com.example.mycli.services.AccountRegistrationService;
 import com.example.mycli.model.AuthRequest;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 @CrossOrigin(origins = "http://localhost:3000")
 @Log
 public class AuthController {
-    private final UserEntityRepository userEntityRepository;
+    private final UserEntityRepo userEntityRepo;
     private final AccountRegistrationService accountRegistrationService;
     private final AccountAuthenticationService accountAuthenticationService;
     private final UserStatusService userStatusService;
@@ -29,7 +29,8 @@ public class AuthController {
     public void registerUser(@RequestBody @Valid RegRequest registrationRequest) {
         String email = registrationRequest.getEmail();
         String password  = registrationRequest.getPassword();
-        accountRegistrationService.registerAccount(email, password);
+        int role = registrationRequest.getRole();
+        accountRegistrationService.registerAccount(email, password, role);
     }
 
     @PostMapping("/auth")
@@ -42,7 +43,7 @@ public class AuthController {
     @GetMapping("/users")
     public List<UserEntity> users() {
         log.info("accessing user database");
-        return userEntityRepository.findAll();
+        return userEntityRepo.findAll();
     }
     @PostMapping("/logout")
     public void logout() {

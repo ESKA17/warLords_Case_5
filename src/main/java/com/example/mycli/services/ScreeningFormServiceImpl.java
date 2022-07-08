@@ -2,10 +2,10 @@ package com.example.mycli.services;
 
 import com.example.mycli.exceptions.AuthenticationFailed;
 import com.example.mycli.model.StudyDegree;
-import com.example.mycli.model.UserEntity;
-import com.example.mycli.model.UserInformation;
-import com.example.mycli.repository.UserEntityRepository;
-import com.example.mycli.repository.UserInformationRepository;
+import com.example.mycli.entity.UserEntity;
+import com.example.mycli.entity.UserInformation;
+import com.example.mycli.repository.UserEntityRepo;
+import com.example.mycli.repository.UserInfoRepo;
 import com.example.mycli.model.ScreeningRequest;
 import com.example.mycli.web.JwtProvider;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log
 public class ScreeningFormServiceImpl implements ScreeningFormService{
-    private final UserInformationRepository userInformationRepository;
-    private final UserEntityRepository userEntityRepository;
+    private final UserInfoRepo userInfoRepo;
+    private final UserEntityRepo userEntityRepo;
     private final JwtProvider jwtProvider;
     @Override
     public void fillScreeningForm(ScreeningRequest screeningRequest, HttpServletRequest httpServletRequest) {
@@ -32,10 +32,10 @@ public class ScreeningFormServiceImpl implements ScreeningFormService{
         } else {
             throw new AuthenticationFailed();
         }
-        if (userInformationRepository.findByEmail(email) == null) {
+        if (userInfoRepo.findByEmail(email) == null) {
             userInformation = new UserInformation();
         } else {
-            userInformation = userInformationRepository.findByEmail(email);
+            userInformation = userInfoRepo.findByEmail(email);
         }
         userInformation.setName(screeningRequest.getName());
         userInformation.setSurname(screeningRequest.getSurname());
@@ -54,7 +54,7 @@ public class ScreeningFormServiceImpl implements ScreeningFormService{
         } else {
             userInformation.setStudyDegree(StudyDegree.DEVOPS);
         }
-        userInformationRepository.save(userInformation);
+        userInfoRepo.save(userInformation);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class ScreeningFormServiceImpl implements ScreeningFormService{
         if (token != null) {
             String email = jwtProvider.getLoginFromToken(token);
             log.info("getting screening form");
-            return userInformationRepository.findByEmail(email);
+            return userInfoRepo.findByEmail(email);
         } else {
             log.info("token is null");
         }
@@ -72,7 +72,7 @@ public class ScreeningFormServiceImpl implements ScreeningFormService{
 
     @Override
     public List<UserInformation> getAllScreeningForms() {
-        return userInformationRepository.findAll();
+        return userInfoRepo.findAll();
     }
     @Override
     public void fillTemplate(ScreeningRequest screeningRequest, Long id) {
@@ -80,7 +80,7 @@ public class ScreeningFormServiceImpl implements ScreeningFormService{
         userInformation = new UserInformation();
         userInformation.setName(screeningRequest.getName());
         userInformation.setSurname(screeningRequest.getSurname());
-        UserEntity user = userEntityRepository.findById(id).orElse(null);
+        UserEntity user = userEntityRepo.findById(id).orElse(null);
         userInformation.setEmail(user.getEmail());
         userInformation.setAge(screeningRequest.getAge());
         userInformation.setMiddleName(screeningRequest.getFatherName());
@@ -96,6 +96,6 @@ public class ScreeningFormServiceImpl implements ScreeningFormService{
         } else {
             userInformation.setStudyDegree(StudyDegree.DEVOPS);
         }
-        userInformationRepository.save(userInformation);
+        userInfoRepo.save(userInformation);
     }
 }

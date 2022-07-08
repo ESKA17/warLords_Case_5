@@ -1,7 +1,7 @@
 package com.example.mycli.services;
 
-import com.example.mycli.repository.UserEntityRepository;
-import com.example.mycli.repository.UserInformationRepository;
+import com.example.mycli.repository.UserEntityRepo;
+import com.example.mycli.repository.UserInfoRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,15 +9,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AccountDeleteServiceImpl implements AccountDeleteService{
 
-    private final UserInformationRepository userInformationRepository;
-    private final UserEntityRepository userEntityRepository;
+    private final UserInfoRepo userInfoRepo;
+    private final UserEntityRepo userEntityRepo;
     @Override
     public void deleteAccount(Long id) {
-        if (userEntityRepository.findById(id).isPresent() ) {
-            userEntityRepository.deleteById(id);
+        if (userEntityRepo.findById(id).isPresent() ) {
+            userEntityRepo.deleteById(id);
         }
-        if (userInformationRepository.findById(id).isPresent()) {
-            userInformationRepository.deleteById(id);
+        if (userInfoRepo.findById(id).isPresent()) {
+            userInfoRepo.deleteById(id);
         }
     }
 }

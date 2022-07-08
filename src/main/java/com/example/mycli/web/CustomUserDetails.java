@@ -1,6 +1,6 @@
 package com.example.mycli.web;
 
-import com.example.mycli.model.UserEntity;
+import com.example.mycli.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

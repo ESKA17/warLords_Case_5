@@ -1,9 +1,9 @@
 package com.example.mycli.services;
 
-import com.example.mycli.model.RoleEntity;
-import com.example.mycli.model.UserEntity;
-import com.example.mycli.repository.RoleEntityRepository;
-import com.example.mycli.repository.UserEntityRepository;
+import com.example.mycli.entity.RoleEntity;
+import com.example.mycli.entity.UserEntity;
+import com.example.mycli.repository.RoleEntityRepo;
+import com.example.mycli.repository.UserEntityRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,29 +12,29 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserEntityRepository userEntityRepository;
-    private final RoleEntityRepository roleEntityRepository;
+    private final UserEntityRepo userEntityRepo;
+    private final RoleEntityRepo roleEntityRepo;
     private final PasswordEncoder passwordEncoder;
 
     public void saveUser(UserEntity userEntity) {
-        RoleEntity userRole = roleEntityRepository.findByName("ROLE_USER");
-        userEntity.setRoleEntity(userRole);
+        RoleEntity userRoleEntity = roleEntityRepo.findByName("ROLE_USER");
+        userEntity.setRoleEntity(userRoleEntity);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
-        userEntityRepository.save(userEntity);
+        userEntityRepo.save(userEntity);
     }
     public void saveAdmin(UserEntity userEntity) {
-        RoleEntity userRole = roleEntityRepository.findByName("ROLE_ADMIN");
-        userEntity.setRoleEntity(userRole);
+        RoleEntity userRoleEntity = roleEntityRepo.findByName("ROLE_ADMIN");
+        userEntity.setRoleEntity(userRoleEntity);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
-        userEntityRepository.save(userEntity);
+        userEntityRepo.save(userEntity);
     }
 
     public UserEntity findByEmail(String login) {
-        return userEntityRepository.findByEmail(login);
+        return userEntityRepo.findByEmail(login);
     }
 
     public UserEntity findByLoginAndPassword(String login, String password) {
-        UserEntity userEntity = userEntityRepository.findByEmail(login);
+        UserEntity userEntity = userEntityRepo.findByEmail(login);
         System.out.println(userEntity + " - user entity");
         if (userEntity != null) {
             if (passwordEncoder.matches(password, userEntity.getPassword())) {
