@@ -29,7 +29,7 @@ public class Report {
 
 
     @Column(name = "reason")
-    private String chat;s
+    private String chat;
 
     @OneToOne
     @JoinColumn(name = "reporter", referencedColumnName = "id")

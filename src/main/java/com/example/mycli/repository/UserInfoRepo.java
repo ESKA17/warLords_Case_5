@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserInfoRepo extends JpaRepository<UserInformation, Long> {
-    UserInformation findByEmail(String email);
     void deleteById(Long id);
 }
