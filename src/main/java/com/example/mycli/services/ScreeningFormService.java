@@ -1,7 +1,7 @@
 package com.example.mycli.services;
 
 import com.example.mycli.model.ScreeningRequest;
-import com.example.mycli.model.UserInformation;
+import com.example.mycli.entity.UserInformation;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

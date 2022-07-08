@@ -10,4 +10,5 @@ import lombok.Setter;
 public class RegRequest {
     private String email;
     private String password;
+    private Integer role;
 }

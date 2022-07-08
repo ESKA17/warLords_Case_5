@@ -1,9 +1,8 @@
 package com.example.mycli.services;
 
-import com.example.mycli.exceptions.AccountNotFound;
 import com.example.mycli.exceptions.AuthenticationFailed;
-import com.example.mycli.model.UserInformation;
-import com.example.mycli.repository.UserInformationRepository;
+import com.example.mycli.entity.UserInformation;
+import com.example.mycli.repository.UserInfoRepo;
 import com.example.mycli.web.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -16,14 +15,14 @@ import javax.servlet.http.HttpServletRequest;
 @Log
 public class UserStatusServiceImpl implements UserStatusService {
 
-    private final UserInformationRepository userInformationRepository;
+    private final UserInfoRepo userInfoRepo;
     private final JwtProvider jwtProvider;
 
     @Override
     public void changeStatus(int status, String email, HttpServletRequest httpServletRequest) {
-            UserInformation userInformation = userInformationRepository.findByEmail(email);
+            UserInformation userInformation = userInfoRepo.findByEmail(email);
             userInformation.setStatus(status);
-            userInformationRepository.save(userInformation);
+            userInfoRepo.save(userInformation);
             log.info("user info was saved");
 
     }
@@ -33,7 +32,7 @@ public class UserStatusServiceImpl implements UserStatusService {
         if (token != null) {
             String email = jwtProvider.getLoginFromToken(token);
             log.info("get user status");
-            return userInformationRepository.findByEmail(email).getStatus();
+            return userInfoRepo.findByEmail(email).getStatus();
         } else {
             log.info("token is null");
             throw new AuthenticationFailed();

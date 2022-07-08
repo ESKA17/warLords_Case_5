@@ -1,10 +1,9 @@
 package com.example.mycli.controllers;
 
-import com.example.mycli.model.UserInformation;
+import com.example.mycli.entity.UserInformation;
 import com.example.mycli.services.ScreeningFormService;
 import com.example.mycli.model.ScreeningRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;

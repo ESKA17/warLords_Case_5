@@ -1,4 +1,4 @@
-package com.example.mycli.model;
+package com.example.mycli.entity;
 import lombok.*;
 import javax.persistence.*;
 
@@ -8,12 +8,13 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "ROLE_ENTITY")
+@Table(name = "role_table")
 public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
-    @Column(name = "name")
+
+    @Column(name = "name", nullable = false)
     private String name;
 }

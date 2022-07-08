@@ -1,14 +1,13 @@
 package com.example.mycli.services;
 
 import com.example.mycli.exceptions.*;
-import com.example.mycli.model.UserEntity;
-import com.example.mycli.repository.UserEntityRepository;
+import com.example.mycli.entity.UserEntity;
+import com.example.mycli.repository.UserEntityRepo;
 import com.example.mycli.web.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @RequiredArgsConstructor
@@ -16,14 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 @Log
 public class AccountAuthenticationServiceImpl implements AccountAuthenticationService{
 
-    private final UserEntityRepository userEntityRepository;
+    private final UserEntityRepo userEntityRepo;
     private final UserService userService;
     private final JwtProvider jwtProvider;
 
     @Override
     public String authenticateAccount(String email, String password,
                                                       HttpServletResponse httpServletResponse) {
-        if (userEntityRepository.findByEmail(email) == null) throw new AccountNotFound(email);
+        if (userEntityRepo.findByEmail(email) == null) throw new AccountNotFound(email);
         UserEntity userEntity = userService.findByLoginAndPassword(email, password);
         if (userEntity != null) {
             String token = jwtProvider.generateToken(email);
