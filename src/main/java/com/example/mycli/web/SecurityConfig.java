@@ -39,16 +39,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
 //                .authorizeRequests()
-//                .antMatchers("/screening/**", "/upload", "/filename/**").permitAll()
-//                .antMatchers("/users",  "/files/**", "/screening/**", "/changeStatus/**","/delete/**",
+//                .antMatchers("/user_info/**", "/upload", "/filename/**").permitAll()
+//                .antMatchers("/files/**", "/user_info/**", "/changeStatus/**","/delete/**",
 //                        "/getStatus", "/files").permitAll()
 //                .and()
                 .logout().logoutUrl("/logout")
                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
                 .deleteCookies("token")
-                .permitAll();
-//                .and()
-//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .permitAll()
+                .and()
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests().
                 antMatchers("/register", "/auth", "/h2-console/**", "/swagger-ui.html", "/swagger-ui/**",
                         "/v3/api-docs", "/v3/api-docs/**").permitAll();

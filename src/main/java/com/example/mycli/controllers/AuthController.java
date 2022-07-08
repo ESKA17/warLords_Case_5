@@ -9,6 +9,7 @@ import com.example.mycli.model.RegRequest;
 //import com.example.mycli.services.UserStatusService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,11 +27,12 @@ public class AuthController {
 //    private final UserStatusService userStatusService;
 
     @PostMapping("/register")
-    public void registerUser(@RequestBody @Valid RegRequest registrationRequest) {
+    public ResponseEntity<String> registerUser(@RequestBody @Valid RegRequest registrationRequest) {
         String email = registrationRequest.getEmail();
         String password  = registrationRequest.getPassword();
         int role = registrationRequest.getRole();
         accountRegistrationService.registerAccount(email, password, role);
+        return ResponseEntity.ok("Account was successfully registered");
     }
 
     @PostMapping("/auth")
