@@ -11,6 +11,7 @@ import com.example.mycli.repository.RoleEntityRepo;
 import com.example.mycli.repository.UserEntityRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ public class AccountRegistrationServiceImpl implements AccountRegistrationServic
     private final UserEntityRepo userEntityRepo;
     private final AuthDataRepo authDataRepo;
     private final RoleEntityRepo roleEntityRepo;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void registerAccount(String email, String password, int role) {
@@ -43,7 +45,7 @@ public class AccountRegistrationServiceImpl implements AccountRegistrationServic
         UserEntity user = new UserEntity();
         authData = AuthData.builder()
                 .email(email)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .roleEntity(userRoleEntity)
                 .build();
         user.setAuthdata(authData);

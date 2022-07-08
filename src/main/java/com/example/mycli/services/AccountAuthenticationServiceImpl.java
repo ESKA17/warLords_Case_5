@@ -24,7 +24,7 @@ public class AccountAuthenticationServiceImpl implements AccountAuthenticationSe
         if (userEntity != null) {
             String token = jwtProvider.generateToken(email);
             httpServletResponse.addHeader("token", token);
-            log.info("Authenticated, token: " + token);
+            log.info("Token: " + token);
             return token;
         }
         return "";
