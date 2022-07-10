@@ -21,7 +21,8 @@ public class CreateAdminServiceImpl implements CreateAdminService{
 
     @Override
     public void createAdmin() {
-        UserEntity userEntity = userEntityRepo.findByAuthdata_Email("admin");
+        log.info("creating admin ...");
+        UserEntity userEntity = userEntityRepo.findByAuthdata_Email("admin").orElse(null);
         if (userEntity == null) {
             RoleEntity userRoleEntity = roleEntityRepo.findByName("ROLE_ADMIN");
             AuthData authData = AuthData.builder()
@@ -34,9 +35,9 @@ public class CreateAdminServiceImpl implements CreateAdminService{
                     .fullName("admin")
                     .build();
             UserEntity admin = userService.saveUser(user);
-            log.info("admin created");
+            log.info("admin created: admin mail.ru:admin");
         } else {
-            log.info("admin is already created");
+            log.info("admin is already created: admin mail.ru:admin");
         }
     }
 }

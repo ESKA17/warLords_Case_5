@@ -21,12 +21,6 @@ public class ExceptionsAdviser {
     String badRequest(AccountBadRequest ex) {
         return ex.getMessage();
     }
-    @ResponseBody
-    @ExceptionHandler(AccountWrongLogin.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    String wrongLogin(AccountBadRequest ex) {
-        return ex.getMessage();
-    }
 
     @ResponseBody
     @ExceptionHandler(PasswordFailed.class)
@@ -42,12 +36,6 @@ public class ExceptionsAdviser {
         return ex.getMessage();
     }
 
-    @ResponseBody
-    @ExceptionHandler(AccountCreated.class)
-    @ResponseStatus(value = HttpStatus.CREATED)
-    String accountCreated(AccountCreated ex) {
-        return ex.getMessage();
-    }
 
     @ResponseBody
     @ExceptionHandler(AccountConflict.class)
@@ -56,12 +44,6 @@ public class ExceptionsAdviser {
         return ex.getMessage();
     }
 
-    @ResponseBody
-    @ExceptionHandler(AccountOK.class)
-    @ResponseStatus(value = HttpStatus.OK)
-    String accountOK(AccountOK ex) {
-        return ex.getMessage();
-    }
     @ResponseBody
     @ExceptionHandler(FolderInit.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)

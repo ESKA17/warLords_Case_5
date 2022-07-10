@@ -46,6 +46,9 @@ public class UserEntity {
     @Column(name = "active")
     private Boolean active;
 
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
+
     @Override
     public String toString() {
         return "UserEntity{" +
