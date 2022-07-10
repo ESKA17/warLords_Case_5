@@ -1,29 +1,42 @@
-//package com.example.mycli.services;
-//
-//import com.example.mycli.entity.UserEntity;
-//import com.example.mycli.repository.UserEntityRepo;
-//import lombok.RequiredArgsConstructor;
-//import lombok.extern.java.Log;
-//import org.springframework.stereotype.Service;
-//
-//@Service
-//@RequiredArgsConstructor
-//@Log
-//public class CreateAdminServiceImpl implements CreateAdminService{
-//    private final UserEntityRepo userEntityRepo;
-//    private final UserServiceImpl userServiceImpl;
-//
-//    @Override
-//    public void createAdmin() {
-//        UserEntity userEntity = userEntityRepo.findByEmail("admin");
-//        if (userEntity == null) {
-//            UserEntity user = new UserEntity();
-//            user.setPassword("admin");
-//            user.setEmail("adam.inov@gmail.com");
-//            userServiceImpl.saveAdmin(user);
-//            log.info("email created");
-//        } else {
-//            log.info("admin is already created");
-//        }
-//    }
-//}
+package com.example.mycli.services;
+
+import com.example.mycli.entity.AuthData;
+import com.example.mycli.entity.RoleEntity;
+import com.example.mycli.entity.UserEntity;
+import com.example.mycli.repository.RoleEntityRepo;
+import com.example.mycli.repository.UserEntityRepo;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+@Log
+public class CreateAdminServiceImpl implements CreateAdminService{
+    private final UserEntityRepo userEntityRepo;
+    private final RoleEntityRepo roleEntityRepo;
+    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
+
+    @Override
+    public void createAdmin() {
+        UserEntity userEntity = userEntityRepo.findByAuthdata_Email("admin");
+        if (userEntity == null) {
+            RoleEntity userRoleEntity = roleEntityRepo.findByName("ROLE_ADMIN");
+            AuthData authData = AuthData.builder()
+                    .email("admin@gmail.ru")
+                    .password(passwordEncoder.encode("admin"))
+                    .roleEntity(userRoleEntity)
+                    .build();
+            UserEntity user = UserEntity.builder()
+                    .authdata(authData)
+                    .fullName("admin")
+                    .build();
+            UserEntity admin = userService.saveUser(user);
+            log.info("admin created");
+        } else {
+            log.info("admin is already created");
+        }
+    }
+}

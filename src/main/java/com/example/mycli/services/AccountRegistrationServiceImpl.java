@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Log
 public class AccountRegistrationServiceImpl implements AccountRegistrationService{
 
-    private final UserEntityRepo userEntityRepo;
+    private final UserService userService;
     private final AuthDataRepo authDataRepo;
     private final RoleEntityRepo roleEntityRepo;
     private final PasswordEncoder passwordEncoder;
@@ -49,8 +49,8 @@ public class AccountRegistrationServiceImpl implements AccountRegistrationServic
                 .roleEntity(userRoleEntity)
                 .build();
         user.setAuthdata(authData);
-        authDataRepo.save(authData);
-        UserEntity userEntity = userEntityRepo.save(user);
+        user.setActive(false);
+        UserEntity userEntity = userService.saveUser(user);
         log.info("user created: " + userEntity);
     }
 }

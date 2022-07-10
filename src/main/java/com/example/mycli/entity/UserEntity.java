@@ -43,6 +43,9 @@ public class UserEntity {
     @Column(name = "rating")
     private Integer rating;
 
+    @Column(name = "active")
+    private Boolean active;
+
     @Override
     public String toString() {
         return "UserEntity{" +

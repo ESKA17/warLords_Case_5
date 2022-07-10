@@ -36,11 +36,12 @@ public class AuthController {
     }
 
     @PostMapping("/auth")
-    public String auth(@RequestBody @Valid AuthRequest authRequest,
+    public ResponseEntity<String> auth(@RequestBody @Valid AuthRequest authRequest,
                                        HttpServletResponse httpServletResponse) {
         String email = authRequest.getEmail();
         String password = authRequest.getPassword();
-        return accountAuthenticationService.authenticateAccount(email, password, httpServletResponse);
+        accountAuthenticationService.authenticateAccount(email, password, httpServletResponse);
+        return ResponseEntity.ok("Successfully authenticated");
     }
     @GetMapping("/users")
     public List<UserEntity> users() {

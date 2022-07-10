@@ -6,6 +6,7 @@ import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.AccountNotFound;
 import com.example.mycli.exceptions.PasswordFailed;
 import com.example.mycli.exceptions.RoleNotFound;
+import com.example.mycli.repository.AuthDataRepo;
 import com.example.mycli.repository.RoleEntityRepo;
 import com.example.mycli.repository.UserEntityRepo;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.stream.Stream;
 
 @Service
@@ -22,16 +24,26 @@ public class UserServiceImpl implements UserService{
 
     private final UserEntityRepo userEntityRepo;
     private final RoleEntityRepo roleEntityRepo;
+    private final AuthDataRepo authDataRepo;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public void initRoles() {
-        RoleEntity roleAdmin = new RoleEntity(0L, "ROLE_ADMIN");
-        RoleEntity roleMentor = new RoleEntity(1L, "ROLE_MENTOR");
-        RoleEntity roleMentee = new RoleEntity(2L, "ROLE_MENTEE");
-        roleEntityRepo.save(roleAdmin);
-        roleEntityRepo.save(roleMentor);
-        roleEntityRepo.save(roleMentee);
+        if (roleEntityRepo.count() == 0) {
+            RoleEntity roleAdmin = new RoleEntity(0L, "ROLE_ADMIN");
+            RoleEntity roleMentor = new RoleEntity(1L, "ROLE_MENTOR");
+            RoleEntity roleMentee = new RoleEntity(2L, "ROLE_MENTEE");
+            roleEntityRepo.save(roleAdmin);
+            roleEntityRepo.save(roleMentor);
+            roleEntityRepo.save(roleMentee);
+        }
+    }
+
+    @Transactional
+    @Override
+    public UserEntity saveUser(UserEntity user) {
+        authDataRepo.save(user.getAuthdata());
+        return userEntityRepo.save(user);
     }
 
     @Override

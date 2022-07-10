@@ -1,5 +1,5 @@
-//package com.example.mycli.services;
-//
-//public interface CreateAdminService {
-//    void createAdmin();
-//}
+package com.example.mycli.services;
+
+public interface CreateAdminService {
+    void createAdmin();
+}
