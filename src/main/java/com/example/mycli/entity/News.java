@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,5 +27,9 @@ public class News {
     @Column(name = "news")
     private String news;
 
+    @Column(name = "accepter" )
+    private Long accepter_id;
 
+    @Column(name = "accepted")
+    private Boolean accepted;
 }
