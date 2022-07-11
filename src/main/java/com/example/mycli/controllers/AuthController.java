@@ -36,7 +36,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody @Valid RegRequest registrationRequest) {
-        String email = registrationRequest.getEmail();
+        String email = registrationRequest.getEmail().toLowerCase();
         String password  = registrationRequest.getPassword();
         int role = registrationRequest.getRole();
         String fullName = registrationRequest.getFullName();
@@ -47,7 +47,7 @@ public class AuthController {
     @PostMapping("/auth")
     public ResponseEntity<String> auth(@RequestBody @Valid AuthRequest authRequest,
                                        HttpServletResponse httpServletResponse) {
-        String email = authRequest.getEmail();
+        String email = authRequest.getEmail().toLowerCase();
         String password = authRequest.getPassword();
         String token = accountAuthenticationService.authenticateAccount(email, password, httpServletResponse);
         return ResponseEntity.ok(token);

@@ -16,4 +16,5 @@ public interface UserEntityRepo extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByVerificationCode(String verificationCode);
 
     List<UserEntity> findAllByAuthdata_RoleEntity_Id(Long id);
+    List<UserEntity> findAllByUserInformation_City(String city);
 }
