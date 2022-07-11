@@ -12,4 +12,6 @@ public class ReportRequest {
     private String reporter;
     private String ignore;
     private String mentor;
+    private Long reportedPersonId;
+    private String reportedPerson;
 }

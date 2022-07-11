@@ -1,9 +1,7 @@
 package com.example.mycli.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import net.bytebuddy.ByteBuddy;
 
 import javax.persistence.*;
 
@@ -13,28 +11,29 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "report_table")
+@Builder
 public class Report {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @OneToOne
-    @JoinColumn(name = "mentor", referencedColumnName = "id")
-    private UserEntity mentor;
+    @JoinColumn(name = "reporter", referencedColumnName = "id")
+    private UserEntity reporter;
 
     @OneToOne
-    @JoinColumn(name = "mentee", referencedColumnName = "id")
-    private UserEntity mentee;
+    @JoinColumn(name = "harasser", referencedColumnName = "id")
+    private UserEntity harasser;
+
 
 
     @Column(name = "reason")
-    private String chat;
+    private String reason;
 
-    @Column(name = "reporter")
-    private Long reporterID;
 
     @Column(name = "ignore")
     private Boolean ignore;
+
 
 }
