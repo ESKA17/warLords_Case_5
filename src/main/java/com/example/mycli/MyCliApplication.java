@@ -7,6 +7,9 @@ import com.example.mycli.services.AccountRegistrationService;
 import com.example.mycli.services.FilesStorageService;
 //import com.example.mycli.services.UserInformationService;
 import com.example.mycli.services.UserService;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -17,6 +20,7 @@ import javax.annotation.Resource;
 
 @SpringBootApplication
 @RequiredArgsConstructor
+//@SecurityScheme(name = "basicauth", scheme = "basic", type = SecuritySchemeType.HTTP, bearerFormat = "[token]")
 public class MyCliApplication implements CommandLineRunner {
     @Resource
     FilesStorageService storageService;

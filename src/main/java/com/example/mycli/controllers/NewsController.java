@@ -3,6 +3,7 @@ package com.example.mycli.controllers;
 import com.example.mycli.entity.News;
 import com.example.mycli.model.NewsRequest;
 import com.example.mycli.services.NewsService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+//@SecurityRequirement(name = "basicauth")
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/news")
 public class NewsController {

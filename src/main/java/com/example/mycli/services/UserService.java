@@ -22,4 +22,7 @@ public interface UserService {
     String getEmailFromToken(HttpServletRequest httpServletRequest);
     UserEntity findUserByID(Long id);
 
+    Boolean checkFirstTime(HttpServletRequest httpServletRequest);
+
+    void wasHere(HttpServletRequest httpServletRequest);
 }

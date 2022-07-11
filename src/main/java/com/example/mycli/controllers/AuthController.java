@@ -9,6 +9,7 @@ import com.example.mycli.model.AuthRequest;
 import com.example.mycli.model.RegRequest;
 //import com.example.mycli.services.UserStatusService;
 import com.example.mycli.services.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.data.repository.query.Param;
@@ -24,6 +25,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
+//@SecurityRequirement(name = "basicauth")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 @Log
@@ -47,8 +49,8 @@ public class AuthController {
                                        HttpServletResponse httpServletResponse) {
         String email = authRequest.getEmail();
         String password = authRequest.getPassword();
-        accountAuthenticationService.authenticateAccount(email, password, httpServletResponse);
-        return ResponseEntity.ok("Successfully authenticated");
+        String token = accountAuthenticationService.authenticateAccount(email, password, httpServletResponse);
+        return ResponseEntity.ok(token);
     }
     @GetMapping("/users")
     public ResponseEntity<List<UserEntity>> users() {
@@ -64,6 +66,7 @@ public class AuthController {
     public ResponseEntity<String> processRegister(@RequestBody ProcessRegister processRegister,
                                                   HttpServletRequest request)
             throws UnsupportedEncodingException, MessagingException {
+        log.info(processRegister.getEmail());
         accountRegistrationService.twoStepVerificationEmail(processRegister.getEmail(), getSiteURL(request));
         return ResponseEntity.ok("Registration verification email was sent");
     }
@@ -75,6 +78,17 @@ public class AuthController {
         } else {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User is already active");
         }
+    }
+
+    @GetMapping("/is_first_time")
+    public ResponseEntity<Boolean> isFirstTime(HttpServletRequest httpServletRequest) {
+        Boolean status = userService.checkFirstTime(httpServletRequest);
+        return ResponseEntity.ok(status);
+    }
+    @PostMapping("/was here")
+    public ResponseEntity<String> wasHere(HttpServletRequest httpServletRequest) {
+        userService.wasHere(httpServletRequest);
+        return ResponseEntity.ok("marked as was here");
     }
 
     private String getSiteURL(HttpServletRequest request) {

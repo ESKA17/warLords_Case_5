@@ -55,6 +55,7 @@ public class AccountRegistrationServiceImpl implements AccountRegistrationServic
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .roleEntity(userRoleEntity)
+                .firstTime(true)
                 .build();
         UserEntity user = UserEntity.builder()
                 .fullName(fullName)
