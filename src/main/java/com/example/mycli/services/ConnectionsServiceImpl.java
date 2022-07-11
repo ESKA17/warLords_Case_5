@@ -33,13 +33,24 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         log.info("breaking match ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity poster = userService.findByAuthDataEmail(email);
-        UserEntity accepter =  userService.findUserByID(matchID);
+        matchBreaker(matchID, poster);
+    }
+
+    @Override
+    public void breakMatchByID(Long posterID, Long accepterID) {
+        log.info("breaking match ...");
+        UserEntity poster = userService.findUserByID(posterID);
+        matchBreaker(accepterID, poster);
+    }
+
+    private void matchBreaker(Long accepterID, UserEntity poster) {
+        UserEntity accepter =  userService.findUserByID(accepterID);
         List<UserEntity> posterList = poster.getConnections();
         List<UserEntity> accepterList = accepter.getConnections();
-        posterList.add(accepter);
-        accepterList.add(poster);
+        posterList.remove(accepter);
+        accepterList.remove(poster);
         userService.saveUser(poster);
         userService.saveUser(accepter);
-        log.info("users unmatched \1F494");
+        log.info("users unmatched(((");
     }
 }
