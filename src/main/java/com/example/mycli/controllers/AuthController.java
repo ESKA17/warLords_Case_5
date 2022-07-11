@@ -1,6 +1,7 @@
 package com.example.mycli.controllers;
 
 import com.example.mycli.entity.UserEntity;
+import com.example.mycli.model.ProcessRegister;
 import com.example.mycli.repository.UserEntityRepo;
 import com.example.mycli.services.AccountAuthenticationService;
 import com.example.mycli.services.AccountRegistrationService;
@@ -60,9 +61,10 @@ public class AuthController {
     }
 
     @PostMapping("/process_register")
-    public ResponseEntity<String> processRegister(String email, HttpServletRequest request)
+    public ResponseEntity<String> processRegister(@RequestBody ProcessRegister processRegister,
+                                                  HttpServletRequest request)
             throws UnsupportedEncodingException, MessagingException {
-        accountRegistrationService.twoStepVerificationEmail(email, getSiteURL(request));
+        accountRegistrationService.twoStepVerificationEmail(processRegister.getEmail(), getSiteURL(request));
         return ResponseEntity.ok("Registration verification email was sent");
     }
 
