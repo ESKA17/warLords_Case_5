@@ -1,14 +1,22 @@
 package com.example.mycli.controllers;
 
+import com.example.mycli.services.ConnectionsService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/connections")
 //@SecurityRequirement(name = "basicauth")
-
 @CrossOrigin("http://localhost:3000")
+@RequiredArgsConstructor
+
 public class ConnectionsController {
+    private final ConnectionsService connectionsService;
+    @PostMapping("/match")
+    public void match(@RequestParam Long matchID, HttpServletRequest httpServletRequest) {
+        connectionsService.match(matchID, httpServletRequest);
+    }
 }
