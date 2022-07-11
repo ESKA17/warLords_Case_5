@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 public interface FilesStorageService {
     void init();
     void save(MultipartFile file, HttpServletRequest httpServletRequest);
-    Resource load(String filename);
+    Resource load(Long id);
     void deleteAll();
     Stream<Path> loadAll();
 }
