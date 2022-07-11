@@ -4,6 +4,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface AccountAuthenticationService {
 
-    void authenticateAccount(String email, String password, HttpServletResponse httpServletResponse);
+    String authenticateAccount(String email, String password, HttpServletResponse httpServletResponse);
 
 }

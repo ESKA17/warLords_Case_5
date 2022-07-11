@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/connections")
-@SecurityRequirement(name = "basicauth")
+//@SecurityRequirement(name = "basicauth")
 
 @CrossOrigin("http://localhost:3000")
 public class ConnectionsController {

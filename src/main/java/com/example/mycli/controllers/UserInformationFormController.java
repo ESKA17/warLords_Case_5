@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user_info")
-@SecurityRequirement(name = "basicauth")
+//@SecurityRequirement(name = "basicauth")
 
 @CrossOrigin(origins = "http://localhost:3000")
 public class UserInformationFormController {
