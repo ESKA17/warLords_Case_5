@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,10 +23,11 @@ import java.util.stream.Collectors;
 public class FilesUploadController {
     private final FilesStorageService storageService;
     @PostMapping("/upload")
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file,
+                                                      HttpServletRequest httpServletRequest) {
         String message;
         try {
-            storageService.save(file);
+            storageService.save(file, httpServletRequest);
             message = "Uploaded the file successfully: " + file.getOriginalFilename();
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
         } catch (Exception e) {

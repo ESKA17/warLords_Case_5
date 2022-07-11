@@ -1,12 +1,15 @@
 package com.example.mycli.services;
 
+import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.FolderInit;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -17,8 +20,10 @@ import java.util.Objects;
 import java.util.stream.Stream;
 @Transactional
 @Service
+@RequiredArgsConstructor
 public class FilesStorageServiceImpl implements FilesStorageService {
     private final Path root = Paths.get("uploads");
+    private final UserService userService;
     @Override
     public void init() {
         try {
@@ -29,9 +34,11 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     }
 
     @Override
-    public void save(MultipartFile file) {
+    public void save(MultipartFile file, HttpServletRequest httpServletRequest) {
         try {
-            Files.copy(file.getInputStream(), this.root.resolve(Objects.requireNonNull(file.getOriginalFilename())));
+            String email = userService.getEmailFromToken(httpServletRequest);
+            UserEntity user = userService.findByEmail(email);
+            Files.copy(file.getInputStream(), this.root.resolve(Objects.requireNonNull(user.getId().toString())));
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }

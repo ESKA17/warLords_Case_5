@@ -82,7 +82,7 @@ public class AuthController {
         Boolean status = userService.checkFirstTime(httpServletRequest);
         return ResponseEntity.ok(status);
     }
-    @GetMapping("/was here")
+    @PostMapping("/was here")
     public ResponseEntity<String> wasHere(HttpServletRequest httpServletRequest) {
         userService.wasHere(httpServletRequest);
         return ResponseEntity.ok("marked as was here");

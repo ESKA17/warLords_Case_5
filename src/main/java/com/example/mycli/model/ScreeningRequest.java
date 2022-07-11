@@ -4,17 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @Getter
 @Setter
 public class ScreeningRequest {
-    private String fulName;
-    private Integer age;
-    private int studyDegree;
-    private String phoneNumber;
-    private String school;
     private String city;
+    private String school;
+    private String IIN;
+    private String phoneNumber;
     private String university;
-    private Integer IIN;
-    private String graduationYear;
+    private LocalDate dateOfBirth;
 }
