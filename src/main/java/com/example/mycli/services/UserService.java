@@ -21,6 +21,7 @@ public interface UserService {
     List<UserEntity> findAllUsers();
     String getEmailFromToken(HttpServletRequest httpServletRequest);
     UserEntity findUserByID(Long id);
+    List<UserEntity> findAdmins();
 
     Boolean checkFirstTime(HttpServletRequest httpServletRequest);
 

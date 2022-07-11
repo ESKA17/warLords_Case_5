@@ -4,6 +4,7 @@ import com.example.mycli.repository.UserEntityRepo;
 import com.example.mycli.repository.UserInfoRepo;
 import com.example.mycli.services.AccountRegistrationService;
 //import com.example.mycli.services.CreateAdminService;
+import com.example.mycli.services.CreateAdminService;
 import com.example.mycli.services.FilesStorageService;
 //import com.example.mycli.services.UserInformationService;
 import com.example.mycli.services.UserService;
@@ -26,6 +27,8 @@ public class MyCliApplication implements CommandLineRunner {
     FilesStorageService storageService;
     @Autowired
     private final UserService userService;
+    @Autowired
+    private final CreateAdminService createAdminService;
 
     public static void main(String[] args)  {
         SpringApplication.run(MyCliApplication.class);
@@ -33,5 +36,6 @@ public class MyCliApplication implements CommandLineRunner {
     @Override
     public void run(String... arg0) {
         userService.initRoles();
+        createAdminService.createAdmin();
     }
 }
