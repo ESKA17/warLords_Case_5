@@ -20,6 +20,7 @@ public class AccountDeactivationServiceImpl implements AccountDeactivationServic
         log.info("deactivating account ...");
         UserEntity userEntity = userService.findByAuthDataEmail(email);
         userEntity.setActive(false);
+        userService.saveUser(userEntity);
         log.info("account was deactivated: " + email);
     }
 }
