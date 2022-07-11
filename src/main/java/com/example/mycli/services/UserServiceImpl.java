@@ -107,7 +107,13 @@ public class UserServiceImpl implements UserService{
         return userEntityRepo.findByVerificationCode(verificationCode).orElseThrow(
                 () -> new AccountNotFound("account: " + verificationCode));
     }
-
+    @Override
+    public UserEntity findUserByID(Long id) {
+        log.info("finding UserEntity by id ...");
+        UserEntity user = userEntityRepo.findById(id).orElseThrow(() -> new AccountNotFound("with id: " + id));
+        log.info("userEntity found: " + user);
+        return user;
+    }
 
     @Override
     public List<UserEntity> findAllUsers() {
