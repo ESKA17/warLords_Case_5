@@ -8,9 +8,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ScreeningRequest {
-    private String name;
-    private String surname;
-    private String fatherName;
+    private String fulName;
     private Integer age;
     private int studyDegree;
+    private String phoneNumber;
+    private String school;
+    private String city;
+    private String university;
+    private Integer IIN;
+    private String graduationYear;
 }

@@ -1,7 +1,7 @@
 package com.example.mycli.services;
 
-import com.example.mycli.model.UserEntity;
-import com.example.mycli.repository.UserEntityRepository;
+import com.example.mycli.entity.UserEntity;
+import com.example.mycli.repository.UserEntityRepo;
 import com.example.mycli.web.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserEntityRepository userEntityRepository;
+    private final UserEntityRepo userEntityRepo;
 
     @Override
     public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity userEntity = userEntityRepository.findByEmail(username);
+        UserEntity userEntity = userEntityRepo.findByAuthdata_Email(username).orElse(null);
         return CustomUserDetails.fromUserEntityToCustomUserDetails(userEntity);
     }
 }
