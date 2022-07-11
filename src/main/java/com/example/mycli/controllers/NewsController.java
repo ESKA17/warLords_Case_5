@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@SecurityRequirement(name = "basicauth")
+//@SecurityRequirement(name = "basicauth")
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/news")
 public class NewsController {

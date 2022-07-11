@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping()
-@SecurityRequirement(name = "basicauth")
+//@SecurityRequirement(name = "basicauth")
 
 @CrossOrigin(origins = "http://localhost:3000")
 public class FilesUploadController {

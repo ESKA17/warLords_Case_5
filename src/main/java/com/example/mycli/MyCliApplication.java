@@ -20,7 +20,7 @@ import javax.annotation.Resource;
 
 @SpringBootApplication
 @RequiredArgsConstructor
-@SecurityScheme(name = "basicauth", scheme = "basic", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
+//@SecurityScheme(name = "basicauth", scheme = "basic", type = SecuritySchemeType.HTTP, bearerFormat = "[token]")
 public class MyCliApplication implements CommandLineRunner {
     @Resource
     FilesStorageService storageService;
