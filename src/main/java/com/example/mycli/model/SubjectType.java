@@ -1,15 +1,10 @@
 package com.example.mycli.model;
 
 public enum SubjectType {
+    MATH,
     PHYSICS,
-    MATHEMATICS,
-    RUSSIAN,
-    KAZAKH,
     CHEMISTRY,
     BIOLOGY,
+    INFORMATICS,
     HISTORY,
-    GEOGRAPHY,
-    LITERATURE,
-    ENGLISH
-
 }
