@@ -1,5 +1,6 @@
 package com.example.mycli.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,5 +17,6 @@ public class ScreeningRequest {
     private String IIN;
     private String phoneNumber;
     private String university;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
 }
