@@ -18,9 +18,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-import static io.jsonwebtoken.lang.Strings.hasText;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-
 @Component
 @Log
 @RequiredArgsConstructor
@@ -47,12 +44,8 @@ public class JwtFilter extends GenericFilterBean {
     }
 
     private String getTokenFromRequest(HttpServletRequest httpServletRequest) {
-        String token = httpServletRequest.getHeader("Authorization");
-        if (hasText(token) && token.startsWith("Basic ")) {
-            token = token.substring(6);
-        }
+        String token = httpServletRequest.getHeader("token");
         String username = null;
-        log.info(token);
         if (token != null) {
             username = jwtProvider.getLoginFromToken(token);
         }
