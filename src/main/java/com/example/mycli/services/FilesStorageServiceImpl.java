@@ -38,16 +38,21 @@ public class FilesStorageServiceImpl implements FilesStorageService {
         try {
             String email = userService.getEmailFromToken(httpServletRequest);
             UserEntity user = userService.findByEmail(email);
-            Files.copy(file.getInputStream(), this.root.resolve(Objects.requireNonNull(user.getId().toString())));
+            String extension = file.getOriginalFilename();
+            assert extension != null;
+            int size = extension.length();
+            extension = extension.substring(size-4);
+            String newName = user.getId().toString() + extension;
+            Files.copy(file.getInputStream(), this.root.resolve(Objects.requireNonNull(newName)));
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
     }
 
     @Override
-    public Resource load(String filename) {
+    public Resource load(Long id) {
         try {
-            Path file = root.resolve(filename);
+            Path file = root.resolve(id + ".jpg");
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
                 return resource;

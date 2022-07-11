@@ -26,7 +26,7 @@ public class UserInformationFormController {
         return ResponseEntity.ok("Form was successfully filled");
     }
 
-    @PostMapping()
+    @PostMapping("/majors")
     public ResponseEntity<String> fillMajors(@RequestBody @Valid Majors majors,
                                                     HttpServletRequest httpServletRequest) {
         userInformationService.fillMajors(majors, httpServletRequest);
@@ -38,7 +38,7 @@ public class UserInformationFormController {
         return userInformationService.getUserInformationForm(httpServletRequest);
     }
 
-    @PostMapping()
+    @PostMapping("/name")
     public ResponseEntity<String> changeFullName(@RequestParam String fullName,
                                              HttpServletRequest httpServletRequest) {
         userInformationService.changeFullName(fullName, httpServletRequest);
