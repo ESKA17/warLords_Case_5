@@ -4,11 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
 @AllArgsConstructor
-@Setter
 @Getter
+@Setter
 public class NewsRequest {
-    private Long id;
-    private String text;
+    private String news;
 }

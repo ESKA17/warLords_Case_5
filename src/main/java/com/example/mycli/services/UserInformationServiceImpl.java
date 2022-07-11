@@ -21,22 +21,15 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log
 public class UserInformationServiceImpl implements UserInformationService {
-    private final UserInfoRepo userInfoRepo;
-    private final UserEntityRepo userEntityRepo;
+    private final UserService userService;
     private final JwtProvider jwtProvider;
     @Override
     public void fillUserInformationForm(ScreeningRequest screeningRequest, HttpServletRequest httpServletRequest) {
-        String token = httpServletRequest.getHeader("token");
-        String email;
-        if (token != null) {
-            log.info("email was found in database");
-            email = jwtProvider.getLoginFromToken(token);
-        } else {
-            throw new AuthenticationFailed();
-        }
+        log.info("filling information form ...");
+        String email = userService.getEmailFromToken(httpServletRequest);
         int studyDegreeResponse = screeningRequest.getStudyDegree();
         StudyDegree studyDegree;
-        log.info("choosing study degree");
+
         if (studyDegreeResponse == 0) {
             studyDegree = StudyDegree.HIGH_SCHOOL_UNFINISHED;
         }
@@ -50,6 +43,7 @@ public class UserInformationServiceImpl implements UserInformationService {
         } else {
             throw new AccountBadRequest("study degree - " + studyDegreeResponse);
         }
+        log.info("study degree: " + studyDegree);
         UserInformation userInformation = UserInformation.builder()
                 .age(screeningRequest.getAge())
                 .city(screeningRequest.getCity())
@@ -60,24 +54,20 @@ public class UserInformationServiceImpl implements UserInformationService {
                 .university(screeningRequest.getUniversity())
                 .studyDegree(studyDegree)
                 .build();
-        UserEntity user = userEntityRepo.findByAuthdata_Email(email);
+        UserEntity user = userService.findByAuthDataEmail(email);
         user.setUserInformation(userInformation);
-        userInfoRepo.save(userInformation);
-        userEntityRepo.save(user);
+        userService.saveUser(user);
+        log.info("user: " + user);
         log.info("user information was saved: " + userInformation);
     }
 
     @Override
     public UserInformation getUserInformationForm(HttpServletRequest httpServletRequest) {
-        String token = httpServletRequest.getHeader("token");
-        if (token != null) {
-            String email = jwtProvider.getLoginFromToken(token);
-            log.info("getting screening form");
-            UserEntity user = userEntityRepo.findByAuthdata_Email(email);
-            return userInfoRepo.findById(user.getId()).orElseThrow(() -> new AccountNotFound(email));
-        } else {
-            log.info("token is null");
-            throw new AccountBadRequest(" token is null");
-        }
+        log.info("retrieving user info ...");
+        String email = userService.getEmailFromToken(httpServletRequest);
+        UserEntity user = userService.findByAuthDataEmail(email);
+        log.info("getting screening form for email " + email + ": " + user);
+        log.info("user info: " + user.getUserInformation());
+        return user.getUserInformation();
     }
 }

@@ -18,15 +18,15 @@ public class AccountAuthenticationServiceImpl implements AccountAuthenticationSe
     private final JwtProvider jwtProvider;
 
     @Override
-    public String authenticateAccount(String email, String password,
+    public void authenticateAccount(String email, String password,
                                                       HttpServletResponse httpServletResponse) {
+        log.info("account authentication ...");
         UserEntity userEntity = userService.findByLoginAndPassword(email, password);
         if (userEntity != null) {
             String token = jwtProvider.generateToken(email);
             httpServletResponse.addHeader("token", token);
-            log.info("Authenticated, token: " + token);
-            return token;
+            log.info("Token: " + token);
+            log.info("successful authentication");
         }
-        return "";
     }
 }

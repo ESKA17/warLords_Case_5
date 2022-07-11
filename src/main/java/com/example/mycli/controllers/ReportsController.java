@@ -13,12 +13,12 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/news")
-public class NewsController {
+@RequestMapping("/reports")
+public class ReportsController {
     private final NewsService newsService;
 
     @PostMapping()
-    public ResponseEntity<String> addNews(@RequestBody NewsRequest newsRequest, HttpServletRequest httpServletRequest){
+    public ResponseEntity<String> addReport(@RequestBody NewsRequest newsRequest, HttpServletRequest httpServletRequest){
         newsService.addNews(newsRequest.getNews(), httpServletRequest);
         return ResponseEntity.ok("News were posted");
     }

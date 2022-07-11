@@ -1,13 +1,24 @@
 package com.example.mycli.services;
 
 import com.example.mycli.entity.News;
-import com.example.mycli.entity.UserEntity;
-import org.springframework.stereotype.Service;
 
-@Service
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
 public interface NewsService {
-    public void addNews(String text, Long id);
-    public void getAllNews();
-    public News getNews(Long id);
-    public void acceptNews();
+    void addNews(String news, HttpServletRequest httpServletRequest);
+
+    List<Long> getAllUnacceptedNews();
+
+    List<Long> getUnacceptedNewsByOP(HttpServletRequest httpServletRequest);
+
+    List<Long> getAcceptedNewsByOP(HttpServletRequest httpServletRequest);
+
+    News getNewsByID(Long id);
+
+    void markAccepted(Long newsID, HttpServletRequest httpServletRequest);
+
+    void markFinished(Long newsID, HttpServletRequest httpServletRequest);
+
+    void editNews(Long newsID, String news);
 }
