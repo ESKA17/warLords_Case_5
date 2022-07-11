@@ -3,6 +3,7 @@ package com.example.mycli.services;
 import com.example.mycli.entity.RoleEntity;
 import com.example.mycli.entity.UserEntity;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface UserService {
@@ -18,5 +19,6 @@ public interface UserService {
     RoleEntity findRoleEntityByName(String name);
     UserEntity checkByAuthDataEmail(String email);
     List<UserEntity> findAllUsers();
+    String getEmailFromToken(HttpServletRequest httpServletRequest);
 
 }

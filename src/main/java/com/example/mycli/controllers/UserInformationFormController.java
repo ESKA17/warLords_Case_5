@@ -5,6 +5,7 @@ import com.example.mycli.services.UserInformationService;
 import com.example.mycli.model.ScreeningRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,9 +19,10 @@ import java.util.List;
 public class UserInformationFormController {
     private final UserInformationService userInformationService;
     @PostMapping()
-    public void fillScreeningForm(@RequestBody @Valid ScreeningRequest screeningRequest,
-                                  HttpServletRequest httpServletRequest) {
+    public ResponseEntity<String> fillScreeningForm(@RequestBody @Valid ScreeningRequest screeningRequest,
+                                            HttpServletRequest httpServletRequest) {
         userInformationService.fillUserInformationForm(screeningRequest, httpServletRequest);
+        return ResponseEntity.ok("Form was successfully filled");
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

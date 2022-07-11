@@ -1,11 +1,10 @@
 package com.example.mycli.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -14,12 +13,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "news_table")
+@Builder
 public class News {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
+    private Long id;
     @OneToOne
     @JoinColumn(name = "user", referencedColumnName = "id")
     private UserEntity userEntity;
@@ -32,4 +31,11 @@ public class News {
 
     @Column(name = "accepted")
     private Boolean accepted;
+
+    @Column(name = "date_time")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime dateTime;
+
+    @Column(name = "finished")
+    private Boolean finished;
 }
