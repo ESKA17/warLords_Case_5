@@ -79,6 +79,17 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/is_first_time")
+    public ResponseEntity<Boolean> isFirstTime(HttpServletRequest httpServletRequest) {
+        Boolean status = userService.checkFirstTime(httpServletRequest);
+        return ResponseEntity.ok(status);
+    }
+    @PostMapping("/was here")
+    public ResponseEntity<String> wasHere(HttpServletRequest httpServletRequest) {
+        userService.wasHere(httpServletRequest);
+        return ResponseEntity.ok("marked as was here");
+    }
+
     private String getSiteURL(HttpServletRequest request) {
         String siteURL = request.getRequestURL().toString();
         return siteURL.replace(request.getServletPath(), "");
