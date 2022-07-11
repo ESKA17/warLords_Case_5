@@ -1,8 +1,6 @@
 package com.example.mycli.services;
 
-import com.example.mycli.exceptions.*;
 import com.example.mycli.entity.UserEntity;
-import com.example.mycli.repository.UserEntityRepo;
 import com.example.mycli.web.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -18,15 +16,18 @@ public class AccountAuthenticationServiceImpl implements AccountAuthenticationSe
     private final JwtProvider jwtProvider;
 
     @Override
-    public void authenticateAccount(String email, String password,
-                                                      HttpServletResponse httpServletResponse) {
+    public String authenticateAccount(String email, String password,
+                                      HttpServletResponse httpServletResponse) {
         log.info("account authentication ...");
         UserEntity userEntity = userService.findByLoginAndPassword(email, password);
+        String token = null;
         if (userEntity != null) {
-            String token = jwtProvider.generateToken(email);
+            token = jwtProvider.generateToken(email);
             httpServletResponse.addHeader("token", token);
             log.info("Token: " + token);
             log.info("successful authentication");
+
         }
+        return token;
     }
 }
