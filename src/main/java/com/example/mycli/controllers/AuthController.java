@@ -9,6 +9,7 @@ import com.example.mycli.model.AuthRequest;
 import com.example.mycli.model.RegRequest;
 //import com.example.mycli.services.UserStatusService;
 import com.example.mycli.services.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.data.repository.query.Param;
@@ -24,6 +25,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
+@SecurityRequirement(name = "basicauth")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 @Log

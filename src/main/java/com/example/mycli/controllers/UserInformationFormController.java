@@ -3,6 +3,7 @@ package com.example.mycli.controllers;
 import com.example.mycli.entity.UserInformation;
 import com.example.mycli.services.UserInformationService;
 import com.example.mycli.model.ScreeningRequest;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user_info")
+@SecurityRequirement(name = "basicauth")
+
 @CrossOrigin(origins = "http://localhost:3000")
 public class UserInformationFormController {
     private final UserInformationService userInformationService;
