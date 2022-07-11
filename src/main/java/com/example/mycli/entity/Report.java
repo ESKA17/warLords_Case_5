@@ -31,9 +31,8 @@ public class Report {
     @Column(name = "reason")
     private String chat;
 
-    @OneToOne
-    @JoinColumn(name = "reporter", referencedColumnName = "id")
-    private UserEntity userEntity;
+    @Column(name = "reporter")
+    private Long reporterID;
 
     @Column(name = "ignore")
     private Boolean ignore;

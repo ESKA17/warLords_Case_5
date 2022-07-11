@@ -105,7 +105,7 @@ public class AccountRegistrationServiceImpl implements AccountRegistrationServic
         UserEntity user = userService.findByVerificationCode(code);
         if (user == null ) {
             log.info("no user was found");
-            throw new AccountNotFound("with verification code " + code);
+            throw new AccountNotFound("account with verification code " + code);
         } else if (user.getActive()) {
             log.info("user is already active");
             return false;

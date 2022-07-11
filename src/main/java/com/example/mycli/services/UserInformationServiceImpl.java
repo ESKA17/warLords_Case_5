@@ -26,14 +26,7 @@ public class UserInformationServiceImpl implements UserInformationService {
     @Override
     public void fillUserInformationForm(ScreeningRequest screeningRequest, HttpServletRequest httpServletRequest) {
         log.info("filling information form ...");
-        String token = httpServletRequest.getHeader("token");
-        String email;
-        if (token != null) {
-            email = jwtProvider.getLoginFromToken(token);
-            log.info("account was found in database: " + email);
-        } else {
-            throw new AuthenticationFailed("token is null");
-        }
+        String email = userService.getEmailFromToken(httpServletRequest);
         int studyDegreeResponse = screeningRequest.getStudyDegree();
         StudyDegree studyDegree;
 
@@ -71,15 +64,10 @@ public class UserInformationServiceImpl implements UserInformationService {
     @Override
     public UserInformation getUserInformationForm(HttpServletRequest httpServletRequest) {
         log.info("retrieving user info ...");
-        String token = httpServletRequest.getHeader("token");
-        if (token != null) {
-            String email = jwtProvider.getLoginFromToken(token);
-            UserEntity user = userService.findByAuthDataEmail(email);
-            log.info("getting screening form for email " + email + ": " + user);
-            log.info("user info: " + user.getUserInformation());
-            return user.getUserInformation();
-        } else {
-            throw new AccountBadRequest(" token is null");
-        }
+        String email = userService.getEmailFromToken(httpServletRequest);
+        UserEntity user = userService.findByAuthDataEmail(email);
+        log.info("getting screening form for email " + email + ": " + user);
+        log.info("user info: " + user.getUserInformation());
+        return user.getUserInformation();
     }
 }

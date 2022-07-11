@@ -3,16 +3,19 @@ package com.example.mycli.services;
 import com.example.mycli.entity.RoleEntity;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.AccountNotFound;
+import com.example.mycli.exceptions.AuthenticationFailed;
 import com.example.mycli.exceptions.PasswordFailed;
 import com.example.mycli.repository.AuthDataRepo;
 import com.example.mycli.repository.RoleEntityRepo;
 import com.example.mycli.repository.UserEntityRepo;
 import com.example.mycli.repository.UserInfoRepo;
+import com.example.mycli.web.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -26,6 +29,7 @@ public class UserServiceImpl implements UserService{
     private final UserInfoRepo userInfoRepo;
     private final AuthDataRepo authDataRepo;
     private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
 
     @Override
     public void initRoles() {
@@ -43,20 +47,6 @@ public class UserServiceImpl implements UserService{
         }
 
     }
-
-    @Override
-    public UserEntity findByAuthDataEmail(String email) {
-        log.info("finding UserEntity by AuthData_email ...");
-        return userEntityRepo.findByAuthdata_Email(email).orElseThrow(
-                () -> new AccountNotFound(email));
-    }
-
-    @Override
-    public RoleEntity findRoleEntityByName(String name) {
-        log.info("finding RoleEntity by name ...");
-        return roleEntityRepo.findByName(name);
-    }
-
     @Transactional
     @Override
     public UserEntity saveUser(UserEntity user) {
@@ -66,6 +56,18 @@ public class UserServiceImpl implements UserService{
         }
         authDataRepo.save(user.getAuthdata());
         return userEntityRepo.save(user);
+    }
+    @Override
+    public UserEntity findByAuthDataEmail(String email) {
+        log.info("finding UserEntity by AuthData_email ...");
+        return userEntityRepo.findByAuthdata_Email(email).orElseThrow(
+                () -> new AccountNotFound("account: " + email));
+    }
+
+    @Override
+    public RoleEntity findRoleEntityByName(String name) {
+        log.info("finding RoleEntity by name ...");
+        return roleEntityRepo.findByName(name);
     }
 
     @Override
@@ -82,7 +84,7 @@ public class UserServiceImpl implements UserService{
                 throw new PasswordFailed();
             }
         } else {
-            throw new AccountNotFound(email);
+            throw new AccountNotFound("account: " + email);
         }
     }
 
@@ -95,7 +97,7 @@ public class UserServiceImpl implements UserService{
                 return userEntity;
         } else {
             log.info("email verification: user not found");
-            throw new AccountNotFound(email);
+            throw new AccountNotFound("account: " + email);
         }
     }
 
@@ -103,9 +105,15 @@ public class UserServiceImpl implements UserService{
     public UserEntity findByVerificationCode(String verificationCode) {
         log.info("finding UserEntity by verification code ...");
         return userEntityRepo.findByVerificationCode(verificationCode).orElseThrow(
-                () -> new AccountNotFound(verificationCode));
+                () -> new AccountNotFound("account: " + verificationCode));
     }
 
+
+    @Override
+    public List<UserEntity> findAllUsers() {
+        log.info("accessing user database for all users");
+        return userEntityRepo.findAll();
+    }
     @Override
     public UserEntity checkByAuthDataEmail(String email) {
         log.info("checking UserEntity by AuthData_email ...");
@@ -113,8 +121,15 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<UserEntity> findAllUsers() {
-        log.info("accessing user database");
-        return userEntityRepo.findAll();
+    public String getEmailFromToken(HttpServletRequest httpServletRequest) {
+        String token = httpServletRequest.getHeader("token");
+        String email;
+        if (token != null) {
+            email = jwtProvider.getLoginFromToken(token);
+            log.info("account was found in database: " + email);
+            return email;
+        } else {
+            throw new AuthenticationFailed("token is null");
+        }
     }
 }

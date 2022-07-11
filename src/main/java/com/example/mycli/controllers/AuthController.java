@@ -50,12 +50,13 @@ public class AuthController {
         return ResponseEntity.ok("Successfully authenticated");
     }
     @GetMapping("/users")
-    public List<UserEntity> users() {
-        return userService.findAllUsers();
+    public ResponseEntity<List<UserEntity>> users() {
+        return ResponseEntity.ok(userService.findAllUsers());
     }
     @PostMapping("/logout")
-    public void logout() {
+    public ResponseEntity<String> logout() {
         log.info("logout");
+        return ResponseEntity.ok("Successful logout");
     }
 
     @PostMapping("/process_register")
