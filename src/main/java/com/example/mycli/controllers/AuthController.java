@@ -25,7 +25,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-@SecurityRequirement(name = "basicauth")
+//@SecurityRequirement(name = "basicauth")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 @Log
