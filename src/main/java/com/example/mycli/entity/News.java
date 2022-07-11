@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -32,9 +33,9 @@ public class News {
     @Column(name = "accepted")
     private Boolean accepted;
 
-    @Column(name = "date_time")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dateTime;
+    @Column(name = "date")
+    @JsonFormat(pattern="dd-MM-yyyy")
+    private LocalDate date;
 
     @Column(name = "finished")
     private Boolean finished;

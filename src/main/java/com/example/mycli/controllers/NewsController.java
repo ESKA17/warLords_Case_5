@@ -2,9 +2,11 @@ package com.example.mycli.controllers;
 
 import com.example.mycli.entity.News;
 import com.example.mycli.model.NewsRequest;
+import com.example.mycli.model.NewsResponse;
 import com.example.mycli.services.NewsService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,9 +42,9 @@ public class NewsController {
         return newsService.getAcceptedNewsByOP(httpServletRequest);
     }
 
-    @GetMapping("/by_id")
-    public News getNewsByID(Long id){
-        return newsService.getNewsByID(id);
+    @GetMapping(value = "/by_id", produces = MediaType.APPLICATION_JSON_VALUE)
+    public NewsResponse getNewsByID(Long id){
+        return newsService.getNewsResponseByID(id);
     }
 
     @PostMapping("/mark_accepted")

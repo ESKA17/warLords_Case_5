@@ -3,6 +3,7 @@ package com.example.mycli.services;
 import com.example.mycli.entity.News;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.AccountNotFound;
+import com.example.mycli.model.NewsResponse;
 import com.example.mycli.repository.NewsRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,7 @@ public class NewsServiceImpl implements NewsService{
         News addedNews = News.builder()
                 .accepted(false)
                 .news(news)
-                .dateTime(LocalDateTime.now())
+                .date(LocalDate.now())
                 .userEntity(userEntity)
                 .finished(false)
                 .build();
@@ -79,9 +81,24 @@ public class NewsServiceImpl implements NewsService{
     public News getNewsByID(Long id) {
         log.info("getting news by id ...");
         News news = newsRepo.findById(id).orElseThrow(() -> new AccountNotFound("news with id: " + id));
-        log.info("successfully retrieved by id");
+        log.info("successfully retrieved by id: " + news);
         return news;
     }
+
+    @Override
+    public NewsResponse getNewsResponseByID(Long id) {
+        log.info("getting news response by id ...");
+        News news = newsRepo.findById(id).orElseThrow(() -> new AccountNotFound("news with id: " + id));
+        NewsResponse newsResponse = NewsResponse.builder()
+                .fullName(news.getUserEntity().getFullName())
+                .date(news.getDate())
+                .news(news.getNews())
+                .build();
+        log.info("successfully retrieved by id: " + newsResponse);
+        return newsResponse;
+    }
+
+
     @Transactional
     @Override
     public void markAccepted(Long newsID, HttpServletRequest httpServletRequest) {
