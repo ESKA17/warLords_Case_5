@@ -34,7 +34,7 @@ public class News {
     private Boolean accepted;
 
     @Column(name = "date")
-    @JsonFormat(pattern="dd-MM-yyyy")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate date;
 
     @Column(name = "finished")
