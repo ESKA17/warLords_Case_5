@@ -20,5 +20,6 @@ public interface UserService {
     UserEntity checkByAuthDataEmail(String email);
     List<UserEntity> findAllUsers();
     String getEmailFromToken(HttpServletRequest httpServletRequest);
+    UserEntity findUserByID(Long id);
 
 }

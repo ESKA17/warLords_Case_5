@@ -82,15 +82,27 @@ public class NewsServiceImpl implements NewsService{
         log.info("successfully retrieved by id");
         return news;
     }
- @Transactional
+    @Transactional
     @Override
     public void markAccepted(Long newsID, HttpServletRequest httpServletRequest) {
      log.info("marking news as accepted ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity user = userService.findByEmail(email);
+
         News news = getNewsByID(newsID);
         news.setAccepted(true);
         news.setAccepter_id(user.getId());
+
+        UserEntity poster = news.getUserEntity();
+
+        List<UserEntity> posterConnections = poster.getConnections();
+        List<UserEntity> userConnections = user.getConnections();
+        userConnections.add(poster);
+        posterConnections.add(user);
+        poster.setConnections(posterConnections);
+        user.setConnections(userConnections);
+        userService.saveUser(poster);
+        userService.saveUser(user);
         newsRepo.save(news);
      log.info("successfully marked as accepted");
     }
