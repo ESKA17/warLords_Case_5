@@ -17,6 +17,8 @@ import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -28,8 +30,13 @@ public class UserInformationServiceImpl implements UserInformationService {
     public void fillUserInformationForm(ScreeningRequest screeningRequest, HttpServletRequest httpServletRequest) {
         log.info("filling information form ...");
         String email = userService.getEmailFromToken(httpServletRequest);
+        String[] strings = screeningRequest.getDateOfBirth().split("-");
+        int[] numbers = Arrays.stream(strings)
+                .mapToInt(Integer::parseInt)
+                .toArray();;
+        LocalDate localDate = LocalDate.of(numbers[2], numbers[1], numbers[0]);
         UserInformation userInformation = UserInformation.builder()
-                .dateOfBirth(screeningRequest.getDateOfBirth())
+                .dateOfBirth(localDate)
                 .city(screeningRequest.getCity())
                 .school(screeningRequest.getSchool())
                 .IIN(screeningRequest.getIIN())

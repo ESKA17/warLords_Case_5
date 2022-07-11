@@ -19,4 +19,8 @@ public class ConnectionsController {
     public void match(@RequestParam Long matchID, HttpServletRequest httpServletRequest) {
         connectionsService.match(matchID, httpServletRequest);
     }
+    @PostMapping("/break_match")
+    public void breakMatch(@RequestParam Long matchID, HttpServletRequest httpServletRequest) {
+        connectionsService.breakMatch(matchID, httpServletRequest);
+    }
 }

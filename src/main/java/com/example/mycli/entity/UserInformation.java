@@ -33,8 +33,6 @@ public class UserInformation {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
-    @Column(name = "age")
-    private Integer age;
     @Override
     public String toString() {
         return "UserInformation{" +
@@ -43,7 +41,7 @@ public class UserInformation {
                 ", city='" + city + '\'' +
                 ", school='" + school + '\'' +
                 ", university='" + university + '\'' +
-                ", age=" + age +
+                ", dateOfBirth=" + dateOfBirth +
                 ", IIN=" + IIN +
                 '}';
     }

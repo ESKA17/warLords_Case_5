@@ -17,6 +17,5 @@ public class ScreeningRequest {
     private String IIN;
     private String phoneNumber;
     private String university;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dateOfBirth;
+    private String dateOfBirth;
 }
