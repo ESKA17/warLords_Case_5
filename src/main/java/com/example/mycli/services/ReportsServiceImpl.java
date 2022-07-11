@@ -1,16 +1,21 @@
 package com.example.mycli.services;
 
-import com.example.mycli.entity.News;
 import com.example.mycli.entity.Report;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.AccountNotFound;
 import com.example.mycli.repository.ReportsRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +25,7 @@ import java.util.List;
 public class ReportsServiceImpl implements ReportsService{
     private final UserService userService;
     private final ReportsRepo reportsRepo;
+    private final JavaMailSender mailSender;
     @Override
     @Transactional
     public void reportPerson(Long harasserId, String reason, HttpServletRequest httpServletRequest) {
@@ -35,6 +41,36 @@ public class ReportsServiceImpl implements ReportsService{
                 .build();
         reportsRepo.save(newReport);
         log.info("report is saved ...");
+    }
+
+    @Override
+    @Transactional
+    @Async
+    public void twoStepVerificationEmail(String email)
+            throws MessagingException, UnsupportedEncodingException {
+        UserEntity user = userService.findByEmail(email);
+        log.info("sending email started ...");
+        String toAddress = user.getAuthdata().getEmail();
+        String fromAddress = "test.spring.test@mail.ru";
+        String senderName = "Mentorship Alumni NIS.";
+        String subject = "Please verify your registration";
+        String content = "Dear [[name]],<br>"
+                + "Please click the link below to verify your registration:<br>"
+                + "Thank you,<br>"
+                + "Mentorship Alumni NIS.";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom(fromAddress, senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+
+        content = content.replace("[[name]]", user.getFullName());
+
+        helper.setText(content, true);
+        mailSender.send(message);
+        log.info("email is sent");
     }
 
     @Override

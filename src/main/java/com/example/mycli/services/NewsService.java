@@ -1,6 +1,7 @@
 package com.example.mycli.services;
 
 import com.example.mycli.entity.News;
+import com.example.mycli.model.NewsResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -15,6 +16,8 @@ public interface NewsService {
     List<Long> getAcceptedNewsByOP(HttpServletRequest httpServletRequest);
 
     News getNewsByID(Long id);
+
+    NewsResponse getNewsResponseByID(Long id);
 
     void markAccepted(Long newsID, HttpServletRequest httpServletRequest);
 
