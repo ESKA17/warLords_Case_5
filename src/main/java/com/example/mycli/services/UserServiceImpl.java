@@ -1,5 +1,6 @@
 package com.example.mycli.services;
 
+import com.example.mycli.entity.AuthData;
 import com.example.mycli.entity.RoleEntity;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.AccountNotFound;
@@ -30,6 +31,7 @@ public class UserServiceImpl implements UserService{
     private final AuthDataRepo authDataRepo;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+
 
     @Override
     public void initRoles() {
@@ -113,6 +115,28 @@ public class UserServiceImpl implements UserService{
         UserEntity user = userEntityRepo.findById(id).orElseThrow(() -> new AccountNotFound("with id: " + id));
         log.info("userEntity found: " + user);
         return user;
+    }
+
+    @Override
+    public Boolean checkFirstTime(HttpServletRequest httpServletRequest) {
+        log.info("first time? ...");
+        String email = getEmailFromToken(httpServletRequest);
+        AuthData authData = findByAuthDataEmail(email).getAuthdata();
+        Boolean status = authData.getFirstTime();
+        log.info("first time? " + status);
+        return status;
+    }
+
+    @Override
+    public void wasHere(HttpServletRequest httpServletRequest) {
+        log.info("he was here ...");
+        String email = getEmailFromToken(httpServletRequest);
+        UserEntity user = findByAuthDataEmail(email);
+        AuthData authData = user.getAuthdata();
+        authData.setFirstTime(false);
+        user.setAuthdata(authData);
+        saveUser(user);
+        log.info("now everybody knows");
     }
 
     @Override

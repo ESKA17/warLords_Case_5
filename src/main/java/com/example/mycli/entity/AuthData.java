@@ -23,6 +23,9 @@ public class AuthData {
         @Column(name = "password", nullable = false)
         private String password;
 
+        @Column(name = "first_time", nullable = false)
+        private Boolean firstTime;
+
         @ManyToOne
         @JoinColumn(name="role_table", referencedColumnName = "id", nullable = false)
         private RoleEntity roleEntity;
