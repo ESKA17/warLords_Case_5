@@ -2,6 +2,7 @@ package com.example.mycli.controllers;
 
 import com.example.mycli.entity.News;
 import com.example.mycli.entity.Report;
+import com.example.mycli.model.MessageReport;
 import com.example.mycli.model.NewsRequest;
 import com.example.mycli.model.ReportRequest;
 import com.example.mycli.services.AccountDeactivationService;
@@ -12,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @RestController
@@ -27,8 +30,9 @@ public class ReportsController {
     private final AccountDeactivationService accountDeactivationService;
 
     @PostMapping("/report_by_id")
-    public ResponseEntity<String> report(@RequestBody ReportRequest reportRequest, HttpServletRequest httpServletRequest){
+    public ResponseEntity<String> report(@RequestBody ReportRequest reportRequest, HttpServletRequest httpServletRequest) throws MessagingException, UnsupportedEncodingException {
         reportsService.reportPerson(reportRequest.getReportedPersonId(), reportRequest.getReason(), httpServletRequest);
+        reportsService.sendingNotificationReport();
         return ResponseEntity.ok(reportRequest.getReportedPerson() +" is reported");
     }
 

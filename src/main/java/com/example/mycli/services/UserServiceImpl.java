@@ -140,6 +140,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public List<UserEntity> findAdmins() {
+        log.info("getting all admins");
+        return userEntityRepo.findAllByAuthdata_RoleEntity_Id(0L);
+
+    }
+
+    @Override
     public List<UserEntity> findAllUsers() {
         log.info("accessing user database for all users");
         return userEntityRepo.findAll();

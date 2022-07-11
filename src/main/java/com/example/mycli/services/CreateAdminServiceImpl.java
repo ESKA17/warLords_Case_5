@@ -26,7 +26,7 @@ public class CreateAdminServiceImpl implements CreateAdminService{
         if (userEntity == null) {
             RoleEntity userRoleEntity = roleEntityRepo.findByName("ROLE_ADMIN");
             AuthData authData = AuthData.builder()
-                    .email("admin@gmail.ru")
+                    .email("sakenovramazan@gmail.com")
                     .password(passwordEncoder.encode("admin"))
                     .roleEntity(userRoleEntity)
                     .build();

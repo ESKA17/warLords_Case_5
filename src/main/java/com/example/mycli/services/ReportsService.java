@@ -15,8 +15,7 @@ public interface ReportsService {
 
     @Transactional
     @Async
-    void twoStepVerificationEmail(String email)
-            throws MessagingException, UnsupportedEncodingException;
+    void sendingNotificationReport() throws MessagingException, UnsupportedEncodingException;
 
     void reportIgnore(Long reportId, HttpServletRequest httpServletRequest);
 
