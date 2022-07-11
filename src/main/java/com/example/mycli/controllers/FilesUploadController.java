@@ -3,6 +3,7 @@ package com.example.mycli.controllers;
 import com.example.mycli.model.FileInfo;
 import com.example.mycli.model.ResponseMessage;
 import com.example.mycli.services.FilesStorageService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +20,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping()
+@SecurityRequirement(name = "basicauth")
+
 @CrossOrigin(origins = "http://localhost:3000")
 public class FilesUploadController {
     private final FilesStorageService storageService;
