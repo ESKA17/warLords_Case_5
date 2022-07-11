@@ -6,6 +6,8 @@ import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.AccountNotFound;
 import com.example.mycli.exceptions.AuthenticationFailed;
 import com.example.mycli.exceptions.PasswordFailed;
+import com.example.mycli.model.FilterSearchRequest;
+import com.example.mycli.model.SubjectType;
 import com.example.mycli.repository.AuthDataRepo;
 import com.example.mycli.repository.RoleEntityRepo;
 import com.example.mycli.repository.UserEntityRepo;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -140,6 +143,31 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public List<UserEntity> filter(FilterSearchRequest filterSearchRequest) {
+        String city = filterSearchRequest.getCity();
+        List<String> universities = filterSearchRequest.getUniversities();
+        List<SubjectType> subjects = fromIntToSubjectType(filterSearchRequest.getSubjects());
+        List<UserEntity> cityFilter = userEntityRepo.findAllByUserInformation_City(city);
+        List<UserEntity> universityFilter = new ArrayList<>();
+        for (UserEntity user : cityFilter) {
+            if(universities.contains(user.getUserInformation().getUniversity())) {
+                universityFilter.add(user);
+            }
+        }
+        List<UserEntity> subjectFilter = new ArrayList<>();
+        for (UserEntity userFiltered : universityFilter) {
+            for (SubjectType subject: subjects) {
+                if(subjects.contains(subject)) {
+                    subjectFilter.add(userFiltered);
+                    break;
+                }
+            }
+        }
+
+        return subjectFilter;
+    }
+
+    @Override
     public List<UserEntity> findAdmins() {
         log.info("getting all admins");
         return userEntityRepo.findAllByAuthdata_RoleEntity_Id(0L);
@@ -168,5 +196,38 @@ public class UserServiceImpl implements UserService{
         } else {
             throw new AuthenticationFailed("token is null");
         }
+    }
+
+    private List<SubjectType> fromIntToSubjectType(List<Integer> subjects) {
+        List<SubjectType> subjectList = new ArrayList<>();
+        for (int digit: subjects) {
+            switch (digit) {
+                case 0: {
+                    subjectList.add(SubjectType.MATH);
+                    break;
+                }
+                case 1: {
+                    subjectList.add(SubjectType.PHYSICS);
+                    break;
+                }
+                case 2: {
+                    subjectList.add(SubjectType.CHEMISTRY);
+                    break;
+                }
+                case 3: {
+                    subjectList.add(SubjectType.BIOLOGY);
+                    break;
+                }
+                case 4: {
+                    subjectList.add(SubjectType.INFORMATICS);
+                    break;
+                }
+                case 5: {
+                    subjectList.add(SubjectType.HISTORY);
+                    break;
+                }
+            }
+        }
+        return subjectList;
     }
 }
