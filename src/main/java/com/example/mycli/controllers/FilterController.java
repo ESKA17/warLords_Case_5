@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @CrossOrigin("http://localhost:3000")
 @RequiredArgsConstructor
-@RequestMapping("filter_search")
+@RequestMapping("/filter_search")
 public class FilterController {
 
     private final UserService userService;

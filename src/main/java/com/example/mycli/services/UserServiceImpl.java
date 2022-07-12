@@ -57,8 +57,10 @@ public class UserServiceImpl implements UserService{
     public UserEntity saveUser(UserEntity user) {
         log.info("saving user ...");
         if (user.getUserInformation() != null) {
+            log.info("user info is not null");
             userInfoRepo.save(user.getUserInformation());
         }
+        log.info("pre save user with auith data");
         authDataRepo.save(user.getAuthdata());
         return userEntityRepo.save(user);
     }
