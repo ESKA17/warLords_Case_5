@@ -24,7 +24,7 @@ public class UserEntity {
     private String fullName;
 
     @OneToOne
-    @JoinColumn(name = "auth_data", referencedColumnName = "id")
+    @JoinColumn(name = "auth_data")
     private AuthData authdata;
 
     @ElementCollection
@@ -37,11 +37,11 @@ public class UserEntity {
     private List<UserEntity> connections;
 
     @OneToOne
-    @JoinColumn(name = "user_information", referencedColumnName = "id")
+    @JoinColumn(name = "user_information")
     private UserInformation userInformation;
 
-    @Column(name = "rating")
-    private Integer rating;
+    @OneToOne
+    private Ranking ranking;
 
     @Column(name = "active")
     private Boolean active;

@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/user_info")
 //@SecurityRequirement(name = "basicauth")
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class UserInformationFormController {
     private final UserInformationService userInformationService;
     @PostMapping()
@@ -41,6 +41,10 @@ public class UserInformationFormController {
         return userInformationService.getUserInformationForm(httpServletRequest);
     }
 
+    @GetMapping("/majors")
+    public List<Integer> getMajors(HttpServletRequest httpServletRequest) {
+        return userInformationService.getMajors(httpServletRequest);
+    }
     @PostMapping("/name")
     public ResponseEntity<String> changeFullName(@RequestParam String fullName,
                                              HttpServletRequest httpServletRequest) {

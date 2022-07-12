@@ -16,7 +16,8 @@ import javax.persistence.*;
 public class Chats {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chets_en")
+    @SequenceGenerator(name = "chats_en", sequenceName = "chats_en", allocationSize = 1)
     private Integer id;
 
     @OneToOne

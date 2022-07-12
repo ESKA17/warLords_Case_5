@@ -14,4 +14,6 @@ public interface UserInformationService {
     void fillMajors(Majors majors, HttpServletRequest httpServletRequest);
 
     void changeFullName(String fullName, HttpServletRequest httpServletRequest);
+
+    List<Integer> getMajors(HttpServletRequest httpServletRequest);
 }
