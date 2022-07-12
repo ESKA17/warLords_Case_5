@@ -38,9 +38,9 @@ public class UserServiceImpl implements UserService{
     public void initRoles() {
         log.info("roles initialization ...");
         if (roleEntityRepo.count() == 0) {
-            RoleEntity roleAdmin = new RoleEntity(0L, "ROLE_ADMIN");
-            RoleEntity roleMentor = new RoleEntity(1L, "ROLE_MENTOR");
-            RoleEntity roleMentee = new RoleEntity(2L, "ROLE_MENTEE");
+            RoleEntity roleAdmin = new RoleEntity(0, "ROLE_ADMIN");
+            RoleEntity roleMentor = new RoleEntity(1, "ROLE_MENTOR");
+            RoleEntity roleMentee = new RoleEntity(2, "ROLE_MENTEE");
             roleEntityRepo.save(roleAdmin);
             roleEntityRepo.save(roleMentor);
             roleEntityRepo.save(roleMentee);
@@ -173,7 +173,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<UserEntity> findAdmins() {
         log.info("getting all admins");
-        return userEntityRepo.findAllByAuthdata_RoleEntity_Id(0L);
+        return userEntityRepo.findAllByAuthdata_RoleEntity_Id(0);
 
     }
 
