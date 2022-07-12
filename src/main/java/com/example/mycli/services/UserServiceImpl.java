@@ -3,6 +3,7 @@ package com.example.mycli.services;
 import com.example.mycli.entity.AuthData;
 import com.example.mycli.entity.RoleEntity;
 import com.example.mycli.entity.UserEntity;
+import com.example.mycli.exceptions.AccountBadRequest;
 import com.example.mycli.exceptions.AccountNotFound;
 import com.example.mycli.exceptions.AuthenticationFailed;
 import com.example.mycli.exceptions.PasswordFailed;
@@ -116,6 +117,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserEntity findUserByID(Long id) {
         log.info("finding UserEntity by id ...");
+        if (id == null) {
+            throw new AccountBadRequest("no ID");
+        }
         UserEntity user = userEntityRepo.findById(id).orElseThrow(() -> new AccountNotFound("with id: " + id));
         log.info("userEntity found: " + user);
         return user;

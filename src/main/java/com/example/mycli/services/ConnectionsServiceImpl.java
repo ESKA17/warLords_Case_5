@@ -1,6 +1,7 @@
 package com.example.mycli.services;
 
 import com.example.mycli.entity.UserEntity;
+import com.example.mycli.exceptions.AccountBadRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ public class ConnectionsServiceImpl implements ConnectionsService {
     private final UserService userService;
     @Override
     public void match(Long matchID, HttpServletRequest httpServletRequest) {
+        if (matchID == null) {
+            throw new AccountBadRequest("check matchID");
+        }
         log.info("starting matching ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity poster = userService.findByAuthDataEmail(email);
@@ -40,6 +44,9 @@ public class ConnectionsServiceImpl implements ConnectionsService {
     @Override
     public void breakMatchByID(Long posterID, Long accepterID) {
         log.info("breaking match by id ...");
+        if (posterID == null) {
+            throw new AccountBadRequest("check matchID");
+        }
         UserEntity poster = userService.findUserByID(posterID);
         matchBreaker(accepterID, poster);
     }
@@ -58,6 +65,9 @@ public class ConnectionsServiceImpl implements ConnectionsService {
     }
 
     private void matchBreaker(Long accepterID, UserEntity poster) {
+        if (accepterID == null) {
+            throw new AccountBadRequest("check matchID");
+        }
         UserEntity accepter =  userService.findUserByID(accepterID);
         List<UserEntity> posterList = poster.getConnections();
         List<UserEntity> accepterList = accepter.getConnections();

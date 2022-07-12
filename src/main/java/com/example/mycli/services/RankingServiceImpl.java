@@ -2,6 +2,7 @@ package com.example.mycli.services;
 
 import com.example.mycli.entity.Ranking;
 import com.example.mycli.entity.UserEntity;
+import com.example.mycli.exceptions.AccountBadRequest;
 import com.example.mycli.model.RankingForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

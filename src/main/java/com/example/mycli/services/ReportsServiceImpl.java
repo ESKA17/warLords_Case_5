@@ -2,6 +2,7 @@ package com.example.mycli.services;
 
 import com.example.mycli.entity.Report;
 import com.example.mycli.entity.UserEntity;
+import com.example.mycli.exceptions.AccountBadRequest;
 import com.example.mycli.exceptions.AccountNotFound;
 import com.example.mycli.repository.ReportsRepo;
 import lombok.RequiredArgsConstructor;
@@ -79,6 +80,9 @@ public class ReportsServiceImpl implements ReportsService{
     @Override
     public void reportIgnore(Long reportId, HttpServletRequest httpServletRequest){
         log.info("ignoring report ...");
+        if (reportId == null) {
+            throw new AccountBadRequest("check ID");
+        }
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity harasser = userService.findByEmail(email);
 
@@ -92,6 +96,9 @@ public class ReportsServiceImpl implements ReportsService{
     @Transactional
     public Report getReportById(Long reportId){
         log.info("getting report by id ...");
+        if (reportId == null) {
+            throw new AccountBadRequest("check ID");
+        }
         Report report = reportsRepo.findById(reportId).orElseThrow(() -> new AccountNotFound("report with id: " + reportId));
         log.info("report successfully retrieved by id");
         return report;
@@ -99,6 +106,7 @@ public class ReportsServiceImpl implements ReportsService{
     @Override
     public List<Long> getReportsAll(){
         log.info("accessing database for all reports");
+
         List<Report> allReports = reportsRepo.findAll();
         List<Long> listById = new ArrayList<>();
         for( Report report : allReports){
