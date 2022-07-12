@@ -1,17 +1,9 @@
 package com.example.mycli.services;
 
 import com.example.mycli.exceptions.AccountBadRequest;
-import com.example.mycli.exceptions.AccountNotFound;
-import com.example.mycli.exceptions.AuthenticationFailed;
-import com.example.mycli.model.Majors;
-import com.example.mycli.model.StudyDegree;
+import com.example.mycli.model.*;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.entity.UserInformation;
-import com.example.mycli.model.SubjectType;
-import com.example.mycli.repository.UserEntityRepo;
-import com.example.mycli.repository.UserInfoRepo;
-import com.example.mycli.model.ScreeningRequest;
-import com.example.mycli.web.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
@@ -55,13 +47,24 @@ public class UserInformationServiceImpl implements UserInformationService {
     }
 
     @Override
-    public UserInformation getUserInformationForm(HttpServletRequest httpServletRequest) {
+    public UserInfoResponse getUserInformationForm(HttpServletRequest httpServletRequest) {
         log.info("retrieving user info ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity user = userService.findByAuthDataEmail(email);
+        Integer roleID = user.getAuthdata().getRoleEntity().getId();
+        UserInfoResponse userInfoResponse = UserInfoResponse.builder()
+                .aboutMe(user.getUserInformation().getAboutMe())
+                .city(user.getUserInformation().getCity())
+                .dateOfBirth(user.getUserInformation().getDateOfBirth())
+                .IIN(user.getUserInformation().getIIN())
+                .phoneNumber(user.getUserInformation().getPhoneNumber())
+                .university(user.getUserInformation().getUniversity())
+                .school(user.getUserInformation().getSchool())
+                .roleID(roleID)
+                .build();
         log.info("getting screening form for email " + email + ": " + user);
-        log.info("user info: " + user.getUserInformation());
-        return user.getUserInformation();
+        log.info("user info: " + userInfoResponse);
+        return userInfoResponse;
     }
 
     @Override
