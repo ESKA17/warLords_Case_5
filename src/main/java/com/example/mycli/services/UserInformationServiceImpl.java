@@ -18,8 +18,11 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.example.mycli.model.SubjectType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +45,7 @@ public class UserInformationServiceImpl implements UserInformationService {
                 .IIN(screeningRequest.getIIN())
                 .phoneNumber(screeningRequest.getPhoneNumber())
                 .university(screeningRequest.getUniversity())
+                .aboutMe(screeningRequest.getAboutMe())
                 .build();
         UserEntity user = userService.findByAuthDataEmail(email);
         user.setUserInformation(userInformation);
@@ -69,27 +73,27 @@ public class UserInformationServiceImpl implements UserInformationService {
         for (int in: majors.getMajors()) {
             switch (in) {
                 case 0: {
-                    if (!subjectList.contains(SubjectType.MATH)) {subjectList.add(SubjectType.MATH);}
+                    if (!subjectList.contains(MATH)) {subjectList.add(MATH);}
                     break;
                 }
                 case 1: {
-                    if (!subjectList.contains(SubjectType.PHYSICS)) {subjectList.add(SubjectType.PHYSICS);}
+                    if (!subjectList.contains(PHYSICS)) {subjectList.add(PHYSICS);}
                     break;
                 }
                 case 2: {
-                    if (!subjectList.contains(SubjectType.CHEMISTRY)) {subjectList.add(SubjectType.CHEMISTRY);}
+                    if (!subjectList.contains(CHEMISTRY)) {subjectList.add(CHEMISTRY);}
                     break;
                 }
                 case 3: {
-                    if (!subjectList.contains(SubjectType.BIOLOGY)) {subjectList.add(SubjectType.BIOLOGY);}
+                    if (!subjectList.contains(BIOLOGY)) {subjectList.add(BIOLOGY);}
                     break;
                 }
                 case 4: {
-                    if (!subjectList.contains(SubjectType.INFORMATICS)) {subjectList.add(SubjectType.INFORMATICS);}
+                    if (!subjectList.contains(INFORMATICS)) {subjectList.add(INFORMATICS);}
                     break;
                 }
                 case 5: {
-                    if (!subjectList.contains(SubjectType.HISTORY)) {subjectList.add(SubjectType.HISTORY);}
+                    if (!subjectList.contains(HISTORY)) {subjectList.add(HISTORY);}
                     break;
                 }
                 default: throw new AccountBadRequest("major with id " + in + " does not match any subject");
@@ -109,4 +113,46 @@ public class UserInformationServiceImpl implements UserInformationService {
         userService.saveUser(user);
         log.info("full name was changed");
     }
+
+    @Override
+    public List<Integer> getMajors(HttpServletRequest httpServletRequest) {
+        log.info("getting majors ...");
+        String email = userService.getEmailFromToken(httpServletRequest);
+        UserEntity userEntity = userService.findByAuthDataEmail(email);
+        List<SubjectType> subjectList = userEntity.getSubjectTypeList();
+        List<Integer> out = new ArrayList<>();
+        for (SubjectType in: subjectList) {
+            switch (in) {
+                case MATH: {
+                    out.add(0);
+                    break;
+                }
+                case PHYSICS: {
+                    out.add(1);
+                    break;
+                }
+                case CHEMISTRY: {
+                    out.add(2);
+                    break;
+                }
+                case BIOLOGY: {
+                    out.add(3);
+                    break;
+                }
+                case INFORMATICS: {
+                    out.add(4);
+                    break;
+                }
+                case HISTORY: {
+                    out.add(5);
+                    break;
+                }
+                default:
+                    throw new AccountBadRequest("major with id " + in + " does not match any subject");
+            }
+        }
+        log.info("majors sent");
+        return out;
+    }
+
 }

@@ -15,7 +15,8 @@ import javax.persistence.*;
 public class Report {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reports_en")
+    @SequenceGenerator(name = "reports_en", sequenceName = "reports_en", allocationSize = 1)
     private Long id;
 
     @OneToOne

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,9 +39,22 @@ public class ConnectionsServiceImpl implements ConnectionsService {
 
     @Override
     public void breakMatchByID(Long posterID, Long accepterID) {
-        log.info("breaking match ...");
+        log.info("breaking match by id ...");
         UserEntity poster = userService.findUserByID(posterID);
         matchBreaker(accepterID, poster);
+    }
+
+    @Override
+    public List<Long> getConnections(HttpServletRequest httpServletRequest) {
+        log.info("retrieving connections ...");
+        String email = userService.getEmailFromToken(httpServletRequest);
+        List<UserEntity> connectionsList = userService.findByAuthDataEmail(email).getConnections();
+        List<Long> out = new ArrayList<>();
+        for (UserEntity user: connectionsList) {
+            out.add(user.getId());
+        }
+        log.info("connections were retrieved: " + out);
+        return out;
     }
 
     private void matchBreaker(Long accepterID, UserEntity poster) {
@@ -51,6 +65,6 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         accepterList.remove(poster);
         userService.saveUser(poster);
         userService.saveUser(accepter);
-        log.info("users unmatched(((");
+        log.info("users unmatched(((: " + accepter + " and " + poster);
     }
 }
