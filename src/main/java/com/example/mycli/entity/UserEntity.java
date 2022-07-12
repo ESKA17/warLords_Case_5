@@ -40,8 +40,8 @@ public class UserEntity {
     @JoinColumn(name = "user_information", referencedColumnName = "id")
     private UserInformation userInformation;
 
-    @Column(name = "rating")
-    private Integer rating;
+    @OneToOne
+    private Ranking ranking;
 
     @Column(name = "active")
     private Boolean active;
