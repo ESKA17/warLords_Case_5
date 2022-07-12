@@ -2,6 +2,7 @@ package com.example.mycli.services;
 
 import com.example.mycli.entity.RoleEntity;
 import com.example.mycli.entity.UserEntity;
+import com.example.mycli.model.FilterSearchRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -21,8 +22,8 @@ public interface UserService {
     List<UserEntity> findAllUsers();
     String getEmailFromToken(HttpServletRequest httpServletRequest);
     UserEntity findUserByID(Long id);
-
+    List<UserEntity> findAdmins();
     Boolean checkFirstTime(HttpServletRequest httpServletRequest);
-
     void wasHere(HttpServletRequest httpServletRequest);
+    List<UserEntity> filter(FilterSearchRequest filterSearchRequest);
 }

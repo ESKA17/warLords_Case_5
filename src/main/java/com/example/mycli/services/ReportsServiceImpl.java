@@ -46,16 +46,15 @@ public class ReportsServiceImpl implements ReportsService{
     @Override
     @Transactional
     @Async
-    public void twoStepVerificationEmail(String email)
+    public void sendingNotificationReport()
             throws MessagingException, UnsupportedEncodingException {
-        UserEntity user = userService.findByEmail(email);
         log.info("sending email started ...");
-        String toAddress = user.getAuthdata().getEmail();
+        List<UserEntity> listOfAdmins = userService.findAdmins();
         String fromAddress = "test.spring.test@mail.ru";
         String senderName = "Mentorship Alumni NIS.";
-        String subject = "Please verify your registration";
+        String subject = "You got new report";
         String content = "Dear [[name]],<br>"
-                + "Please click the link below to verify your registration:<br>"
+                + "You have new report to be judged:<br>"
                 + "Thank you,<br>"
                 + "Mentorship Alumni NIS.";
 
@@ -63,14 +62,18 @@ public class ReportsServiceImpl implements ReportsService{
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
         helper.setFrom(fromAddress, senderName);
-        helper.setTo(toAddress);
+
         helper.setSubject(subject);
 
-        content = content.replace("[[name]]", user.getFullName());
 
         helper.setText(content, true);
-        mailSender.send(message);
-        log.info("email is sent");
+
+        for(UserEntity admin:listOfAdmins){
+            String toAddress = admin.getAuthdata().getEmail();
+            helper.setTo(toAddress);
+            mailSender.send(message);
+        }
+        log.info("emails are sent");
     }
 
     @Override
