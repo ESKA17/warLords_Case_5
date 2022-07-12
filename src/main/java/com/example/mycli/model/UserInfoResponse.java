@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Setter
 @Builder
 public class UserInfoResponse {
+    private String fullName;
     private String city;
     private String school;
     private String IIN;

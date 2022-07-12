@@ -53,6 +53,7 @@ public class UserInformationServiceImpl implements UserInformationService {
         UserEntity user = userService.findByAuthDataEmail(email);
         Integer roleID = user.getAuthdata().getRoleEntity().getId();
         UserInfoResponse userInfoResponse = UserInfoResponse.builder()
+                .fullName(user.getFullName())
                 .aboutMe(user.getUserInformation().getAboutMe())
                 .city(user.getUserInformation().getCity())
                 .dateOfBirth(user.getUserInformation().getDateOfBirth())
