@@ -1,7 +1,11 @@
 package com.example.mycli.services;
 
+import com.example.mycli.entity.Connection;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.AccountBadRequest;
+import com.example.mycli.exceptions.AccountNotFound;
+import com.example.mycli.repository.ConnectionRepo;
+import com.example.mycli.web.SerializableSSE;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,7 @@ import java.util.List;
 @Slf4j
 public class ConnectionsServiceImpl implements ConnectionsService {
     private final UserService userService;
+    private final ConnectionRepo connectionRepo;
     @Override
     public void match(Long matchID, HttpServletRequest httpServletRequest) {
         if (matchID == null) {
@@ -62,6 +67,22 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         }
         log.info("connections were retrieved: " + out);
         return out;
+    }
+
+    @Override
+    public void addEmitterConnection(Connection connection) {
+        log.info("saving connection ...");
+        connectionRepo.save(connection);
+        log.info("saving connection done");
+    }
+
+    @Override
+    public SerializableSSE getEmitter(Long toWhom, Long from) {
+        log.info("accessing base for emitter between users "+ toWhom + " and " +  from);
+        Connection connection = connectionRepo.findByFriendIDAndUserID(toWhom, from).orElseThrow(
+                () -> new AccountNotFound("emitter between users "+ toWhom + " and " +  from));
+        log.info("emitter was found");
+        return connection.getSseEmitter();
     }
 
     private void matchBreaker(Long accepterID, UserEntity poster) {

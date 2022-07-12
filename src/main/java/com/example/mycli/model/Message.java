@@ -1,16 +1,11 @@
 package com.example.mycli.model;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
+@Builder
 public class Message {
-        private String senderName;
-        private String receiverName;
-        private String message;
-        private String date;
-        private Status status;
+    private String from;
+    private String message;
 }
