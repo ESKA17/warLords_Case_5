@@ -32,7 +32,7 @@ public class NewsServiceImpl implements NewsService{
                 .accepted(false)
                 .news(news)
                 .date(LocalDate.now())
-                .userEntity(userEntity)
+                .userID(userEntity.getId())
                 .finished(false)
                 .build();
         newsRepo.save(addedNews);
@@ -55,7 +55,8 @@ public class NewsServiceImpl implements NewsService{
     public List<Long> getUnacceptedNewsByOP(HttpServletRequest httpServletRequest) {
         log.info("retrieving unaccepted news by OP ... ");
         String email = userService.getEmailFromToken(httpServletRequest);
-        List<News> allNews = newsRepo.findAllByAcceptedIsFalseAndUserEntity_Authdata_Email(email);
+        UserEntity userEntity = userService.findByAuthDataEmail(email);
+        List<News> allNews = newsRepo.findAllByAcceptedIsFalseAndUserID(userEntity.getId());
         List<Long> listByID = new ArrayList<>();
         for (News news: allNews) {
             listByID.add(news.getId());
@@ -68,7 +69,8 @@ public class NewsServiceImpl implements NewsService{
     public List<Long> getAcceptedNewsByOP(HttpServletRequest httpServletRequest) {
         log.info("retrieving accepted news by OP ... ");
         String email = userService.getEmailFromToken(httpServletRequest);
-        List<News> allNews = newsRepo.findAllByAcceptedIsTrueAndFinishedIsFalseAndUserEntity_Authdata_Email(email);
+        UserEntity userEntity = userService.findByAuthDataEmail(email);
+        List<News> allNews = newsRepo.findAllByAcceptedIsTrueAndFinishedIsFalseAndUserID(userEntity.getId());
         List<Long> listByID = new ArrayList<>();
         for (News news: allNews) {
             listByID.add(news.getId());
@@ -89,8 +91,9 @@ public class NewsServiceImpl implements NewsService{
     public NewsResponse getNewsResponseByID(Long id) {
         log.info("getting news response by id ...");
         News news = newsRepo.findById(id).orElseThrow(() -> new AccountNotFound("news with id: " + id));
+        UserEntity userEntity = userService.findUserByID(news.getUserID());
         NewsResponse newsResponse = NewsResponse.builder()
-                .fullName(news.getUserEntity().getFullName())
+                .fullName(userEntity.getFullName())
                 .date(news.getDate())
                 .news(news.getNews())
                 .build();
@@ -110,7 +113,7 @@ public class NewsServiceImpl implements NewsService{
         news.setAccepted(true);
         news.setAccepter_id(user.getId());
 
-        UserEntity poster = news.getUserEntity();
+        UserEntity poster = userService.findUserByID(news.getUserID());
 
         List<UserEntity> posterConnections = poster.getConnections();
         List<UserEntity> userConnections = user.getConnections();

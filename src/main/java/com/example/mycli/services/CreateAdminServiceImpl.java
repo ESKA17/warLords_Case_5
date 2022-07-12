@@ -10,6 +10,8 @@ import lombok.extern.java.Log;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Log
@@ -22,8 +24,8 @@ public class CreateAdminServiceImpl implements CreateAdminService{
     @Override
     public void createAdmin() {
         log.info("creating admin ...");
-        UserEntity userEntity = userEntityRepo.findByAuthdata_Email("admin").orElse(null);
-        if (userEntity == null) {
+        List<UserEntity> admins = userService.findAdmins();
+        if (admins.size() == 0) {
             RoleEntity userRoleEntity = roleEntityRepo.findByName("ROLE_ADMIN");
             AuthData authData = AuthData.builder()
                     .email("sakenovramazan@gmail.com")
@@ -34,11 +36,16 @@ public class CreateAdminServiceImpl implements CreateAdminService{
             UserEntity user = UserEntity.builder()
                     .authdata(authData)
                     .fullName("admin")
+                    .active(true)
                     .build();
             UserEntity admin = userService.saveUser(user);
             log.info("admin created - sakenovramazan@gmail.com:admin");
         } else {
-            log.info("admin is already created - sakenovramazan@gmail.com:admin");
+            for (UserEntity admin: admins) {
+                if (admin.getActive()) {
+                    log.info("admin is already created :" + admin.getAuthdata().getEmail());
+                }
+            }
         }
     }
 }

@@ -30,7 +30,9 @@ public class ReportsController {
     private final AccountDeactivationService accountDeactivationService;
 
     @PostMapping("/report_by_id")
-    public ResponseEntity<String> report(@RequestBody ReportRequest reportRequest, HttpServletRequest httpServletRequest) throws MessagingException, UnsupportedEncodingException {
+    public ResponseEntity<String> report(@RequestBody ReportRequest reportRequest,
+                                         HttpServletRequest httpServletRequest)
+            throws MessagingException, UnsupportedEncodingException {
         reportsService.reportPerson(reportRequest.getReportedPersonId(), reportRequest.getReason(), httpServletRequest);
         reportsService.sendingNotificationReport();
         return ResponseEntity.ok(reportRequest.getReportedPerson() +" is reported");

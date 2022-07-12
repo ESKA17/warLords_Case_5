@@ -1,14 +1,12 @@
 package com.example.mycli.controllers;
 
+import com.example.mycli.entity.Ranking;
 import com.example.mycli.model.RankingForm;
 import com.example.mycli.services.RankingService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,4 +23,9 @@ public class RankingFormController {
         rankingService.fillRankingForm(rankingForm, httpServletRequest);
         return ResponseEntity.ok("Form was successfully filled");
     }
+    @GetMapping()
+    public Ranking getRankingForm(HttpServletRequest httpServletRequest) {
+        return rankingService.getRankingForm(httpServletRequest);
+    }
+
 }

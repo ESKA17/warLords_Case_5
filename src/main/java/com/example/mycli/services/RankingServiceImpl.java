@@ -33,4 +33,13 @@ public class RankingServiceImpl implements RankingService {
         userService.saveUser(userEntity);
         log.info("ranking was saved: " + ranking);
     }
+
+    @Override
+    public Ranking getRankingForm(HttpServletRequest httpServletRequest) {
+        log.info("retrieving ranking by jwt ...");
+        String email = userService.getEmailFromToken(httpServletRequest);
+        Ranking ranking = userService.findByAuthDataEmail(email).getRanking();
+        log.info("ranking info was retrieved");
+        return ranking;
+    }
 }

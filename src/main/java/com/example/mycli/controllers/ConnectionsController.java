@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/connections")
@@ -23,4 +24,9 @@ public class ConnectionsController {
     public void breakMatch(@RequestParam Long matchID, HttpServletRequest httpServletRequest) {
         connectionsService.breakMatch(matchID, httpServletRequest);
     }
+    @GetMapping("/show_connections")
+    public List<Long> getConnections(HttpServletRequest httpServletRequest) {
+        return connectionsService.getConnections(httpServletRequest);
+    }
+
 }
