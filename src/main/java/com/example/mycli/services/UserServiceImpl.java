@@ -3,6 +3,7 @@ package com.example.mycli.services;
 import com.example.mycli.entity.AuthData;
 import com.example.mycli.entity.RoleEntity;
 import com.example.mycli.entity.UserEntity;
+import com.example.mycli.exceptions.AccountBadRequest;
 import com.example.mycli.exceptions.AccountNotFound;
 import com.example.mycli.exceptions.AuthenticationFailed;
 import com.example.mycli.exceptions.PasswordFailed;
@@ -38,9 +39,9 @@ public class UserServiceImpl implements UserService{
     public void initRoles() {
         log.info("roles initialization ...");
         if (roleEntityRepo.count() == 0) {
-            RoleEntity roleAdmin = new RoleEntity(0L, "ROLE_ADMIN");
-            RoleEntity roleMentor = new RoleEntity(1L, "ROLE_MENTOR");
-            RoleEntity roleMentee = new RoleEntity(2L, "ROLE_MENTEE");
+            RoleEntity roleAdmin = new RoleEntity(0, "ROLE_ADMIN");
+            RoleEntity roleMentor = new RoleEntity(1, "ROLE_MENTOR");
+            RoleEntity roleMentee = new RoleEntity(2, "ROLE_MENTEE");
             roleEntityRepo.save(roleAdmin);
             roleEntityRepo.save(roleMentor);
             roleEntityRepo.save(roleMentee);
@@ -116,6 +117,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserEntity findUserByID(Long id) {
         log.info("finding UserEntity by id ...");
+        if (id == null) {
+            throw new AccountBadRequest("no ID");
+        }
         UserEntity user = userEntityRepo.findById(id).orElseThrow(() -> new AccountNotFound("with id: " + id));
         log.info("userEntity found: " + user);
         return user;
@@ -173,7 +177,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<UserEntity> findAdmins() {
         log.info("getting all admins");
-        return userEntityRepo.findAllByAuthdata_RoleEntity_Id(0L);
+        return userEntityRepo.findAllByAuthdata_RoleEntity_Id(0);
 
     }
 

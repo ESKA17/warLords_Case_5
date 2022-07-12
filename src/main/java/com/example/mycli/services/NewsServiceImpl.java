@@ -2,6 +2,7 @@ package com.example.mycli.services;
 
 import com.example.mycli.entity.News;
 import com.example.mycli.entity.UserEntity;
+import com.example.mycli.exceptions.AccountBadRequest;
 import com.example.mycli.exceptions.AccountNotFound;
 import com.example.mycli.model.NewsResponse;
 import com.example.mycli.repository.NewsRepo;
@@ -26,6 +27,9 @@ public class NewsServiceImpl implements NewsService{
     @Transactional
     public void addNews(String news, HttpServletRequest httpServletRequest) {
         log.info("adding new news ...");
+        if (news.isEmpty()) {
+            throw new AccountBadRequest("no news");
+        }
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity userEntity = userService.findByAuthDataEmail(email);
         News addedNews = News.builder()
@@ -82,6 +86,9 @@ public class NewsServiceImpl implements NewsService{
     @Override
     public News getNewsByID(Long id) {
         log.info("getting news by id ...");
+        if (id == null) {
+            throw new AccountBadRequest("check ID");
+        }
         News news = newsRepo.findById(id).orElseThrow(() -> new AccountNotFound("news with id: " + id));
         log.info("successfully retrieved by id: " + news);
         return news;
@@ -90,6 +97,9 @@ public class NewsServiceImpl implements NewsService{
     @Override
     public NewsResponse getNewsResponseByID(Long id) {
         log.info("getting news response by id ...");
+        if (id == null) {
+            throw new AccountBadRequest("check ID");
+        }
         News news = newsRepo.findById(id).orElseThrow(() -> new AccountNotFound("news with id: " + id));
         UserEntity userEntity = userService.findUserByID(news.getUserID());
         NewsResponse newsResponse = NewsResponse.builder()
@@ -106,6 +116,9 @@ public class NewsServiceImpl implements NewsService{
     @Override
     public void markAccepted(Long newsID, HttpServletRequest httpServletRequest) {
      log.info("marking news as accepted ...");
+        if (newsID == null) {
+            throw new AccountBadRequest("check ID");
+        }
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity user = userService.findByEmail(email);
 
@@ -130,6 +143,9 @@ public class NewsServiceImpl implements NewsService{
     @Override
     public void markFinished(Long newsID, HttpServletRequest httpServletRequest) {
         log.info("marking news as finished ...");
+        if (newsID == null) {
+            throw new AccountBadRequest("check ID");
+        }
         News news = getNewsByID(newsID);
         news.setFinished(true);
         newsRepo.save(news);
@@ -139,6 +155,9 @@ public class NewsServiceImpl implements NewsService{
     @Override
     public void editNews(Long newsID, String news) {
         log.info("editing news ...");
+        if (newsID == null) {
+            throw new AccountBadRequest("check ID");
+        }
         News newsEdited = newsRepo.findById(newsID).orElseThrow(
                 () -> new AccountNotFound("news with id: " + newsID));
         newsEdited.setNews(news);

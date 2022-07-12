@@ -28,7 +28,7 @@ public class UserInformationServiceImpl implements UserInformationService {
         String[] strings = screeningRequest.getDateOfBirth().split("-");
         int[] numbers = Arrays.stream(strings)
                 .mapToInt(Integer::parseInt)
-                .toArray();;
+                .toArray();
         LocalDate localDate = LocalDate.of(numbers[2], numbers[1], numbers[0]);
         UserInformation userInformation = UserInformation.builder()
                 .dateOfBirth(localDate)
@@ -53,6 +53,7 @@ public class UserInformationServiceImpl implements UserInformationService {
         UserEntity user = userService.findByAuthDataEmail(email);
         Integer roleID = user.getAuthdata().getRoleEntity().getId();
         UserInfoResponse userInfoResponse = UserInfoResponse.builder()
+                .fullName(user.getFullName())
                 .aboutMe(user.getUserInformation().getAboutMe())
                 .city(user.getUserInformation().getCity())
                 .dateOfBirth(user.getUserInformation().getDateOfBirth())
@@ -110,6 +111,9 @@ public class UserInformationServiceImpl implements UserInformationService {
     @Override
     public void changeFullName(String fullName, HttpServletRequest httpServletRequest) {
         log.info("changing full name ...");
+        if (fullName.isEmpty()) {
+            throw new AccountBadRequest("check full name");
+        }
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity user = userService.findByAuthDataEmail(email);
         user.setFullName(fullName);

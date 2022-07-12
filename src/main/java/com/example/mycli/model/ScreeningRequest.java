@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -12,11 +13,18 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ScreeningRequest {
+    @NotNull
     private String city;
+    @NotNull
     private String school;
+    @NotNull
     private String IIN;
+    @NotNull
     private String phoneNumber;
+    @NotNull
     private String university;
+    @NotNull
     private String dateOfBirth;
+    @NotNull
     private String aboutMe;
 }
