@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/user_info")
 //@SecurityRequirement(name = "basicauth")
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class UserInformationFormController {
     private final UserInformationService userInformationService;
     @PostMapping()

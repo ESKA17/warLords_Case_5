@@ -1,6 +1,7 @@
 package com.example.mycli.services;
 
 import com.example.mycli.entity.AuthData;
+import com.example.mycli.entity.Ranking;
 import com.example.mycli.entity.RoleEntity;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.AccountNotFound;
@@ -8,10 +9,7 @@ import com.example.mycli.exceptions.AuthenticationFailed;
 import com.example.mycli.exceptions.PasswordFailed;
 import com.example.mycli.model.FilterSearchRequest;
 import com.example.mycli.model.SubjectType;
-import com.example.mycli.repository.AuthDataRepo;
-import com.example.mycli.repository.RoleEntityRepo;
-import com.example.mycli.repository.UserEntityRepo;
-import com.example.mycli.repository.UserInfoRepo;
+import com.example.mycli.repository.*;
 import com.example.mycli.web.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +31,7 @@ public class UserServiceImpl implements UserService{
     private final UserInfoRepo userInfoRepo;
     private final AuthDataRepo authDataRepo;
     private final PasswordEncoder passwordEncoder;
+    private final RankingRepo rankingRepo;
     private final JwtProvider jwtProvider;
 
 
@@ -56,6 +55,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserEntity saveUser(UserEntity user) {
         log.info("saving user ...");
+        if (user.getRanking() != null) {
+            rankingRepo.save(user.getRanking());
+        }
         if (user.getUserInformation() != null) {
             userInfoRepo.save(user.getUserInformation());
         }

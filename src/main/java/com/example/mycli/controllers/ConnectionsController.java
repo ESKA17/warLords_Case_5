@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/connections")
 //@SecurityRequirement(name = "basicauth")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 
 public class ConnectionsController {
