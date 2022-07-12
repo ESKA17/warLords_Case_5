@@ -1,7 +1,6 @@
 package com.example.mycli.services;
 
 import com.example.mycli.entity.AuthData;
-import com.example.mycli.entity.Ranking;
 import com.example.mycli.entity.RoleEntity;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.AccountNotFound;
@@ -145,28 +144,30 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<UserEntity> filter(FilterSearchRequest filterSearchRequest) {
-        String city = filterSearchRequest.getCity();
-        List<String> universities = filterSearchRequest.getUniversities();
+    public List<Long> filter(FilterSearchRequest filterSearchRequest) {
         List<SubjectType> subjects = fromIntToSubjectType(filterSearchRequest.getSubjects());
-        List<UserEntity> cityFilter = userEntityRepo.findAllByUserInformation_City(city);
-        List<UserEntity> universityFilter = new ArrayList<>();
-        for (UserEntity user : cityFilter) {
-            if(universities.contains(user.getUserInformation().getUniversity())) {
-                universityFilter.add(user);
-            }
-        }
-        List<UserEntity> subjectFilter = new ArrayList<>();
-        for (UserEntity userFiltered : universityFilter) {
+        List<UserEntity> allUsers = userEntityRepo.findAll();
+        List<Long> subjectFilter = new ArrayList<>();
+        for (UserEntity userFiltered : allUsers) {
             for (SubjectType subject: subjects) {
                 if(subjects.contains(subject)) {
-                    subjectFilter.add(userFiltered);
+                    subjectFilter.add(userFiltered.getId());
                     break;
                 }
             }
         }
 
         return subjectFilter;
+    }
+
+    @Override
+    public List<Long> findAllReturnID() {
+        List<UserEntity> allUsers = userEntityRepo.findAll();
+        List<Long> allUsersReturnID = new ArrayList<>();
+        for (UserEntity user: allUsers) {
+            allUsersReturnID.add(user.getId());
+        }
+        return allUsersReturnID;
     }
 
     @Override

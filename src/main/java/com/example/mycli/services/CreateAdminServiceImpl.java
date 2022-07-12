@@ -36,9 +36,9 @@ public class CreateAdminServiceImpl implements CreateAdminService{
                     .fullName("admin")
                     .build();
             UserEntity admin = userService.saveUser(user);
-            log.info("admin created: admin mail.ru:admin");
+            log.info("admin created - sakenovramazan@gmail.com:admin");
         } else {
-            log.info("admin is already created: admin mail.ru:admin");
+            log.info("admin is already created - sakenovramazan@gmail.com:admin");
         }
     }
 }

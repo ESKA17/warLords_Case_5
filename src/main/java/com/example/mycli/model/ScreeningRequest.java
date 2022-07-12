@@ -18,4 +18,5 @@ public class ScreeningRequest {
     private String phoneNumber;
     private String university;
     private String dateOfBirth;
+    private String aboutMe;
 }

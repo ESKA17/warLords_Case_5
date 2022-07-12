@@ -21,8 +21,8 @@ public class FilterController {
     private final UserService userService;
 
     @GetMapping("/all")
-    public List<UserEntity> showAll() {
-        return userService.findAllUsers();
+    public List<Long> showAll() {
+        return userService.findAllReturnID();
     }
 
     @GetMapping("/by_id")
@@ -31,7 +31,7 @@ public class FilterController {
     }
 
     @GetMapping("/by_filter")
-    public List<UserEntity> filterSearch(@RequestBody FilterSearchRequest filterSearchRequest) {
+    public List<Long> filterSearch(@RequestBody FilterSearchRequest filterSearchRequest) {
         return userService.filter(filterSearchRequest);
     }
 }

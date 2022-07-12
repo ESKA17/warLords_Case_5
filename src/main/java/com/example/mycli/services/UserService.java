@@ -25,5 +25,7 @@ public interface UserService {
     List<UserEntity> findAdmins();
     Boolean checkFirstTime(HttpServletRequest httpServletRequest);
     void wasHere(HttpServletRequest httpServletRequest);
-    List<UserEntity> filter(FilterSearchRequest filterSearchRequest);
+    List<Long> filter(FilterSearchRequest filterSearchRequest);
+
+    List<Long> findAllReturnID();
 }
