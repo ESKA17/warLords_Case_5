@@ -29,6 +29,7 @@ public class CreateAdminServiceImpl implements CreateAdminService{
                     .email("sakenovramazan@gmail.com")
                     .password(passwordEncoder.encode("admin"))
                     .roleEntity(userRoleEntity)
+                    .firstTime(false)
                     .build();
             UserEntity user = UserEntity.builder()
                     .authdata(authData)
