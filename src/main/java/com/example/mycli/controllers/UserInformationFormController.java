@@ -2,6 +2,7 @@ package com.example.mycli.controllers;
 
 import com.example.mycli.entity.UserInformation;
 import com.example.mycli.model.Majors;
+import com.example.mycli.model.UserInfoResponse;
 import com.example.mycli.services.UserInformationService;
 import com.example.mycli.model.ScreeningRequest;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -37,7 +38,7 @@ public class UserInformationFormController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserInformation getScreeningForm(HttpServletRequest httpServletRequest) {
+    public UserInfoResponse getScreeningForm(HttpServletRequest httpServletRequest) {
         return userInformationService.getUserInformationForm(httpServletRequest);
     }
 
