@@ -10,13 +10,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -56,15 +59,17 @@ public class FilesUploadController {
         return ResponseEntity.status(HttpStatus.OK).body(fileInfos);
     }
 
-    @GetMapping("/files/{filename:.+}")
+    @GetMapping(value = "/files/{filename:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
-    public ResponseEntity<BufferedImage> getFile(@RequestParam Long id) {
+    public ResponseEntity<byte []> getFile(@RequestParam Long id) throws IOException {
         BufferedImage file = storageService.load(id);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(file, "jpeg", baos);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + id +
-                        "\"").body(file);
+                        "\"").body(baos.toByteArray());
     }
-    @GetMapping("/files/user")
+    @GetMapping(value = "/files/user", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     public ResponseEntity<BufferedImage> getFileJWT(HttpServletRequest httpServletRequest) {
         BufferedImage file =  storageService.loadUser(httpServletRequest);
@@ -73,21 +78,15 @@ public class FilesUploadController {
                         "\"").body(file);
     }
 
-    @GetMapping("/mobile")
+    @GetMapping(value = "/mobile", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
-    public ImageWrap getFileMobile(@RequestParam Long id) {
+    public BufferedImage getFileMobile(@RequestParam Long id) {
         return storageService.loadMobile(id);
     }
-    @GetMapping("/mobile/user")
+    @GetMapping(value = "/mobile/user", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
-    public ImageWrap getFileMobileJWT(HttpServletRequest httpServletRequest) {
+    public BufferedImage getFileMobileJWT(HttpServletRequest httpServletRequest) {
         return storageService.loadUserMobile(httpServletRequest);
     }
 
-    @GetMapping(value = "/image")
-    public @ResponseBody byte[] getImage() throws IOException {
-        InputStream in = getClass()
-                .getResourceAsStream("uploads/2.jpeg");
-        return in.readAllBytes();
-    }
 }
