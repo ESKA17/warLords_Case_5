@@ -6,6 +6,7 @@ import com.example.mycli.model.MessageReport;
 import com.example.mycli.model.NewsRequest;
 import com.example.mycli.model.ReportRequest;
 import com.example.mycli.services.AccountDeactivationService;
+import com.example.mycli.services.ConnectionsService;
 import com.example.mycli.services.NewsService;
 import com.example.mycli.services.ReportsService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -54,6 +55,7 @@ public class ReportsController {
     @PostMapping("/deactivate_account_by_email")
     public ResponseEntity<String> deactivateAccountByEmail(@RequestParam String email){
         accountDeactivationService.deactivateAccount(email);
+
         return ResponseEntity.ok("Account "+ email + "is deactivated");
     }
 

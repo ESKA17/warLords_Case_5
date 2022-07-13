@@ -32,8 +32,8 @@ public class ConnectionsController {
         connectionsService.breakMatch(matchID, httpServletRequest);
         return ResponseEntity.ok("Match was broken");
     }
-    @GetMapping("/show_connections")
-    public List<Long> getConnections(HttpServletRequest httpServletRequest) {
+    @GetMapping("/show_all_connections")
+    public List<Long> getAllConnections(HttpServletRequest httpServletRequest) {
         return connectionsService.getConnections(httpServletRequest);
     }
 
