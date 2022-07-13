@@ -128,7 +128,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
             throw new RuntimeException(e);
         }
         if (resource.exists() || resource.isReadable()) {
-            return new ImageWrap(new String(content));
+            return new ImageWrap(content);
         } else {
             throw new RuntimeException("Could not read the file!");
         }
