@@ -162,4 +162,13 @@ public class UserInformationServiceImpl implements UserInformationService {
         return out;
     }
 
+    @Override
+    public String getFullName(HttpServletRequest httpServletRequest) {
+        log.info("getting full name ...");
+        String email = userService.getEmailFromToken(httpServletRequest);
+        UserEntity userEntity = userService.findByAuthDataEmail(email);
+        log.info("full name was retrieved");
+        return userEntity.getFullName();
+    }
+
 }
