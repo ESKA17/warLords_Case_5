@@ -41,7 +41,7 @@ public class FilesUploadController {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
         }
     }
-    @GetMapping("/files")
+    @GetMapping("/all_files")
     public ResponseEntity<List<FileInfo>> getListFiles() {
         List<FileInfo> fileInfos = storageService.loadAll().map(path -> {
             String filename = path.getFileName().toString();
