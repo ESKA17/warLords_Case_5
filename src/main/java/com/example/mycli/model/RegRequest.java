@@ -13,14 +13,11 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class RegRequest {
     @Email
-    @NotNull
-    @NotEmpty
     private String email;
     @NotNull
     @NotEmpty
     private String password;
     @NotNull
-    @NotEmpty
     private Integer role;
     @NotNull
     @NotEmpty

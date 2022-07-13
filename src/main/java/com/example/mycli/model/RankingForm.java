@@ -2,6 +2,7 @@ package com.example.mycli.model;
 
 import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
@@ -25,5 +26,6 @@ public class RankingForm {
     @NotNull
     private Integer goalsReachingLevel;
     @NotNull
+    @NotEmpty
     private String comments;
 }
