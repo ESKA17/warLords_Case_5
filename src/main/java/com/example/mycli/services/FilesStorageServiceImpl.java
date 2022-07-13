@@ -10,14 +10,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.util.Base64;
 import java.util.Objects;
 import java.util.stream.Stream;
 @Transactional
@@ -52,18 +54,21 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     }
 
     @Override
-    public Resource load(Long id) {
+    public BufferedImage load(Long id) {
         try {
             Path file = root.resolve(id + ".jpeg");
             Resource resource = new UrlResource(file.toUri());
-
+            BufferedImage image = ImageIO.read(Objects.requireNonNull(getClass().getResource(file.getFileName()
+                    .toString())));
             if (resource.exists() || resource.isReadable()) {
-                return resource;
+                return image;
             } else {
                 throw new RuntimeException("Could not read the file!");
             }
         } catch (MalformedURLException e) {
             throw new RuntimeException("Error: " + e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
     @Override
@@ -92,19 +97,22 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     }
 
     @Override
-    public Resource loadUser(HttpServletRequest httpServletRequest) {
+    public BufferedImage loadUser(HttpServletRequest httpServletRequest) {
         try {
             String email = userService.getEmailFromToken(httpServletRequest);
             UserEntity userEntity = userService.findByAuthDataEmail(email);
             Path file = root.resolve(userEntity.getId() + ".jpeg");
             Resource resource = new UrlResource(file.toUri());
+            BufferedImage image = ImageIO.read(Objects.requireNonNull(getClass().getResource("uploads/2.jpeg")));
             if (resource.exists() || resource.isReadable()) {
-                return resource;
+                return image;
             } else {
                 throw new RuntimeException("Could not read the file!");
             }
         } catch (MalformedURLException e) {
             throw new RuntimeException("Error: " + e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
     @Override
@@ -123,7 +131,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     private ImageWrap getImageWrap(Path path, Resource resource) {
         byte[] content;
         try {
-            content = Files.readAllBytes(path);
+            content = Base64.getEncoder().encode(Files.readAllBytes(path));
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }

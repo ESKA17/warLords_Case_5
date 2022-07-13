@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,18 +56,18 @@ public class FilesUploadController {
 
     @GetMapping("/files/{filename:.+}")
     @ResponseBody
-    public ResponseEntity<Resource> getFile(@RequestParam Long id) {
-        Resource file = storageService.load(id);
+    public ResponseEntity<BufferedImage> getFile(@RequestParam Long id) {
+        BufferedImage file = storageService.load(id);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() +
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + id +
                         "\"").body(file);
     }
     @GetMapping("/files/user")
     @ResponseBody
-    public ResponseEntity<Resource> getFileJWT(HttpServletRequest httpServletRequest) {
-        Resource file =  storageService.loadUser(httpServletRequest);
+    public ResponseEntity<BufferedImage> getFileJWT(HttpServletRequest httpServletRequest) {
+        BufferedImage file =  storageService.loadUser(httpServletRequest);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() +
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + 2 +
                         "\"").body(file);
     }
 
