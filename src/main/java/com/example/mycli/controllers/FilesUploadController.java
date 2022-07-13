@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @RequestMapping()
 //@SecurityRequirement(name = "basicauth")
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class FilesUploadController {
     private final FilesStorageService storageService;
     @PostMapping("/upload")
@@ -53,6 +53,14 @@ public class FilesUploadController {
     @ResponseBody
     public ResponseEntity<Resource> getFile(@RequestParam Long id) {
         Resource file = storageService.load(id);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() +
+                        "\"").body(file);
+    }
+    @GetMapping("/files/user")
+    @ResponseBody
+    public ResponseEntity<Resource> getFile(HttpServletRequest httpServletRequest) {
+        Resource file = storageService.loadUser(httpServletRequest);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() +
                         "\"").body(file);

@@ -3,12 +3,16 @@ package com.example.mycli.services;
 import com.example.mycli.entity.AuthData;
 import com.example.mycli.entity.RoleEntity;
 import com.example.mycli.entity.UserEntity;
+import com.example.mycli.exceptions.AccountBadRequest;
 import com.example.mycli.exceptions.AccountNotFound;
 import com.example.mycli.exceptions.AuthenticationFailed;
 import com.example.mycli.exceptions.PasswordFailed;
 import com.example.mycli.model.FilterSearchRequest;
+import com.example.mycli.model.FindAllReturnIdWrap;
+import com.example.mycli.model.FindUserByIDWrap;
 import com.example.mycli.model.SubjectType;
 import com.example.mycli.repository.*;
+import com.example.mycli.utils.Utils;
 import com.example.mycli.web.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,9 +42,9 @@ public class UserServiceImpl implements UserService{
     public void initRoles() {
         log.info("roles initialization ...");
         if (roleEntityRepo.count() == 0) {
-            RoleEntity roleAdmin = new RoleEntity(0L, "ROLE_ADMIN");
-            RoleEntity roleMentor = new RoleEntity(1L, "ROLE_MENTOR");
-            RoleEntity roleMentee = new RoleEntity(2L, "ROLE_MENTEE");
+            RoleEntity roleAdmin = new RoleEntity(0, "ROLE_ADMIN");
+            RoleEntity roleMentor = new RoleEntity(1, "ROLE_MENTOR");
+            RoleEntity roleMentee = new RoleEntity(2, "ROLE_MENTEE");
             roleEntityRepo.save(roleAdmin);
             roleEntityRepo.save(roleMentor);
             roleEntityRepo.save(roleMentee);
@@ -118,6 +122,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserEntity findUserByID(Long id) {
         log.info("finding UserEntity by id ...");
+        if (id == null) {
+            throw new AccountBadRequest("no ID");
+        }
         UserEntity user = userEntityRepo.findById(id).orElseThrow(() -> new AccountNotFound("with id: " + id));
         log.info("userEntity found: " + user);
         return user;
@@ -148,7 +155,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<Long> filter(FilterSearchRequest filterSearchRequest) {
         List<SubjectType> subjects = fromIntToSubjectType(filterSearchRequest.getSubjects());
-        List<UserEntity> allUsers = userEntityRepo.findAll();
+        List<UserEntity> allUsers = userEntityRepo.findAllByAuthdata_RoleEntity_Id(1);
         List<Long> subjectFilter = new ArrayList<>();
         for (UserEntity userFiltered : allUsers) {
             for (SubjectType subject: subjects) {
@@ -163,19 +170,43 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<Long> findAllReturnID() {
-        List<UserEntity> allUsers = userEntityRepo.findAll();
+    public FindAllReturnIdWrap findAllReturnID() {
+        List<UserEntity> allUsers = userEntityRepo.findAllByAuthdata_RoleEntity_Id(1);
         List<Long> allUsersReturnID = new ArrayList<>();
         for (UserEntity user: allUsers) {
             allUsersReturnID.add(user.getId());
         }
-        return allUsersReturnID;
+        return new FindAllReturnIdWrap(allUsersReturnID);
+    }
+
+    @Override
+    public Integer findRoleEntity(HttpServletRequest httpServletRequest) {
+        log.info("getting role id ...");
+        String email = getEmailFromToken(httpServletRequest);
+        UserEntity userEntity = findByAuthDataEmail(email);
+        log.info("role id was found");
+        return userEntity.getAuthdata().getRoleEntity().getId();
+
+    }
+
+    @Override
+    public FindUserByIDWrap findUserByIDInWrap(Long id) {
+        log.info("finding user by id and creating FindUserByIDWrap ... ");
+        UserEntity userEntity= findUserByID(id);
+        List<Integer> subjectList = Utils.fromSubjectTypeToInteger(userEntity.getSubjectTypeList());
+        FindUserByIDWrap findUserByIDWrap = FindUserByIDWrap.builder()
+                .fullName(userEntity.getFullName())
+                .university(userEntity.getUserInformation().getUniversity())
+                .subjectList(subjectList)
+                .build();
+        log.info("wrap was prepared");
+        return findUserByIDWrap;
     }
 
     @Override
     public List<UserEntity> findAdmins() {
         log.info("getting all admins");
-        return userEntityRepo.findAllByAuthdata_RoleEntity_Id(0L);
+        return userEntityRepo.findAllByAuthdata_RoleEntity_Id(0);
 
     }
 

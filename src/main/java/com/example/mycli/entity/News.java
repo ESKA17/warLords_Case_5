@@ -21,6 +21,7 @@ public class News {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "news_en")
     @SequenceGenerator(name = "news_en", sequenceName = "news_en", allocationSize = 1)
     private Long id;
+
     @Column(name = "user_id")
     private Long userID;
 

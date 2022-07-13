@@ -1,8 +1,8 @@
 package com.example.mycli.controllers;
 
-import com.example.mycli.entity.RoleEntity;
 import com.example.mycli.entity.UserInformation;
 import com.example.mycli.model.Majors;
+import com.example.mycli.model.UserInfoResponse;
 import com.example.mycli.services.UserInformationService;
 import com.example.mycli.model.ScreeningRequest;
 import com.example.mycli.services.UserService;
@@ -20,7 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/user_info")
 //@SecurityRequirement(name = "basicauth")
-@CrossOrigin(origins = "*")
+
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserInformationFormController {
     private final UserInformationService userInformationService;
     private final UserService userService;
@@ -39,7 +40,7 @@ public class UserInformationFormController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserInformation getScreeningForm(HttpServletRequest httpServletRequest) {
+    public UserInfoResponse getScreeningForm(HttpServletRequest httpServletRequest) {
         return userInformationService.getUserInformationForm(httpServletRequest);
     }
 
@@ -53,10 +54,15 @@ public class UserInformationFormController {
         userInformationService.changeFullName(fullName, httpServletRequest);
         return ResponseEntity.ok("Name was successfully changed");
     }
-    @GetMapping("/get_role_by_id")
-    public ResponseEntity<String> getRoleByName(@RequestParam String name,
-                                  HttpServletRequest httpServletRequest){
-        userService.findRoleEntityByName(name);
-        return ResponseEntity.ok("You got role by name");
+    @GetMapping("/name")
+    public ResponseEntity<String> getFullName(HttpServletRequest httpServletRequest) {
+        String fullName = userInformationService.getFullName(httpServletRequest);
+        return ResponseEntity.ok(fullName);
     }
+    @GetMapping("/get_role")
+    public ResponseEntity<Integer> getRoleByName(HttpServletRequest httpServletRequest){
+        int roleID = userService.findRoleEntity(httpServletRequest);
+        return ResponseEntity.ok(roleID);
+    }
+
 }

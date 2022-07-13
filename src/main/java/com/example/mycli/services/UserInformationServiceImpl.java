@@ -2,22 +2,16 @@ package com.example.mycli.services;
 
 import com.example.mycli.entity.RoleEntity;
 import com.example.mycli.exceptions.AccountBadRequest;
-import com.example.mycli.exceptions.AccountNotFound;
-import com.example.mycli.exceptions.AuthenticationFailed;
-import com.example.mycli.model.Majors;
-import com.example.mycli.model.StudyDegree;
+import com.example.mycli.model.*;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.entity.UserInformation;
-import com.example.mycli.model.SubjectType;
-import com.example.mycli.repository.UserEntityRepo;
-import com.example.mycli.repository.UserInfoRepo;
-import com.example.mycli.model.ScreeningRequest;
-import com.example.mycli.web.JwtProvider;
+import com.example.mycli.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,8 +31,13 @@ public class UserInformationServiceImpl implements UserInformationService {
         String[] strings = screeningRequest.getDateOfBirth().split("-");
         int[] numbers = Arrays.stream(strings)
                 .mapToInt(Integer::parseInt)
-                .toArray();;
-        LocalDate localDate = LocalDate.of(numbers[2], numbers[1], numbers[0]);
+                .toArray();
+        LocalDate localDate;
+        if (strings[2].length() == 4) {
+            localDate = LocalDate.of(numbers[2], numbers[1], numbers[0]);
+        } else {
+            localDate = LocalDate.of(numbers[0], numbers[1], numbers[2]);
+        }
         UserInformation userInformation = UserInformation.builder()
                 .dateOfBirth(localDate)
                 .city(screeningRequest.getCity())
@@ -51,18 +50,30 @@ public class UserInformationServiceImpl implements UserInformationService {
         UserEntity user = userService.findByAuthDataEmail(email);
         user.setUserInformation(userInformation);
         userService.saveUser(user);
-        log.info("user: " + user);
+        log.info("user: " + user.getFullName());
         log.info("user information was saved: " + userInformation);
     }
 
     @Override
-    public UserInformation getUserInformationForm(HttpServletRequest httpServletRequest) {
+    public UserInfoResponse getUserInformationForm(HttpServletRequest httpServletRequest) {
         log.info("retrieving user info ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity user = userService.findByAuthDataEmail(email);
+        Integer roleID = user.getAuthdata().getRoleEntity().getId();
+        UserInfoResponse userInfoResponse = UserInfoResponse.builder()
+                .fullName(user.getFullName())
+                .aboutMe(user.getUserInformation().getAboutMe())
+                .city(user.getUserInformation().getCity())
+                .dateOfBirth(user.getUserInformation().getDateOfBirth())
+                .IIN(user.getUserInformation().getIIN())
+                .phoneNumber(user.getUserInformation().getPhoneNumber())
+                .university(user.getUserInformation().getUniversity())
+                .school(user.getUserInformation().getSchool())
+                .roleID(roleID)
+                .build();
         log.info("getting screening form for email " + email + ": " + user);
-        log.info("user info: " + user.getUserInformation());
-        return user.getUserInformation();
+        log.info("user info: " + userInfoResponse);
+        return userInfoResponse;
     }
 
     @Override
@@ -70,37 +81,10 @@ public class UserInformationServiceImpl implements UserInformationService {
         log.info("filling majors ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity user = userService.findByAuthDataEmail(email);
+        List<Integer> majorsInt = majors.getMajors();
         List<SubjectType> subjectList = user.getSubjectTypeList();
-        for (int in: majors.getMajors()) {
-            switch (in) {
-                case 0: {
-                    if (!subjectList.contains(MATH)) {subjectList.add(MATH);}
-                    break;
-                }
-                case 1: {
-                    if (!subjectList.contains(PHYSICS)) {subjectList.add(PHYSICS);}
-                    break;
-                }
-                case 2: {
-                    if (!subjectList.contains(CHEMISTRY)) {subjectList.add(CHEMISTRY);}
-                    break;
-                }
-                case 3: {
-                    if (!subjectList.contains(BIOLOGY)) {subjectList.add(BIOLOGY);}
-                    break;
-                }
-                case 4: {
-                    if (!subjectList.contains(INFORMATICS)) {subjectList.add(INFORMATICS);}
-                    break;
-                }
-                case 5: {
-                    if (!subjectList.contains(HISTORY)) {subjectList.add(HISTORY);}
-                    break;
-                }
-                default: throw new AccountBadRequest("major with id " + in + " does not match any subject");
-            }
-        }
-        user.setSubjectTypeList(subjectList);
+        List<SubjectType>  newSubjectList = Utils.fromIntegerToSubjectType(majorsInt, subjectList);
+        user.setSubjectTypeList(newSubjectList);
         userService.saveUser(user);
         log.info("majors were filled");
     }
@@ -108,6 +92,9 @@ public class UserInformationServiceImpl implements UserInformationService {
     @Override
     public void changeFullName(String fullName, HttpServletRequest httpServletRequest) {
         log.info("changing full name ...");
+        if (fullName.isEmpty()) {
+            throw new AccountBadRequest("check full name");
+        }
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity user = userService.findByAuthDataEmail(email);
         user.setFullName(fullName);
@@ -120,40 +107,20 @@ public class UserInformationServiceImpl implements UserInformationService {
         log.info("getting majors ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity userEntity = userService.findByAuthDataEmail(email);
-        List<SubjectType> subjectList = userEntity.getSubjectTypeList();
-        List<Integer> out = new ArrayList<>();
-        for (SubjectType in: subjectList) {
-            switch (in) {
-                case MATH: {
-                    out.add(0);
-                    break;
-                }
-                case PHYSICS: {
-                    out.add(1);
-                    break;
-                }
-                case CHEMISTRY: {
-                    out.add(2);
-                    break;
-                }
-                case BIOLOGY: {
-                    out.add(3);
-                    break;
-                }
-                case INFORMATICS: {
-                    out.add(4);
-                    break;
-                }
-                case HISTORY: {
-                    out.add(5);
-                    break;
-                }
-                default:
-                    throw new AccountBadRequest("major with id " + in + " does not match any subject");
-            }
-        }
+        List<SubjectType> subjectTypeList = userEntity.getSubjectTypeList();
         log.info("majors sent");
-        return out;
+        return Utils.fromSubjectTypeToInteger(subjectTypeList);
+    }
+
+
+
+    @Override
+    public String getFullName(HttpServletRequest httpServletRequest) {
+        log.info("getting full name ...");
+        String email = userService.getEmailFromToken(httpServletRequest);
+        UserEntity userEntity = userService.findByAuthDataEmail(email);
+        log.info("full name was retrieved");
+        return userEntity.getFullName();
     }
 
     @Override
