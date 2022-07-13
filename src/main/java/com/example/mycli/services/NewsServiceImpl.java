@@ -8,6 +8,7 @@ import com.example.mycli.exceptions.AccountNotFound;
 import com.example.mycli.model.JSONNewsWrap;
 import com.example.mycli.model.NewsResponse;
 import com.example.mycli.model.SubjectType;
+import com.example.mycli.repository.ConnectionRepo;
 import com.example.mycli.repository.NewsRepo;
 import com.example.mycli.utils.Utils;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class NewsServiceImpl implements NewsService{
     private final UserService userService;
     private final NewsRepo newsRepo;
     private final EmitterService emitterService;
+    private final ConnectionRepo connectionRepo;
     @Override
     @Transactional
     public void addNews(String news, HttpServletRequest httpServletRequest) {
@@ -151,21 +153,14 @@ public class NewsServiceImpl implements NewsService{
         news.setAccepter_id(user.getId());
 
         UserEntity poster = userService.findUserByID(news.getUserID());
-        List<Connection> posterConnections = poster.getConnections();
-        List<Connection> userConnections = user.getConnections();
         Connection connection = Connection.builder()
                 .userID(poster.getId())
                 .friendID(user.getId())
                 .sseEmitter(emitterService.addEmitter())
-                .connectionStatus(1)
+                .connectionStatus(2)
                 .messageHistory("")
                 .build();
-        userConnections.add(connection);
-        posterConnections.add(connection);
-        poster.setConnections(posterConnections);
-        user.setConnections(userConnections);
-        userService.saveUser(poster);
-        userService.saveUser(user);
+        connectionRepo.save(connection);
         newsRepo.save(news);
      log.info("successfully marked as accepted");
     }
