@@ -52,15 +52,22 @@ public class FilesUploadController {
         }).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(fileInfos);
     }
-    @GetMapping("/files")
+
+    @GetMapping("/files/{filename:.+}")
     @ResponseBody
-    public Resource getFile(@RequestParam Long id) {
-        return storageService.load(id);
+    public ResponseEntity<Resource> getFile(@RequestParam Long id) {
+        Resource file = storageService.load(id);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() +
+                        "\"").body(file);
     }
     @GetMapping("/files/user")
     @ResponseBody
-    public Resource getFileJWT(HttpServletRequest httpServletRequest) {
-        return storageService.loadUser(httpServletRequest);
+    public ResponseEntity<Resource> getFileJWT(HttpServletRequest httpServletRequest) {
+        Resource file =  storageService.loadUser(httpServletRequest);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() +
+                        "\"").body(file);
     }
 
     @GetMapping("/mobile")
@@ -73,6 +80,4 @@ public class FilesUploadController {
     public ImageWrap getFileMobileJWT(HttpServletRequest httpServletRequest) {
         return storageService.loadUserMobile(httpServletRequest);
     }
-
-
 }

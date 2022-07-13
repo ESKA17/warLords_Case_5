@@ -54,8 +54,9 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     @Override
     public Resource load(Long id) {
         try {
-            Path file = root.resolve(id + ".jpg");
+            Path file = root.resolve(id + ".jpeg");
             Resource resource = new UrlResource(file.toUri());
+
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
@@ -68,7 +69,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     @Override
     public ImageWrap loadMobile(Long id) {
         try {
-            Path path = root.resolve(id + ".jpg");
+            Path path = root.resolve(id + ".jpeg");
             Resource resource = new UrlResource(path.toUri());
             return getImageWrap(path, resource);
         } catch (MalformedURLException e) {
@@ -95,7 +96,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
         try {
             String email = userService.getEmailFromToken(httpServletRequest);
             UserEntity userEntity = userService.findByAuthDataEmail(email);
-            Path file = root.resolve(userEntity.getId() + ".jpg");
+            Path file = root.resolve(userEntity.getId() + ".jpeg");
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
                 return resource;
@@ -111,7 +112,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity userEntity = userService.findByAuthDataEmail(email);
         try {
-            Path path = root.resolve(userEntity.getId() + ".jpg");
+            Path path = root.resolve(userEntity.getId() + ".jpeg");
             Resource resource = new UrlResource(path.toUri());
             return getImageWrap(path, resource);
         } catch (MalformedURLException e) {
@@ -127,7 +128,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
             throw new RuntimeException(e);
         }
         if (resource.exists() || resource.isReadable()) {
-            return new ImageWrap(Arrays.toString(content));
+            return new ImageWrap(content.toString());
         } else {
             throw new RuntimeException("Could not read the file!");
         }
