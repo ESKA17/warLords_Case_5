@@ -1,6 +1,7 @@
 package com.example.mycli.controllers;
 
 import com.example.mycli.entity.News;
+import com.example.mycli.model.JSONNewsWrap;
 import com.example.mycli.model.NewsRequest;
 import com.example.mycli.model.NewsResponse;
 import com.example.mycli.services.NewsService;
@@ -16,7 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 //@SecurityRequirement(name = "basicauth")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/news")
 public class NewsController {
     private final NewsService newsService;
@@ -30,6 +31,10 @@ public class NewsController {
     @GetMapping("/available")
     public List<Long> getAllUnacceptedNews(){
         return newsService.getAllUnacceptedNews();
+    }
+    @GetMapping("/availableJSON")
+    public List<JSONNewsWrap> getAllUnacceptedNewsInJSON(){
+        return newsService.getAllUnacceptedNewsJSON();
     }
 
     @GetMapping("/by_op_unaccepted")

@@ -8,8 +8,10 @@ import com.example.mycli.exceptions.AccountNotFound;
 import com.example.mycli.exceptions.AuthenticationFailed;
 import com.example.mycli.exceptions.PasswordFailed;
 import com.example.mycli.model.FilterSearchRequest;
+import com.example.mycli.model.FindUserByIDWrap;
 import com.example.mycli.model.SubjectType;
 import com.example.mycli.repository.*;
+import com.example.mycli.utils.Utils;
 import com.example.mycli.web.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -150,7 +152,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<Long> filter(FilterSearchRequest filterSearchRequest) {
         List<SubjectType> subjects = fromIntToSubjectType(filterSearchRequest.getSubjects());
-        List<UserEntity> allUsers = userEntityRepo.findAll();
+        List<UserEntity> allUsers = userEntityRepo.findAllByAuthdata_RoleEntity_Id(1);
         List<Long> subjectFilter = new ArrayList<>();
         for (UserEntity userFiltered : allUsers) {
             for (SubjectType subject: subjects) {
@@ -166,7 +168,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<Long> findAllReturnID() {
-        List<UserEntity> allUsers = userEntityRepo.findAll();
+        List<UserEntity> allUsers = userEntityRepo.findAllByAuthdata_RoleEntity_Id(1);
         List<Long> allUsersReturnID = new ArrayList<>();
         for (UserEntity user: allUsers) {
             allUsersReturnID.add(user.getId());
@@ -182,6 +184,20 @@ public class UserServiceImpl implements UserService{
         log.info("role id was found");
         return userEntity.getAuthdata().getRoleEntity().getId();
 
+    }
+
+    @Override
+    public FindUserByIDWrap findUserByIDInWrap(Long id) {
+        log.info("finding user by id and creating FindUserByIDWrap ... ");
+        UserEntity userEntity= findUserByID(id);
+        List<Integer> subjectList = Utils.fromSubjectTypeToInteger(userEntity.getSubjectTypeList());
+        FindUserByIDWrap findUserByIDWrap = FindUserByIDWrap.builder()
+                .fullName(userEntity.getFullName())
+                .university(userEntity.getUserInformation().getUniversity())
+                .subjectList(subjectList)
+                .build();
+        log.info("wrap was prepared");
+        return findUserByIDWrap;
     }
 
     @Override

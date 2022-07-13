@@ -32,6 +32,7 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private List<SubjectType> subjectTypeList;
 
+
     @ManyToMany
     @Column(name = "connections")
     private List<UserEntity> connections;

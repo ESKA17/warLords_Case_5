@@ -89,6 +89,10 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         if (accepterID == null) {
             throw new AccountBadRequest("check matchID");
         }
+        Connection connection = connectionRepo.findByFriendIDAndUserID(accepterID, poster.getId()).orElseThrow(
+                () -> new AccountNotFound("emitter between users "+ accepterID + " and " +  poster.getId() +
+                        " was not found")
+        );
         UserEntity accepter =  userService.findUserByID(accepterID);
         List<UserEntity> posterList = poster.getConnections();
         List<UserEntity> accepterList = accepter.getConnections();
@@ -96,6 +100,7 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         accepterList.remove(poster);
         userService.saveUser(poster);
         userService.saveUser(accepter);
+        connectionRepo.delete(connection);
         log.info("users unmatched(((: " + accepter + " and " + poster);
     }
 }

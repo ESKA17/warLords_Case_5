@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @Slf4j
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:3000")
 @RequiredArgsConstructor
 @RequestMapping("/messages")
 public class MessageController {

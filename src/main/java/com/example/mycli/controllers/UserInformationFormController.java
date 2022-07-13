@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/user_info")
 //@SecurityRequirement(name = "basicauth")
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserInformationFormController {
     private final UserInformationService userInformationService;
     private final UserService userService;
@@ -53,6 +53,11 @@ public class UserInformationFormController {
                                              HttpServletRequest httpServletRequest) {
         userInformationService.changeFullName(fullName, httpServletRequest);
         return ResponseEntity.ok("Name was successfully changed");
+    }
+    @GetMapping("/name")
+    public ResponseEntity<String> getFullName(HttpServletRequest httpServletRequest) {
+        String fullName = userInformationService.getFullName(httpServletRequest);
+        return ResponseEntity.ok(fullName);
     }
     @GetMapping("/get_role")
     public ResponseEntity<Integer> getRoleByName(HttpServletRequest httpServletRequest){

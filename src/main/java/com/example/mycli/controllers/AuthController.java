@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 //@SecurityRequirement(name = "basicauth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 @Log
 public class AuthController {
     private final UserService userService;
@@ -67,7 +67,8 @@ public class AuthController {
                                                   HttpServletRequest request)
             throws UnsupportedEncodingException, MessagingException {
         log.info(processRegister.getEmail());
-        accountRegistrationService.twoStepVerificationEmail(processRegister.getEmail(), getSiteURL(request));
+        accountRegistrationService.twoStepVerificationEmail(processRegister.getEmail().toLowerCase(),
+                getSiteURL(request));
         return ResponseEntity.ok("Registration verification email was sent");
     }
 

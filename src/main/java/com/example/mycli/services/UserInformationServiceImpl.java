@@ -4,6 +4,7 @@ import com.example.mycli.exceptions.AccountBadRequest;
 import com.example.mycli.model.*;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.entity.UserInformation;
+import com.example.mycli.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,12 @@ public class UserInformationServiceImpl implements UserInformationService {
         int[] numbers = Arrays.stream(strings)
                 .mapToInt(Integer::parseInt)
                 .toArray();
-        LocalDate localDate = LocalDate.of(numbers[2], numbers[1], numbers[0]);
+        LocalDate localDate;
+        if (strings[2].length() == 4) {
+            localDate = LocalDate.of(numbers[2], numbers[1], numbers[0]);
+        } else {
+            localDate = LocalDate.of(numbers[0], numbers[1], numbers[2]);
+        }
         UserInformation userInformation = UserInformation.builder()
                 .dateOfBirth(localDate)
                 .city(screeningRequest.getCity())
@@ -42,7 +48,7 @@ public class UserInformationServiceImpl implements UserInformationService {
         UserEntity user = userService.findByAuthDataEmail(email);
         user.setUserInformation(userInformation);
         userService.saveUser(user);
-        log.info("user: " + user);
+        log.info("user: " + user.getFullName());
         log.info("user information was saved: " + userInformation);
     }
 
@@ -73,37 +79,10 @@ public class UserInformationServiceImpl implements UserInformationService {
         log.info("filling majors ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity user = userService.findByAuthDataEmail(email);
+        List<Integer> majorsInt = majors.getMajors();
         List<SubjectType> subjectList = user.getSubjectTypeList();
-        for (int in: majors.getMajors()) {
-            switch (in) {
-                case 0: {
-                    if (!subjectList.contains(MATH)) {subjectList.add(MATH);}
-                    break;
-                }
-                case 1: {
-                    if (!subjectList.contains(PHYSICS)) {subjectList.add(PHYSICS);}
-                    break;
-                }
-                case 2: {
-                    if (!subjectList.contains(CHEMISTRY)) {subjectList.add(CHEMISTRY);}
-                    break;
-                }
-                case 3: {
-                    if (!subjectList.contains(BIOLOGY)) {subjectList.add(BIOLOGY);}
-                    break;
-                }
-                case 4: {
-                    if (!subjectList.contains(INFORMATICS)) {subjectList.add(INFORMATICS);}
-                    break;
-                }
-                case 5: {
-                    if (!subjectList.contains(HISTORY)) {subjectList.add(HISTORY);}
-                    break;
-                }
-                default: throw new AccountBadRequest("major with id " + in + " does not match any subject");
-            }
-        }
-        user.setSubjectTypeList(subjectList);
+        List<SubjectType>  newSubjectList = Utils.fromIntegerToSubjectType(majorsInt, subjectList);
+        user.setSubjectTypeList(newSubjectList);
         userService.saveUser(user);
         log.info("majors were filled");
     }
@@ -126,40 +105,20 @@ public class UserInformationServiceImpl implements UserInformationService {
         log.info("getting majors ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity userEntity = userService.findByAuthDataEmail(email);
-        List<SubjectType> subjectList = userEntity.getSubjectTypeList();
-        List<Integer> out = new ArrayList<>();
-        for (SubjectType in: subjectList) {
-            switch (in) {
-                case MATH: {
-                    out.add(0);
-                    break;
-                }
-                case PHYSICS: {
-                    out.add(1);
-                    break;
-                }
-                case CHEMISTRY: {
-                    out.add(2);
-                    break;
-                }
-                case BIOLOGY: {
-                    out.add(3);
-                    break;
-                }
-                case INFORMATICS: {
-                    out.add(4);
-                    break;
-                }
-                case HISTORY: {
-                    out.add(5);
-                    break;
-                }
-                default:
-                    throw new AccountBadRequest("major with id " + in + " does not match any subject");
-            }
-        }
+        List<SubjectType> subjectTypeList = userEntity.getSubjectTypeList();
         log.info("majors sent");
-        return out;
+        return Utils.fromSubjectTypeToInteger(subjectTypeList);
+    }
+
+
+
+    @Override
+    public String getFullName(HttpServletRequest httpServletRequest) {
+        log.info("getting full name ...");
+        String email = userService.getEmailFromToken(httpServletRequest);
+        UserEntity userEntity = userService.findByAuthDataEmail(email);
+        log.info("full name was retrieved");
+        return userEntity.getFullName();
     }
 
 }

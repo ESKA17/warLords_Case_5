@@ -4,8 +4,11 @@ import com.example.mycli.entity.News;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.AccountBadRequest;
 import com.example.mycli.exceptions.AccountNotFound;
+import com.example.mycli.model.JSONNewsWrap;
 import com.example.mycli.model.NewsResponse;
+import com.example.mycli.model.SubjectType;
 import com.example.mycli.repository.NewsRepo;
+import com.example.mycli.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,7 +16,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,14 +47,31 @@ public class NewsServiceImpl implements NewsService{
 
     @Override
     public List<Long> getAllUnacceptedNews() {
-        log.info("accessing database for all unaccepted news ...");
+        log.info("accessing database for all unaccepted news in int list ...");
         List<News> allNews = newsRepo.findAllByAcceptedIsFalse();
         List<Long> listByID = new ArrayList<>();
         for (News news: allNews) {
             listByID.add(news.getId());
         }
-        log.info("news successfully retrieved");
+        log.info("news in int list successfully retrieved");
         return listByID;
+    }
+    @Override
+    public List<JSONNewsWrap> getAllUnacceptedNewsJSON() {
+        log.info("accessing database for all unaccepted news in JSON ...");
+        List<News> allNews = newsRepo.findAllByAcceptedIsFalse();
+        List<JSONNewsWrap> jsonNewsWrapList = new ArrayList<>();
+        for (News news: allNews) {
+            String fullName = userService.findUserByID(news.getUserID()).getFullName();
+            JSONNewsWrap jsonNewsWrap = JSONNewsWrap.builder()
+                    .date(news.getDate())
+                    .fullName(fullName)
+                    .news(news.getNews())
+                    .build();
+            jsonNewsWrapList.add(jsonNewsWrap);
+        }
+        log.info("news in JSON successfully retrieved");
+        return jsonNewsWrapList;
     }
 
     @Override
@@ -102,8 +121,11 @@ public class NewsServiceImpl implements NewsService{
         }
         News news = newsRepo.findById(id).orElseThrow(() -> new AccountNotFound("news with id: " + id));
         UserEntity userEntity = userService.findUserByID(news.getUserID());
+        List<Integer> listOfSubjects = getMajorsByInt(userEntity.getSubjectTypeList());
         NewsResponse newsResponse = NewsResponse.builder()
                 .fullName(userEntity.getFullName())
+                .posterID(userEntity.getId())
+                .subjects(listOfSubjects)
                 .date(news.getDate())
                 .news(news.getNews())
                 .build();
@@ -163,6 +185,13 @@ public class NewsServiceImpl implements NewsService{
         newsEdited.setNews(news);
         newsRepo.save(newsEdited);
         log.info("successfully edited");
+    }
+    @Override
+    public List<Integer> getMajorsByInt(List<SubjectType> subjectList) {
+        log.info("getting majors from list of integers ...");
+        List<Integer> out = Utils.fromSubjectTypeToInteger(subjectList);
+        log.info("majors sent");
+        return out;
     }
 
 

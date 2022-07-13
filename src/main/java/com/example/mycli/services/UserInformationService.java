@@ -2,6 +2,7 @@ package com.example.mycli.services;
 
 import com.example.mycli.model.Majors;
 import com.example.mycli.model.ScreeningRequest;
+import com.example.mycli.model.SubjectType;
 import com.example.mycli.model.UserInfoResponse;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,4 +17,7 @@ public interface UserInformationService {
     void changeFullName(String fullName, HttpServletRequest httpServletRequest);
 
     List<Integer> getMajors(HttpServletRequest httpServletRequest);
+
+
+    String getFullName(HttpServletRequest httpServletRequest);
 }
