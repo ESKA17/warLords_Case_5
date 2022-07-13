@@ -31,6 +31,10 @@ public class NewsController {
     public List<Long> getAllUnacceptedNews(){
         return newsService.getAllUnacceptedNews();
     }
+    @GetMapping("/availableJSON")
+    public List<News> getAllUnacceptedNewsInJSON(){
+        return newsService.getAllUnacceptedNewsJSON();
+    }
 
     @GetMapping("/by_op_unaccepted")
     public List<Long> getUnacceptedNewsByOP(HttpServletRequest httpServletRequest){

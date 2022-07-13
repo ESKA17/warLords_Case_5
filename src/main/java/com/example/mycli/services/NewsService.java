@@ -12,6 +12,8 @@ public interface NewsService {
 
     List<Long> getAllUnacceptedNews();
 
+    List<News> getAllUnacceptedNewsJSON();
+
     List<Long> getUnacceptedNewsByOP(HttpServletRequest httpServletRequest);
 
     List<Long> getAcceptedNewsByOP(HttpServletRequest httpServletRequest);
