@@ -1,6 +1,6 @@
 package com.example.mycli.controllers;
 
-import com.example.mycli.entity.MessageHistory;
+import com.example.mycli.entity.Connection;
 import com.example.mycli.model.NotificationRequest;
 import com.example.mycli.services.EmitterService;
 import com.example.mycli.services.MessageService;
@@ -29,7 +29,7 @@ public class MessageController {
     }
 
     @GetMapping()
-    public MessageHistory getAllMessages(@RequestParam Long friendID, HttpServletRequest httpServletRequest) {
+    public Connection getAllMessages(@RequestParam Long friendID, HttpServletRequest httpServletRequest) {
         return messageService.getAllMessages(friendID, httpServletRequest);
     }
 }

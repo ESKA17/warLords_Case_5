@@ -1,5 +1,6 @@
 package com.example.mycli.services;
 
+import com.example.mycli.entity.Connection;
 import com.example.mycli.entity.News;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.AccountBadRequest;
@@ -25,6 +26,7 @@ import java.util.List;
 public class NewsServiceImpl implements NewsService{
     private final UserService userService;
     private final NewsRepo newsRepo;
+    private final EmitterService emitterService;
     @Override
     @Transactional
     public void addNews(String news, HttpServletRequest httpServletRequest) {
@@ -149,11 +151,17 @@ public class NewsServiceImpl implements NewsService{
         news.setAccepter_id(user.getId());
 
         UserEntity poster = userService.findUserByID(news.getUserID());
-
-        List<UserEntity> posterConnections = poster.getConnections();
-        List<UserEntity> userConnections = user.getConnections();
-        userConnections.add(poster);
-        posterConnections.add(user);
+        List<Connection> posterConnections = poster.getConnections();
+        List<Connection> userConnections = user.getConnections();
+        Connection connection = Connection.builder()
+                .userID(poster.getId())
+                .friendID(user.getId())
+                .sseEmitter(emitterService.addEmitter())
+                .connectionStatus(1)
+                .messageHistory("")
+                .build();
+        userConnections.add(connection);
+        posterConnections.add(connection);
         poster.setConnections(posterConnections);
         user.setConnections(userConnections);
         userService.saveUser(poster);

@@ -13,15 +13,17 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class ConnectionsServiceImpl implements ConnectionsService {
     private final UserService userService;
+    private final EmitterService emitterService;
     private final ConnectionRepo connectionRepo;
     @Override
-    public void match(Long matchID, HttpServletRequest httpServletRequest) {
+    public void matchFromMentee(Long matchID, HttpServletRequest httpServletRequest) {
         if (matchID == null) {
             throw new AccountBadRequest("check matchID");
         }
@@ -29,10 +31,17 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity poster = userService.findByAuthDataEmail(email);
         UserEntity accepter =  userService.findUserByID(matchID);
-        List<UserEntity> posterList = poster.getConnections();
-        List<UserEntity> accepterList = accepter.getConnections();
-        posterList.add(accepter);
-        accepterList.add(poster);
+        Connection connection = Connection.builder()
+                .userID(poster.getId())
+                .friendID(matchID)
+                .sseEmitter(emitterService.addEmitter())
+                .connectionStatus(1)
+                .messageHistory("")
+                .build();
+        List<Connection> posterList = poster.getConnections();
+        List<Connection> accepterList = accepter.getConnections();
+        posterList.add(connection);
+        accepterList.add(connection);
         userService.saveUser(poster);
         userService.saveUser(accepter);
         log.info("users matched \u2665\u2665\u2665");
@@ -57,33 +66,69 @@ public class ConnectionsServiceImpl implements ConnectionsService {
     }
 
     @Override
-    public List<Long> getConnections(HttpServletRequest httpServletRequest) {
-        log.info("retrieving connections ...");
+    public List<Long> getConnectionsStatusOne(HttpServletRequest httpServletRequest) {
+        log.info("retrieving connections status one ...");
         String email = userService.getEmailFromToken(httpServletRequest);
-        List<UserEntity> connectionsList = userService.findByAuthDataEmail(email).getConnections();
+        List<Connection> connectionsList = userService.findByAuthDataEmail(email).getConnections();
         List<Long> out = new ArrayList<>();
-        for (UserEntity user: connectionsList) {
-            out.add(user.getId());
+        for (Connection connection: connectionsList) {
+            if (connection.getConnectionStatus() == 1) {
+                Long friendID = userService.findUserByID(connection.getFriendID()).getId();
+                out.add(friendID);
+            }
+        }
+        log.info("connections were retrieved: " + out);
+        return out;
+    }
+    @Override
+    public List<Long> getConnectionsStatusTwo(HttpServletRequest httpServletRequest) {
+        log.info("retrieving connections status two ...");
+        String email = userService.getEmailFromToken(httpServletRequest);
+        List<Connection> connectionsList = userService.findByAuthDataEmail(email).getConnections();
+        List<Long> out = new ArrayList<>();
+        for (Connection connection: connectionsList) {
+            if (connection.getConnectionStatus() == 2) {
+                Long friendID = userService.findUserByID(connection.getFriendID()).getId();
+                out.add(friendID);
+            }
         }
         log.info("connections were retrieved: " + out);
         return out;
     }
 
     @Override
-    public void addEmitterConnection(Connection connection) {
-        log.info("saving connection ...");
-        connectionRepo.save(connection);
-        log.info("saving connection done");
+    public void matchFromMentor(Long matchID, HttpServletRequest httpServletRequest) {
+        if (matchID == null) {
+            throw new AccountBadRequest("check matchID");
+        }
+        log.info("starting matching ...");
+        String email = userService.getEmailFromToken(httpServletRequest);
+        UserEntity poster = userService.findByAuthDataEmail(email);
+        UserEntity accepter =  userService.findUserByID(matchID);
+        List<Connection> posterList = poster.getConnections();
+        List<Connection> accepterList = accepter.getConnections();
+        Connection search = null;
+        int posterSearch = -1, accepterSearch = -1;
+        for (Connection connection: posterList) {
+            if (Objects.equals(connection.getFriendID(), matchID)) {
+                search = connection;
+                posterSearch = posterList.indexOf(connection);
+                accepterSearch = accepterList.indexOf(connection);
+            }
+        }
+        if (search != null) {
+            search.setConnectionStatus(2);
+        } else {
+            throw new AccountNotFound("emitter between users "+ matchID + " and " +  poster.getId() +
+                    " was not found");
+        }
+        posterList.set(posterSearch, search);
+        accepterList.set(accepterSearch, search);
+        userService.saveUser(poster);
+        userService.saveUser(accepter);
+        log.info("users matched \u2665\u2665\u2665");
     }
 
-    @Override
-    public SerializableSSE getEmitter(Long toWhom, Long from) {
-        log.info("accessing base for emitter between users "+ toWhom + " and " +  from);
-        Connection connection = connectionRepo.findByFriendIDAndUserID(toWhom, from).orElseThrow(
-                () -> new AccountNotFound("emitter between users "+ toWhom + " and " +  from));
-        log.info("emitter was found");
-        return connection.getSseEmitter();
-    }
 
     private void matchBreaker(Long accepterID, UserEntity poster) {
         if (accepterID == null) {
@@ -94,10 +139,10 @@ public class ConnectionsServiceImpl implements ConnectionsService {
                         " was not found")
         );
         UserEntity accepter =  userService.findUserByID(accepterID);
-        List<UserEntity> posterList = poster.getConnections();
-        List<UserEntity> accepterList = accepter.getConnections();
-        posterList.remove(accepter);
-        accepterList.remove(poster);
+        List<Connection> posterList = poster.getConnections();
+        List<Connection> accepterList = accepter.getConnections();
+        posterList.remove(connection);
+        accepterList.remove(connection);
         userService.saveUser(poster);
         userService.saveUser(accepter);
         connectionRepo.delete(connection);

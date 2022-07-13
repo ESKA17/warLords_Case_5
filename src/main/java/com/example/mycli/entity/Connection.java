@@ -24,4 +24,9 @@ public class Connection {
     private Long friendID;
     @Column(name = "emitter")
     private SerializableSSE sseEmitter;
+    @Column(name = "message_history")
+    private String messageHistory;
+    @Column(name = "connection_status")
+    private int connectionStatus;
+
 }

@@ -20,14 +20,8 @@ public class Report {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "reporter", referencedColumnName = "id")
-    private UserEntity reporter;
-
-    @OneToOne
-    @JoinColumn(name = "harasser", referencedColumnName = "id")
-    private UserEntity harasser;
-
-
+    @JoinColumn(name = "connection")
+    private Connection connection;
 
     @Column(name = "reason")
     private String reason;

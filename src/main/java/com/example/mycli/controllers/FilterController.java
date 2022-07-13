@@ -2,10 +2,12 @@ package com.example.mycli.controllers;
 
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.model.FilterSearchRequest;
+import com.example.mycli.model.FindAllReturnIdWrap;
 import com.example.mycli.model.FindUserByIDWrap;
 import com.example.mycli.services.UserService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +23,8 @@ public class FilterController {
 
     private final UserService userService;
 
-    @GetMapping("/all")
-    public List<Long> showAll() {
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public FindAllReturnIdWrap showAll() {
         return userService.findAllReturnID();
     }
 
