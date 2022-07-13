@@ -1,5 +1,6 @@
 package com.example.mycli.services;
 
+import com.example.mycli.model.ImageWrap;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,8 +12,13 @@ public interface FilesStorageService {
     void init();
     void save(MultipartFile file, HttpServletRequest httpServletRequest);
     Resource load(Long id);
+
+    ImageWrap loadMobile(Long id);
+
     void deleteAll();
     Stream<Path> loadAll();
 
     Resource loadUser(HttpServletRequest httpServletRequest);
+
+    ImageWrap loadUserMobile(HttpServletRequest httpServletRequest);
 }

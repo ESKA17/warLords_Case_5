@@ -12,12 +12,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;
 @Transactional
@@ -65,24 +65,16 @@ public class FilesStorageServiceImpl implements FilesStorageService {
             throw new RuntimeException("Error: " + e.getMessage());
         }
     }
-//    @Override
-//    public ImageWrap loadMobile(Long id) {
-//        try {
-//            Path path = root.resolve(id + ".jpg");
-//            File file = path.toFile();
-//            Resource resource = new UrlResource(path.toUri());
-//
-//            if (resource.exists() || resource.isReadable()) {
-//                return new ImageWrap();
-//            } else {
-//                throw new RuntimeException("Could not read the file!");
-//            }
-//        } catch (MalformedURLException e) {
-//            throw new RuntimeException("Error: " + e.getMessage());
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    @Override
+    public ImageWrap loadMobile(Long id) {
+        try {
+            Path path = root.resolve(id + ".jpg");
+            Resource resource = new UrlResource(path.toUri());
+            return getImageWrap(path, resource);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
+    }
 
     @Override
     public void deleteAll() {
@@ -112,6 +104,32 @@ public class FilesStorageServiceImpl implements FilesStorageService {
             }
         } catch (MalformedURLException e) {
             throw new RuntimeException("Error: " + e.getMessage());
+        }
+    }
+    @Override
+    public ImageWrap loadUserMobile(HttpServletRequest httpServletRequest) {
+        String email = userService.getEmailFromToken(httpServletRequest);
+        UserEntity userEntity = userService.findByAuthDataEmail(email);
+        try {
+            Path path = root.resolve(userEntity.getId() + ".jpg");
+            Resource resource = new UrlResource(path.toUri());
+            return getImageWrap(path, resource);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
+    }
+
+    private ImageWrap getImageWrap(Path path, Resource resource) {
+        byte[] content;
+        try {
+            content = Files.readAllBytes(path);
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
+        if (resource.exists() || resource.isReadable()) {
+            return new ImageWrap(Arrays.toString(content));
+        } else {
+            throw new RuntimeException("Could not read the file!");
         }
     }
 }

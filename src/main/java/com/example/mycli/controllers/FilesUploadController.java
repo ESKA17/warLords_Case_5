@@ -1,8 +1,10 @@
 package com.example.mycli.controllers;
 
 import com.example.mycli.model.FileInfo;
+import com.example.mycli.model.ImageWrap;
 import com.example.mycli.model.ResponseMessage;
 import com.example.mycli.services.FilesStorageService;
+import com.example.mycli.services.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "http://localhost:3000")
 public class FilesUploadController {
     private final FilesStorageService storageService;
+    private final UserService userService;
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file,
                                                       HttpServletRequest httpServletRequest) {
@@ -68,18 +71,19 @@ public class FilesUploadController {
 
     @GetMapping("/mobile/{filename:.+}")
     @ResponseBody
-    public ResponseEntity<Resource> getFileMobile(@RequestParam Long id) {
-        Resource file = storageService.load(id);
+    public ResponseEntity<ImageWrap> getFileMobile(@RequestParam Long id) {
+        ImageWrap file = storageService.loadMobile(id);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() +
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + id +
                         "\"").body(file);
     }
     @GetMapping("/mobile/user")
     @ResponseBody
-    public ResponseEntity<Resource> getFileMobileJWT(HttpServletRequest httpServletRequest) {
-        Resource file = storageService.loadUser(httpServletRequest);
+    public ResponseEntity<ImageWrap> getFileMobileJWT(HttpServletRequest httpServletRequest) {
+        ImageWrap file = storageService.loadUserMobile(httpServletRequest);
+        Long id = userService.findByAuthDataEmail(userService.getEmailFromToken(httpServletRequest)).getId();
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() +
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + id +
                         "\"").body(file);
     }
 
