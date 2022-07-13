@@ -2,6 +2,7 @@ package com.example.mycli.controllers;
 
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.model.FilterSearchRequest;
+import com.example.mycli.model.FindAllMentors;
 import com.example.mycli.model.FindAllReturnIdWrap;
 import com.example.mycli.model.FindUserByIDWrap;
 import com.example.mycli.services.UserService;
@@ -36,5 +37,9 @@ public class FilterController {
     @GetMapping("/by_filter")
     public List<Long> filterSearch(@RequestBody FilterSearchRequest filterSearchRequest) {
         return userService.filter(filterSearchRequest);
+    }
+    @GetMapping(value= "/allMentors", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<UserEntity> showMentors(){
+        return userService.findAllMentors();
     }
 }

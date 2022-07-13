@@ -7,10 +7,7 @@ import com.example.mycli.exceptions.AccountBadRequest;
 import com.example.mycli.exceptions.AccountNotFound;
 import com.example.mycli.exceptions.AuthenticationFailed;
 import com.example.mycli.exceptions.PasswordFailed;
-import com.example.mycli.model.FilterSearchRequest;
-import com.example.mycli.model.FindAllReturnIdWrap;
-import com.example.mycli.model.FindUserByIDWrap;
-import com.example.mycli.model.SubjectType;
+import com.example.mycli.model.*;
 import com.example.mycli.repository.*;
 import com.example.mycli.utils.Utils;
 import com.example.mycli.web.JwtProvider;
@@ -178,7 +175,10 @@ public class UserServiceImpl implements UserService{
         }
         return new FindAllReturnIdWrap(allUsersReturnID);
     }
-
+    @Override
+    public List<UserEntity> findAllMentors(){
+        return userEntityRepo.findAllByAuthdata_RoleEntity_Id(1);
+    }
     @Override
     public Integer findRoleEntity(HttpServletRequest httpServletRequest) {
         log.info("getting role id ...");

@@ -123,9 +123,6 @@ public class UserInformationServiceImpl implements UserInformationService {
         return userEntity.getFullName();
     }
 
-    @Override
-    public void getUsersRoleById(Long id, HttpServletRequest httpServletRequest) {
 
-    }
 
 }

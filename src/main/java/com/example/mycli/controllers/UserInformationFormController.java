@@ -48,6 +48,7 @@ public class UserInformationFormController {
     public List<Integer> getMajors(HttpServletRequest httpServletRequest) {
         return userInformationService.getMajors(httpServletRequest);
     }
+
     @PostMapping("/name")
     public ResponseEntity<String> changeFullName(@RequestParam String fullName,
                                              HttpServletRequest httpServletRequest) {
