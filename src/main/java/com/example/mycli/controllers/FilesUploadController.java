@@ -17,6 +17,8 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,5 +82,12 @@ public class FilesUploadController {
     @ResponseBody
     public ImageWrap getFileMobileJWT(HttpServletRequest httpServletRequest) {
         return storageService.loadUserMobile(httpServletRequest);
+    }
+
+    @GetMapping(value = "/image")
+    public @ResponseBody byte[] getImage() throws IOException {
+        InputStream in = getClass()
+                .getResourceAsStream("uploads/2.jpeg");
+        return in.readAllBytes();
     }
 }

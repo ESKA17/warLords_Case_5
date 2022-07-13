@@ -173,7 +173,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public FindUserByIDWrap findUserByIDInWrap(Long id) {
         log.info("finding user by id and creating FindUserByIDWrap ... ");
-        UserEntity userEntity= findUserByID(id);
+        UserEntity userEntity = findUserByID(id);
         List<Integer> subjectList = Utils.fromSubjectTypeToInteger(userEntity.getSubjectTypeList());
         FindUserByIDWrap findUserByIDWrap = FindUserByIDWrap.builder()
                 .fullName(userEntity.getFullName())
