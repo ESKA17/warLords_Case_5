@@ -96,5 +96,6 @@ public class AuthController {
         return siteURL.replace(request.getServletPath(), "");
     }
 
+
 }
 
