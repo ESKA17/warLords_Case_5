@@ -78,18 +78,21 @@ public class FilesUploadController {
                         "\"").body(file);
     }
 
-    @GetMapping(value = "/mobile", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/mobile")
     @ResponseBody
     public ImageWrap getFileMobile(@RequestParam Long id) throws IOException {
-        BufferedImage file = storageService.load(id);
+        BufferedImage file = storageService.loadMobile(id);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(file, "jpeg", baos);
         return new ImageWrap(baos.toByteArray());
     }
-    @GetMapping(value = "/mobile/user", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/mobile/user")
     @ResponseBody
-    public BufferedImage getFileMobileJWT(HttpServletRequest httpServletRequest) {
-        return storageService.loadUserMobile(httpServletRequest);
+    public ImageWrap getFileMobileJWT(HttpServletRequest httpServletRequest) throws IOException {
+        BufferedImage file = storageService.loadUserMobile(httpServletRequest);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(file, "jpeg", baos);
+        return new ImageWrap(baos.toByteArray());
     }
 
 }

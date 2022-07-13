@@ -115,17 +115,4 @@ public class FilesStorageServiceImpl implements FilesStorageService {
         }
     }
 
-    private ImageWrap getImageWrap(Path path, Resource resource) {
-        byte[] content;
-        try {
-            content = Base64.getEncoder().encode(Files.readAllBytes(path));
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
-        }
-        if (resource.exists() || resource.isReadable()) {
-            return new ImageWrap(content);
-        } else {
-            throw new RuntimeException("Could not read the file!");
-        }
-    }
 }
