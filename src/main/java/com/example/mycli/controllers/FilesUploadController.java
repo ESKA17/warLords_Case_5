@@ -80,8 +80,11 @@ public class FilesUploadController {
 
     @GetMapping(value = "/mobile", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
-    public BufferedImage getFileMobile(@RequestParam Long id) {
-        return storageService.loadMobile(id);
+    public ImageWrap getFileMobile(@RequestParam Long id) throws IOException {
+        BufferedImage file = storageService.load(id);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(file, "jpeg", baos);
+        return new ImageWrap(baos.toByteArray());
     }
     @GetMapping(value = "/mobile/user", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
