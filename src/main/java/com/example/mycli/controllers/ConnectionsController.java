@@ -1,5 +1,6 @@
 package com.example.mycli.controllers;
 
+import com.example.mycli.model.FindAllReturnIdWrap;
 import com.example.mycli.model.NotificationRequest;
 import com.example.mycli.services.ConnectionsService;
 import com.example.mycli.services.EmitterService;
@@ -36,11 +37,11 @@ public class ConnectionsController {
         return ResponseEntity.ok("Match was broken");
     }
     @GetMapping("/show_connections_mentor")
-    public List<Long> getAllConnectionsStatusOne(HttpServletRequest httpServletRequest) {
+    public FindAllReturnIdWrap getAllConnectionsStatusOne(HttpServletRequest httpServletRequest) {
         return connectionsService.getConnectionsStatusOne(httpServletRequest);
     }
     @GetMapping("/show_connections_both")
-    public List<Long> getAllConnectionsStatusTwo(HttpServletRequest httpServletRequest) {
+    public FindAllReturnIdWrap getAllConnectionsStatusTwo(HttpServletRequest httpServletRequest) {
         return connectionsService.getConnectionsStatusTwo(httpServletRequest);
     }
 
