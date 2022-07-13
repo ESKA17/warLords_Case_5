@@ -8,6 +8,7 @@ import com.example.mycli.exceptions.AccountNotFound;
 import com.example.mycli.exceptions.AuthenticationFailed;
 import com.example.mycli.exceptions.PasswordFailed;
 import com.example.mycli.model.FilterSearchRequest;
+import com.example.mycli.model.FindAllReturnIdWrap;
 import com.example.mycli.model.FindUserByIDWrap;
 import com.example.mycli.model.SubjectType;
 import com.example.mycli.repository.*;
@@ -167,13 +168,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<Long> findAllReturnID() {
+    public FindAllReturnIdWrap findAllReturnID() {
         List<UserEntity> allUsers = userEntityRepo.findAllByAuthdata_RoleEntity_Id(1);
         List<Long> allUsersReturnID = new ArrayList<>();
         for (UserEntity user: allUsers) {
             allUsersReturnID.add(user.getId());
         }
-        return allUsersReturnID;
+        FindAllReturnIdWrap findAllReturnIdWrap = new FindAllReturnIdWrap(allUsersReturnID);
+        return findAllReturnIdWrap;
     }
 
     @Override
