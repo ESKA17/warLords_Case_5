@@ -160,6 +160,7 @@ public class UserServiceImpl implements UserService{
     }
     @Override
     public List<UserEntity> findAllMentors(){
+        log.info("getting all mentors");
         return userEntityRepo.findAllByAuthdata_RoleEntity_Id(1);
     }
     @Override
@@ -192,6 +193,7 @@ public class UserServiceImpl implements UserService{
         return userEntityRepo.findAllByAuthdata_RoleEntity_Id(0);
 
     }
+
     @Override
     public List<UserEntity> findAllUsers() {
         log.info("accessing user database for all users");
