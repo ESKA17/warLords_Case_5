@@ -26,6 +26,7 @@ import java.util.List;
 public class ReportsServiceImpl implements ReportsService{
     private final UserService userService;
     private final ReportsRepo reportsRepo;
+    private final ConnectionsService connectionsService;
     private final JavaMailSender mailSender;
     @Override
     @Transactional
@@ -34,6 +35,7 @@ public class ReportsServiceImpl implements ReportsService{
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity reporter = userService.findByEmail(email);
         UserEntity harasser = userService.findUserByID(harasserId);
+        connectionsService.breakMatchByID(reporter.getId(), harasser.getId());
         Report newReport = Report.builder()
                 .ignore(false)
                 .reason(reason)
