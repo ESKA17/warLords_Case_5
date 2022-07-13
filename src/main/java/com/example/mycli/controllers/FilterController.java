@@ -37,4 +37,8 @@ public class FilterController {
     public List<Long> filterSearch(@RequestBody FilterSearchRequest filterSearchRequest) {
         return userService.filter(filterSearchRequest);
     }
+    @GetMapping(value= "/allMentors")
+    public List<UserEntity> showMentors(){
+        return userService.findAllMentors();
+    }
 }
