@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -18,7 +19,7 @@ public class RankingFormController {
     private final RankingService rankingService;
 
     @PostMapping()
-    public ResponseEntity<String> fillRankingForm(@RequestBody RankingForm rankingForm,
+    public ResponseEntity<String> fillRankingForm(@RequestBody @Valid RankingForm rankingForm,
                                                   HttpServletRequest httpServletRequest) {
         rankingService.fillRankingForm(rankingForm, httpServletRequest);
         return ResponseEntity.ok("Form was successfully filled");

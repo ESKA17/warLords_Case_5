@@ -63,7 +63,7 @@ public class AuthController {
     }
 
     @PostMapping("/process_register")
-    public ResponseEntity<String> processRegister(@RequestBody ProcessRegister processRegister,
+    public ResponseEntity<String> processRegister(@RequestBody @Valid ProcessRegister processRegister,
                                                   HttpServletRequest request)
             throws UnsupportedEncodingException, MessagingException {
         log.info(processRegister.getEmail());

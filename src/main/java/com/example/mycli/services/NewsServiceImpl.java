@@ -1,5 +1,6 @@
 package com.example.mycli.services;
 
+import com.example.mycli.entity.Connection;
 import com.example.mycli.entity.News;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.AccountBadRequest;
@@ -7,6 +8,7 @@ import com.example.mycli.exceptions.AccountNotFound;
 import com.example.mycli.model.JSONNewsWrap;
 import com.example.mycli.model.NewsResponse;
 import com.example.mycli.model.SubjectType;
+import com.example.mycli.repository.ConnectionRepo;
 import com.example.mycli.repository.NewsRepo;
 import com.example.mycli.utils.Utils;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,8 @@ import java.util.List;
 public class NewsServiceImpl implements NewsService{
     private final UserService userService;
     private final NewsRepo newsRepo;
+    private final EmitterService emitterService;
+    private final ConnectionRepo connectionRepo;
     @Override
     @Transactional
     public void addNews(String news, HttpServletRequest httpServletRequest) {
@@ -149,15 +153,14 @@ public class NewsServiceImpl implements NewsService{
         news.setAccepter_id(user.getId());
 
         UserEntity poster = userService.findUserByID(news.getUserID());
-
-        List<UserEntity> posterConnections = poster.getConnections();
-        List<UserEntity> userConnections = user.getConnections();
-        userConnections.add(poster);
-        posterConnections.add(user);
-        poster.setConnections(posterConnections);
-        user.setConnections(userConnections);
-        userService.saveUser(poster);
-        userService.saveUser(user);
+        Connection connection = Connection.builder()
+                .userID(poster.getId())
+                .friendID(user.getId())
+                .sseEmitter(emitterService.addEmitter())
+                .connectionStatus(2)
+                .messageHistory("")
+                .build();
+        connectionRepo.save(connection);
         newsRepo.save(news);
      log.info("successfully marked as accepted");
     }

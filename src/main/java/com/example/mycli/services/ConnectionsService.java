@@ -7,15 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface ConnectionsService {
-    void match(Long matchID, HttpServletRequest httpServletRequest);
+    void matchFromMentee(Long matchID, HttpServletRequest httpServletRequest);
 
     void breakMatch(Long matchID, HttpServletRequest httpServletRequest);
 
     void breakMatchByID(Long posterID, Long accepterID);
 
-    List<Long> getConnections(HttpServletRequest httpServletRequest);
+    List<Long> getConnectionsStatusOne(HttpServletRequest httpServletRequest);
 
-    void addEmitterConnection(Connection connection);
+    List<Long> getConnectionsStatusTwo(HttpServletRequest httpServletRequest);
 
-    SerializableSSE getEmitter(Long toWhom, Long from);
+    void matchFromMentor(Long matchID, HttpServletRequest httpServletRequest);
 }

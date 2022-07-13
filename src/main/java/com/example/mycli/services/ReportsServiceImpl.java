@@ -1,9 +1,11 @@
 package com.example.mycli.services;
 
+import com.example.mycli.entity.Connection;
 import com.example.mycli.entity.Report;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.AccountBadRequest;
 import com.example.mycli.exceptions.AccountNotFound;
+import com.example.mycli.repository.ConnectionRepo;
 import com.example.mycli.repository.ReportsRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,7 @@ public class ReportsServiceImpl implements ReportsService{
     private final UserService userService;
     private final ReportsRepo reportsRepo;
     private final ConnectionsService connectionsService;
+    private final ConnectionRepo connectionRepo;
     private final JavaMailSender mailSender;
     @Override
     @Transactional
@@ -36,11 +39,13 @@ public class ReportsServiceImpl implements ReportsService{
         UserEntity reporter = userService.findByEmail(email);
         UserEntity harasser = userService.findUserByID(harasserId);
         connectionsService.breakMatchByID(reporter.getId(), harasser.getId());
+        Connection connection = connectionRepo.findByFriendIDAndUserID(harasserId, reporter.getId())
+                .orElseThrow(() -> new AccountNotFound("emitter between users "+ harasserId + " and " +
+                        reporter.getId() + " was not found"));
         Report newReport = Report.builder()
                 .ignore(false)
                 .reason(reason)
-                .reporter(reporter)
-                .harasser(harasser)
+                .connection(connection)
                 .build();
         reportsRepo.save(newReport);
         log.info("report is saved ...");

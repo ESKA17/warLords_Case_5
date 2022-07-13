@@ -78,4 +78,37 @@ public class Utils {
         }
         return subjectList;
     }
+    public static List<SubjectType> fromIntToSubjectType(List<Integer> subjects) {
+        List<SubjectType> subjectList = new ArrayList<>();
+        for (int digit: subjects) {
+            switch (digit) {
+                case 0: {
+                    subjectList.add(SubjectType.MATH);
+                    break;
+                }
+                case 1: {
+                    subjectList.add(SubjectType.PHYSICS);
+                    break;
+                }
+                case 2: {
+                    subjectList.add(SubjectType.CHEMISTRY);
+                    break;
+                }
+                case 3: {
+                    subjectList.add(SubjectType.BIOLOGY);
+                    break;
+                }
+                case 4: {
+                    subjectList.add(SubjectType.INFORMATICS);
+                    break;
+                }
+                case 5: {
+                    subjectList.add(SubjectType.HISTORY);
+                    break;
+                }
+            }
+        }
+        return subjectList;
+    }
+
 }
