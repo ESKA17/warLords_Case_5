@@ -28,4 +28,6 @@ public interface UserService {
     List<Long> filter(FilterSearchRequest filterSearchRequest);
 
     List<Long> findAllReturnID();
+
+    Integer findRoleEntity(HttpServletRequest httpServletRequest);
 }
