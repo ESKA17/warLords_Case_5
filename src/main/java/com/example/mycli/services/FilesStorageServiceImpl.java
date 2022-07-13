@@ -41,7 +41,7 @@ public class FilesStorageServiceImpl implements FilesStorageService {
             String extension = file.getOriginalFilename();
             assert extension != null;
             int size = extension.length();
-            extension = extension.substring(size-4);
+            extension = extension.substring(size-5);
             String newName = user.getId().toString() + extension;
             Files.copy(file.getInputStream(), this.root.resolve(Objects.requireNonNull(newName)));
         } catch (Exception e) {

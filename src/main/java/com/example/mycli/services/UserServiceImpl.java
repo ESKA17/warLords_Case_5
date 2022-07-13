@@ -38,22 +38,6 @@ public class UserServiceImpl implements UserService{
     private final JwtProvider jwtProvider;
 
 
-    @Override
-    public void initRoles() {
-        log.info("roles initialization ...");
-        if (roleEntityRepo.count() == 0) {
-            RoleEntity roleAdmin = new RoleEntity(0, "ROLE_ADMIN");
-            RoleEntity roleMentor = new RoleEntity(1, "ROLE_MENTOR");
-            RoleEntity roleMentee = new RoleEntity(2, "ROLE_MENTEE");
-            roleEntityRepo.save(roleAdmin);
-            roleEntityRepo.save(roleMentor);
-            roleEntityRepo.save(roleMentee);
-            log.info("roles initialization was successful");
-        } else {
-            log.info("roles have been already added");
-        }
-
-    }
     @Transactional
     @Override
     public UserEntity saveUser(UserEntity user) {
@@ -152,7 +136,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<Long> filter(FilterSearchRequest filterSearchRequest) {
-        List<SubjectType> subjects = fromIntToSubjectType(filterSearchRequest.getSubjects());
+        List<SubjectType> subjects = Utils.fromIntToSubjectType(filterSearchRequest.getSubjects());
         List<UserEntity> allUsers = userEntityRepo.findAllByAuthdata_RoleEntity_Id(1);
         List<Long> subjectFilter = new ArrayList<>();
         for (UserEntity userFiltered : allUsers) {
@@ -163,7 +147,6 @@ public class UserServiceImpl implements UserService{
                 }
             }
         }
-
         return subjectFilter;
     }
 
@@ -207,7 +190,6 @@ public class UserServiceImpl implements UserService{
         return userEntityRepo.findAllByAuthdata_RoleEntity_Id(0);
 
     }
-
     @Override
     public List<UserEntity> findAllUsers() {
         log.info("accessing user database for all users");
@@ -230,38 +212,5 @@ public class UserServiceImpl implements UserService{
         } else {
             throw new AuthenticationFailed("token is null");
         }
-    }
-
-    private List<SubjectType> fromIntToSubjectType(List<Integer> subjects) {
-        List<SubjectType> subjectList = new ArrayList<>();
-        for (int digit: subjects) {
-            switch (digit) {
-                case 0: {
-                    subjectList.add(SubjectType.MATH);
-                    break;
-                }
-                case 1: {
-                    subjectList.add(SubjectType.PHYSICS);
-                    break;
-                }
-                case 2: {
-                    subjectList.add(SubjectType.CHEMISTRY);
-                    break;
-                }
-                case 3: {
-                    subjectList.add(SubjectType.BIOLOGY);
-                    break;
-                }
-                case 4: {
-                    subjectList.add(SubjectType.INFORMATICS);
-                    break;
-                }
-                case 5: {
-                    subjectList.add(SubjectType.HISTORY);
-                    break;
-                }
-            }
-        }
-        return subjectList;
     }
 }
