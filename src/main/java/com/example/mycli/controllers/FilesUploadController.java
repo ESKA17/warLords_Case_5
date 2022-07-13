@@ -52,39 +52,26 @@ public class FilesUploadController {
         }).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(fileInfos);
     }
-    @GetMapping("/files/{filename:.+}")
+    @GetMapping("/files")
     @ResponseBody
-    public ResponseEntity<Resource> getFile(@RequestParam Long id) {
-        Resource file = storageService.load(id);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() +
-                        "\"").body(file);
+    public Resource getFile(@RequestParam Long id) {
+        return storageService.load(id);
     }
     @GetMapping("/files/user")
     @ResponseBody
-    public ResponseEntity<Resource> getFileJWT(HttpServletRequest httpServletRequest) {
-        Resource file = storageService.loadUser(httpServletRequest);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() +
-                        "\"").body(file);
+    public Resource getFileJWT(HttpServletRequest httpServletRequest) {
+        return storageService.loadUser(httpServletRequest);
     }
 
-    @GetMapping("/mobile/{filename:.+}")
+    @GetMapping("/mobile")
     @ResponseBody
-    public ResponseEntity<ImageWrap> getFileMobile(@RequestParam Long id) {
-        ImageWrap file = storageService.loadMobile(id);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + id +
-                        "\"").body(file);
+    public ImageWrap getFileMobile(@RequestParam Long id) {
+        return storageService.loadMobile(id);
     }
     @GetMapping("/mobile/user")
     @ResponseBody
-    public ResponseEntity<ImageWrap> getFileMobileJWT(HttpServletRequest httpServletRequest) {
-        ImageWrap file = storageService.loadUserMobile(httpServletRequest);
-        Long id = userService.findByAuthDataEmail(userService.getEmailFromToken(httpServletRequest)).getId();
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + id +
-                        "\"").body(file);
+    public ImageWrap getFileMobileJWT(HttpServletRequest httpServletRequest) {
+        return storageService.loadUserMobile(httpServletRequest);
     }
 
 
