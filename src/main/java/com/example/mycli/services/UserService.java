@@ -3,6 +3,7 @@ package com.example.mycli.services;
 import com.example.mycli.entity.RoleEntity;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.model.FilterSearchRequest;
+import com.example.mycli.model.FindUserByIDWrap;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -30,4 +31,6 @@ public interface UserService {
     List<Long> findAllReturnID();
 
     Integer findRoleEntity(HttpServletRequest httpServletRequest);
+
+    FindUserByIDWrap findUserByIDInWrap(Long id);
 }

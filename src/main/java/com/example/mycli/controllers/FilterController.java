@@ -2,6 +2,7 @@ package com.example.mycli.controllers;
 
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.model.FilterSearchRequest;
+import com.example.mycli.model.FindUserByIDWrap;
 import com.example.mycli.services.UserService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,9 @@ public class FilterController {
         return userService.findAllReturnID();
     }
 
-    @GetMapping("/by_id")
-    public UserEntity getUser(Long id) {
-        return userService.findUserByID(id);
+    @GetMapping("/get_user_by_id")
+    public FindUserByIDWrap getUser(Long id) {
+        return userService.findUserByIDInWrap(id);
     }
 
     @GetMapping("/by_filter")
