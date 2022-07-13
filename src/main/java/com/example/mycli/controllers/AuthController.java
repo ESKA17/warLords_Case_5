@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 //@SecurityRequirement(name = "basicauth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 @Log
 public class AuthController {
     private final UserService userService;

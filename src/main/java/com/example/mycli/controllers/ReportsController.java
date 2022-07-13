@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 //@SecurityRequirement(name = "basicauth")
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/reports")
 public class ReportsController {
     private final ReportsService reportsService;
