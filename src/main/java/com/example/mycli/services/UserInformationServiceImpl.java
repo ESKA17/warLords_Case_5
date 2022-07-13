@@ -1,5 +1,6 @@
 package com.example.mycli.services;
 
+import com.example.mycli.entity.RoleEntity;
 import com.example.mycli.exceptions.AccountBadRequest;
 import com.example.mycli.model.*;
 import com.example.mycli.entity.UserEntity;
@@ -121,5 +122,7 @@ public class UserInformationServiceImpl implements UserInformationService {
         log.info("full name was retrieved");
         return userEntity.getFullName();
     }
+
+
 
 }

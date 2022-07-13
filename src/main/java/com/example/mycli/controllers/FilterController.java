@@ -2,6 +2,7 @@ package com.example.mycli.controllers;
 
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.model.FilterSearchRequest;
+import com.example.mycli.model.FindAllMentors;
 import com.example.mycli.model.FindAllReturnIdWrap;
 import com.example.mycli.model.FindUserByIDWrap;
 import com.example.mycli.services.UserService;
@@ -18,7 +19,7 @@ import java.util.List;
 @RestController
 @CrossOrigin("http://localhost:3000")
 @RequiredArgsConstructor
-@RequestMapping("filter_search")
+@RequestMapping("/filter_search")
 public class FilterController {
 
     private final UserService userService;
@@ -36,5 +37,9 @@ public class FilterController {
     @GetMapping("/by_filter")
     public List<Long> filterSearch(@RequestBody FilterSearchRequest filterSearchRequest) {
         return userService.filter(filterSearchRequest);
+    }
+    @GetMapping(value= "/allMentors")
+    public List<UserEntity> showMentors(){
+        return userService.findAllMentors();
     }
 }

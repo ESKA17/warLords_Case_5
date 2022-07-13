@@ -59,10 +59,29 @@ public class FilesUploadController {
     }
     @GetMapping("/files/user")
     @ResponseBody
-    public ResponseEntity<Resource> getFile(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Resource> getFileJWT(HttpServletRequest httpServletRequest) {
         Resource file = storageService.loadUser(httpServletRequest);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() +
                         "\"").body(file);
     }
+
+    @GetMapping("/mobile/{filename:.+}")
+    @ResponseBody
+    public ResponseEntity<Resource> getFileMobile(@RequestParam Long id) {
+        Resource file = storageService.load(id);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() +
+                        "\"").body(file);
+    }
+    @GetMapping("/mobile/user")
+    @ResponseBody
+    public ResponseEntity<Resource> getFileMobileJWT(HttpServletRequest httpServletRequest) {
+        Resource file = storageService.loadUser(httpServletRequest);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() +
+                        "\"").body(file);
+    }
+
+
 }

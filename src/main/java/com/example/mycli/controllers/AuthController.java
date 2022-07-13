@@ -56,6 +56,7 @@ public class AuthController {
     public ResponseEntity<List<UserEntity>> users() {
         return ResponseEntity.ok(userService.findAllUsers());
     }
+
     @PostMapping("/logout")
     public ResponseEntity<String> logout() {
         log.info("logout");
