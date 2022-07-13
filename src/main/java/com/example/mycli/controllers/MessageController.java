@@ -1,6 +1,6 @@
 package com.example.mycli.controllers;
 
-import com.example.mycli.entity.MessageHistory;
+import com.example.mycli.entity.Connection;
 import com.example.mycli.model.NotificationRequest;
 import com.example.mycli.services.EmitterService;
 import com.example.mycli.services.MessageService;
@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @Slf4j
@@ -21,7 +22,7 @@ public class MessageController {
     private final MessageService messageService;
 
     @PostMapping("/send/{toWhom}")
-    public ResponseEntity<?> send(@PathVariable Long toWhom, @RequestBody NotificationRequest request,
+    public ResponseEntity<?> send(@PathVariable Long toWhom, @RequestBody @Valid NotificationRequest request,
                                   HttpServletRequest httpServletRequest) {
         emitterService.pushMessage(toWhom, request.getMessage(), httpServletRequest);
         messageService.saveMessage(toWhom, request.getMessage(), httpServletRequest);
@@ -29,7 +30,7 @@ public class MessageController {
     }
 
     @GetMapping()
-    public MessageHistory getAllMessages(@RequestParam Long friendID, HttpServletRequest httpServletRequest) {
+    public Connection getAllMessages(@RequestParam Long friendID, HttpServletRequest httpServletRequest) {
         return messageService.getAllMessages(friendID, httpServletRequest);
     }
 }

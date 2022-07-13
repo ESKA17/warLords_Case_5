@@ -20,11 +20,14 @@ import java.util.List;
 
 public class ConnectionsController {
     private final ConnectionsService connectionsService;
-    private final EmitterService emitterService;
-    @PostMapping("/match")
-    public ResponseEntity<String> match(@RequestParam Long matchID, HttpServletRequest httpServletRequest) {
-        connectionsService.match(matchID, httpServletRequest);
-        emitterService.addEmitter(matchID, httpServletRequest);
+    @PostMapping("/match_from_mentee")
+    public ResponseEntity<String> matchFromMentee(@RequestParam Long matchID, HttpServletRequest httpServletRequest) {
+        connectionsService.matchFromMentee(matchID, httpServletRequest);
+        return ResponseEntity.ok("Connection was made");
+    }
+    @PostMapping("/match_from_mentor")
+    public ResponseEntity<String> matchFromMentor(@RequestParam Long matchID, HttpServletRequest httpServletRequest) {
+        connectionsService.matchFromMentor(matchID, httpServletRequest);
         return ResponseEntity.ok("Connection was made");
     }
     @PostMapping("/break_match")
@@ -32,9 +35,13 @@ public class ConnectionsController {
         connectionsService.breakMatch(matchID, httpServletRequest);
         return ResponseEntity.ok("Match was broken");
     }
-    @GetMapping("/show_connections")
-    public List<Long> getConnections(HttpServletRequest httpServletRequest) {
-        return connectionsService.getConnections(httpServletRequest);
+    @GetMapping("/show_connections_mentor")
+    public List<Long> getAllConnectionsStatusOne(HttpServletRequest httpServletRequest) {
+        return connectionsService.getConnectionsStatusOne(httpServletRequest);
+    }
+    @GetMapping("/show_connections_both")
+    public List<Long> getAllConnectionsStatusTwo(HttpServletRequest httpServletRequest) {
+        return connectionsService.getConnectionsStatusTwo(httpServletRequest);
     }
 
 

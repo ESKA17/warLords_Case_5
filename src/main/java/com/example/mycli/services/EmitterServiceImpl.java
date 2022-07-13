@@ -2,9 +2,10 @@ package com.example.mycli.services;
 
 import com.example.mycli.entity.Connection;
 import com.example.mycli.entity.UserEntity;
-import com.example.mycli.exceptions.AccountBadRequest;
+import com.example.mycli.exceptions.AccountNotFound;
 import com.example.mycli.exceptions.ServerFail;
 import com.example.mycli.model.Message;
+import com.example.mycli.repository.ConnectionRepo;
 import com.example.mycli.web.SerializableSSE;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,23 +17,15 @@ import java.io.IOException;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class EmitterServiceImpl implements EmitterService{
+public class EmitterServiceImpl implements EmitterService {
     private final UserService userService;
-    private final ConnectionsService connectionsService;
+    private  final ConnectionRepo connectionRepo;
     @Override
-    public void addEmitter(Long subscribeToID, HttpServletRequest httpServletRequest) {
+    public SerializableSSE addEmitter() {
         log.info("subscribing...");
-        if (subscribeToID == null) {throw new AccountBadRequest("check ID");}
         SerializableSSE sseEmitter = new SerializableSSE(-1L);
-        String email = userService.getEmailFromToken(httpServletRequest);
-        UserEntity userEntity = userService.findByAuthDataEmail(email);
-        Connection connection = Connection.builder()
-                .sseEmitter(sseEmitter)
-                .friendID(subscribeToID)
-                .userID(userEntity.getId())
-                .build();
-        connectionsService.addEmitterConnection(connection);
         log.info("subscribed");
+        return sseEmitter;
     }
     @Override
     public void pushMessage(Long toWhom, String text, HttpServletRequest httpServletRequest) {
@@ -45,7 +38,9 @@ public class EmitterServiceImpl implements EmitterService{
                 .from(fromUser.getFullName())
                 .message(text)
                 .build();
-        SerializableSSE sse = connectionsService.getEmitter(toWhom, fromUser.getId());
+        Connection connection = connectionRepo.findByFriendIDAndUserID(toWhom, fromUser.getId()).orElseThrow(
+                () -> new AccountNotFound("emitter between users "+ toWhom + " and " +  fromUser.getId()));
+        SerializableSSE sse = connection.getSseEmitter();
         try {
             sse.send(SerializableSSE
                     .event()

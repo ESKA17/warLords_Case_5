@@ -10,6 +10,7 @@ import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +31,12 @@ public class UserInformationServiceImpl implements UserInformationService {
         int[] numbers = Arrays.stream(strings)
                 .mapToInt(Integer::parseInt)
                 .toArray();
-        LocalDate localDate = LocalDate.of(numbers[2], numbers[1], numbers[0]);
+        LocalDate localDate;
+        if (strings[2].length() == 4) {
+            localDate = LocalDate.of(numbers[2], numbers[1], numbers[0]);
+        } else {
+            localDate = LocalDate.of(numbers[0], numbers[1], numbers[2]);
+        }
         UserInformation userInformation = UserInformation.builder()
                 .dateOfBirth(localDate)
                 .city(screeningRequest.getCity())
@@ -43,7 +49,7 @@ public class UserInformationServiceImpl implements UserInformationService {
         UserEntity user = userService.findByAuthDataEmail(email);
         user.setUserInformation(userInformation);
         userService.saveUser(user);
-        log.info("user: " + user);
+        log.info("user: " + user.getFullName());
         log.info("user information was saved: " + userInformation);
     }
 
