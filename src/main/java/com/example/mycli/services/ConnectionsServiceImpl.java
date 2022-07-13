@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +31,6 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         log.info("starting matching ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity poster = userService.findByAuthDataEmail(email);
-        UserEntity accepter =  userService.findUserByID(matchID);
         Connection connection = Connection.builder()
                 .userID(poster.getId())
                 .friendID(matchID)
@@ -38,12 +38,7 @@ public class ConnectionsServiceImpl implements ConnectionsService {
                 .connectionStatus(1)
                 .messageHistory("")
                 .build();
-        List<Connection> posterList = poster.getConnections();
-        List<Connection> accepterList = accepter.getConnections();
-        posterList.add(connection);
-        accepterList.add(connection);
-        userService.saveUser(poster);
-        userService.saveUser(accepter);
+        connectionRepo.save(connection);
         log.info("users matched \u2665\u2665\u2665");
     }
 
@@ -69,28 +64,27 @@ public class ConnectionsServiceImpl implements ConnectionsService {
     public List<Long> getConnectionsStatusOne(HttpServletRequest httpServletRequest) {
         log.info("retrieving connections status one ...");
         String email = userService.getEmailFromToken(httpServletRequest);
-        List<Connection> connectionsList = userService.findByAuthDataEmail(email).getConnections();
+        UserEntity userEntity = userService.findByAuthDataEmail(email);
+        List<Connection> connectionList = connectionRepo.findAllByUserIDAndConnectionStatus(
+                userEntity.getId(), 1);
         List<Long> out = new ArrayList<>();
-        for (Connection connection: connectionsList) {
-            if (connection.getConnectionStatus() == 1) {
-                Long friendID = userService.findUserByID(connection.getFriendID()).getId();
-                out.add(friendID);
-            }
+        for (Connection connection: connectionList) {
+            out.add(connection.getFriendID());
         }
-        log.info("connections were retrieved: " + out);
+        log.info("connections were retrieved: " + connectionList);
         return out;
     }
+
     @Override
     public List<Long> getConnectionsStatusTwo(HttpServletRequest httpServletRequest) {
         log.info("retrieving connections status two ...");
         String email = userService.getEmailFromToken(httpServletRequest);
-        List<Connection> connectionsList = userService.findByAuthDataEmail(email).getConnections();
+        UserEntity userEntity = userService.findByAuthDataEmail(email);
+        List<Connection> connectionList = connectionRepo.findAllByUserIDAndConnectionStatus(
+                userEntity.getId(), 2);
         List<Long> out = new ArrayList<>();
-        for (Connection connection: connectionsList) {
-            if (connection.getConnectionStatus() == 2) {
-                Long friendID = userService.findUserByID(connection.getFriendID()).getId();
-                out.add(friendID);
-            }
+        for (Connection connection: connectionList) {
+            out.add(connection.getFriendID());
         }
         log.info("connections were retrieved: " + out);
         return out;
@@ -105,27 +99,11 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity poster = userService.findByAuthDataEmail(email);
         UserEntity accepter =  userService.findUserByID(matchID);
-        List<Connection> posterList = poster.getConnections();
-        List<Connection> accepterList = accepter.getConnections();
-        Connection search = null;
-        int posterSearch = -1, accepterSearch = -1;
-        for (Connection connection: posterList) {
-            if (Objects.equals(connection.getFriendID(), matchID)) {
-                search = connection;
-                posterSearch = posterList.indexOf(connection);
-                accepterSearch = accepterList.indexOf(connection);
-            }
-        }
-        if (search != null) {
-            search.setConnectionStatus(2);
-        } else {
-            throw new AccountNotFound("emitter between users "+ matchID + " and " +  poster.getId() +
-                    " was not found");
-        }
-        posterList.set(posterSearch, search);
-        accepterList.set(accepterSearch, search);
-        userService.saveUser(poster);
-        userService.saveUser(accepter);
+        Connection connection = connectionRepo.findByFriendIDAndUserID(matchID, poster.getId())
+                .orElseThrow(() -> new AccountNotFound("connection between users "+ matchID + " and " +
+                        poster.getId() + " was not found"));
+        connection.setConnectionStatus(2);
+        connectionRepo.save(connection);
         log.info("users matched \u2665\u2665\u2665");
     }
 
@@ -138,14 +116,7 @@ public class ConnectionsServiceImpl implements ConnectionsService {
                 () -> new AccountNotFound("emitter between users "+ accepterID + " and " +  poster.getId() +
                         " was not found")
         );
-        UserEntity accepter =  userService.findUserByID(accepterID);
-        List<Connection> posterList = poster.getConnections();
-        List<Connection> accepterList = accepter.getConnections();
-        posterList.remove(connection);
-        accepterList.remove(connection);
-        userService.saveUser(poster);
-        userService.saveUser(accepter);
         connectionRepo.delete(connection);
-        log.info("users unmatched(((: " + accepter + " and " + poster);
+        log.info("users unmatched(((: " + accepterID + " and " + poster.getId());
     }
 }

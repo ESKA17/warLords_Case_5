@@ -2,6 +2,7 @@ package com.example.mycli.services;
 
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.FolderInit;
+import com.example.mycli.model.ImageWrap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -63,6 +65,24 @@ public class FilesStorageServiceImpl implements FilesStorageService {
             throw new RuntimeException("Error: " + e.getMessage());
         }
     }
+//    @Override
+//    public ImageWrap loadMobile(Long id) {
+//        try {
+//            Path path = root.resolve(id + ".jpg");
+//            File file = path.toFile();
+//            Resource resource = new UrlResource(path.toUri());
+//
+//            if (resource.exists() || resource.isReadable()) {
+//                return new ImageWrap();
+//            } else {
+//                throw new RuntimeException("Could not read the file!");
+//            }
+//        } catch (MalformedURLException e) {
+//            throw new RuntimeException("Error: " + e.getMessage());
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     @Override
     public void deleteAll() {

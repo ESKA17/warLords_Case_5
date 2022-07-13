@@ -32,10 +32,6 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private List<SubjectType> subjectTypeList;
 
-    @OneToMany
-    @Column(name = "connections")
-    private List<Connection> connections;
-
     @OneToOne
     @JoinColumn(name = "user_information")
     private UserInformation userInformation;
