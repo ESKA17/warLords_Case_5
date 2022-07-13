@@ -16,4 +16,6 @@ public interface UserInformationService {
     void changeFullName(String fullName, HttpServletRequest httpServletRequest);
 
     List<Integer> getMajors(HttpServletRequest httpServletRequest);
+
+    String getFullName(HttpServletRequest httpServletRequest);
 }

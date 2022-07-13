@@ -54,6 +54,11 @@ public class UserInformationFormController {
         userInformationService.changeFullName(fullName, httpServletRequest);
         return ResponseEntity.ok("Name was successfully changed");
     }
+    @GetMapping("/name")
+    public ResponseEntity<String> getFullName(HttpServletRequest httpServletRequest) {
+        String fullName = userInformationService.getFullName(httpServletRequest);
+        return ResponseEntity.ok(fullName);
+    }
     @GetMapping("/get_role")
     public ResponseEntity<Integer> getRoleByName(HttpServletRequest httpServletRequest){
         int roleID = userService.findRoleEntity(httpServletRequest);
