@@ -77,4 +77,21 @@ public class FilesStorageServiceImpl implements FilesStorageService {
             throw new RuntimeException("Could not load the files!");
         }
     }
+
+    @Override
+    public Resource loadUser(HttpServletRequest httpServletRequest) {
+        try {
+            String email = userService.getEmailFromToken(httpServletRequest);
+            UserEntity userEntity = userService.findByAuthDataEmail(email);
+            Path file = root.resolve(userEntity.getId() + ".jpg");
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("Could not read the file!");
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
+    }
 }

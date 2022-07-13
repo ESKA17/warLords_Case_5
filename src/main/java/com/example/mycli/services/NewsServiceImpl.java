@@ -5,6 +5,7 @@ import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.AccountBadRequest;
 import com.example.mycli.exceptions.AccountNotFound;
 import com.example.mycli.model.NewsResponse;
+import com.example.mycli.model.SubjectType;
 import com.example.mycli.repository.NewsRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,8 +102,11 @@ public class NewsServiceImpl implements NewsService{
         }
         News news = newsRepo.findById(id).orElseThrow(() -> new AccountNotFound("news with id: " + id));
         UserEntity userEntity = userService.findUserByID(news.getUserID());
+        List<Integer> listOfSubjects = getMajorsByInt(userEntity.getSubjectTypeList());
         NewsResponse newsResponse = NewsResponse.builder()
                 .fullName(userEntity.getFullName())
+                .posterID(userEntity.getId())
+                .subjects(listOfSubjects)
                 .date(news.getDate())
                 .news(news.getNews())
                 .build();
@@ -163,6 +166,43 @@ public class NewsServiceImpl implements NewsService{
         newsEdited.setNews(news);
         newsRepo.save(newsEdited);
         log.info("successfully edited");
+    }
+    @Override
+    public List<Integer> getMajorsByInt(List<SubjectType> subjectList) {
+        log.info("getting majors from list of integers ...");
+        List<Integer> out = new ArrayList<>();
+        for (SubjectType in: subjectList) {
+            switch (in) {
+                case MATH: {
+                    out.add(0);
+                    break;
+                }
+                case PHYSICS: {
+                    out.add(1);
+                    break;
+                }
+                case CHEMISTRY: {
+                    out.add(2);
+                    break;
+                }
+                case BIOLOGY: {
+                    out.add(3);
+                    break;
+                }
+                case INFORMATICS: {
+                    out.add(4);
+                    break;
+                }
+                case HISTORY: {
+                    out.add(5);
+                    break;
+                }
+                default:
+                    throw new AccountBadRequest("major with id " + in + " does not match any subject");
+            }
+        }
+        log.info("majors sent");
+        return out;
     }
 
 
