@@ -1,6 +1,7 @@
 package com.example.mycli.controllers;
 
 import com.example.mycli.entity.News;
+import com.example.mycli.model.JSONNewsWrap;
 import com.example.mycli.model.NewsRequest;
 import com.example.mycli.model.NewsResponse;
 import com.example.mycli.services.NewsService;
@@ -32,7 +33,7 @@ public class NewsController {
         return newsService.getAllUnacceptedNews();
     }
     @GetMapping("/availableJSON")
-    public List<News> getAllUnacceptedNewsInJSON(){
+    public List<JSONNewsWrap> getAllUnacceptedNewsInJSON(){
         return newsService.getAllUnacceptedNewsJSON();
     }
 

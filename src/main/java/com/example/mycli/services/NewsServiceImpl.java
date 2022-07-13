@@ -4,6 +4,7 @@ import com.example.mycli.entity.News;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.AccountBadRequest;
 import com.example.mycli.exceptions.AccountNotFound;
+import com.example.mycli.model.JSONNewsWrap;
 import com.example.mycli.model.NewsResponse;
 import com.example.mycli.model.SubjectType;
 import com.example.mycli.repository.NewsRepo;
@@ -56,11 +57,21 @@ public class NewsServiceImpl implements NewsService{
         return listByID;
     }
     @Override
-    public List<News> getAllUnacceptedNewsJSON() {
+    public List<JSONNewsWrap> getAllUnacceptedNewsJSON() {
         log.info("accessing database for all unaccepted news in JSON ...");
         List<News> allNews = newsRepo.findAllByAcceptedIsFalse();
+        List<JSONNewsWrap> jsonNewsWrapList = new ArrayList<>();
+        for (News news: allNews) {
+            String fullName = userService.findUserByID(news.getUserID()).getFullName();
+            JSONNewsWrap jsonNewsWrap = JSONNewsWrap.builder()
+                    .date(news.getDate())
+                    .fullName(fullName)
+                    .news(news.getNews())
+                    .build();
+            jsonNewsWrapList.add(jsonNewsWrap);
+        }
         log.info("news in JSON successfully retrieved");
-        return allNews;
+        return jsonNewsWrapList;
     }
 
     @Override

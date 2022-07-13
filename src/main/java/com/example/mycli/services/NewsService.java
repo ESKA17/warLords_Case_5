@@ -1,6 +1,7 @@
 package com.example.mycli.services;
 
 import com.example.mycli.entity.News;
+import com.example.mycli.model.JSONNewsWrap;
 import com.example.mycli.model.NewsResponse;
 import com.example.mycli.model.SubjectType;
 
@@ -12,7 +13,7 @@ public interface NewsService {
 
     List<Long> getAllUnacceptedNews();
 
-    List<News> getAllUnacceptedNewsJSON();
+    List<JSONNewsWrap> getAllUnacceptedNewsJSON();
 
     List<Long> getUnacceptedNewsByOP(HttpServletRequest httpServletRequest);
 

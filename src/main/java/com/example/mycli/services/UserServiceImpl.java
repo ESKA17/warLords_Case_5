@@ -35,7 +35,6 @@ public class UserServiceImpl implements UserService{
     private final PasswordEncoder passwordEncoder;
     private final RankingRepo rankingRepo;
     private final JwtProvider jwtProvider;
-    private final UserInformationService userInformationService;
 
 
     @Override
