@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @RequestMapping()
 //@SecurityRequirement(name = "basicauth")
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class FilesUploadController {
     private final FilesStorageService storageService;
     @PostMapping("/upload")

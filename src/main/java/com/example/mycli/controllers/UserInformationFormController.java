@@ -5,6 +5,7 @@ import com.example.mycli.model.Majors;
 import com.example.mycli.model.UserInfoResponse;
 import com.example.mycli.services.UserInformationService;
 import com.example.mycli.model.ScreeningRequest;
+import com.example.mycli.services.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -20,9 +21,10 @@ import java.util.List;
 @RequestMapping("/user_info")
 //@SecurityRequirement(name = "basicauth")
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserInformationFormController {
     private final UserInformationService userInformationService;
+    private final UserService userService;
     @PostMapping()
     public ResponseEntity<String> fillScreeningForm(@RequestBody @Valid ScreeningRequest screeningRequest,
                                             HttpServletRequest httpServletRequest) {
@@ -52,4 +54,10 @@ public class UserInformationFormController {
         userInformationService.changeFullName(fullName, httpServletRequest);
         return ResponseEntity.ok("Name was successfully changed");
     }
+    @GetMapping("/get_role")
+    public ResponseEntity<Integer> getRoleByName(HttpServletRequest httpServletRequest){
+        int roleID = userService.findRoleEntity(httpServletRequest);
+        return ResponseEntity.ok(roleID);
+    }
+
 }

@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/connections")
 //@SecurityRequirement(name = "basicauth")
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:3000")
 @RequiredArgsConstructor
 
 public class ConnectionsController {

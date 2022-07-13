@@ -175,6 +175,16 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public Integer findRoleEntity(HttpServletRequest httpServletRequest) {
+        log.info("getting role id ...");
+        String email = getEmailFromToken(httpServletRequest);
+        UserEntity userEntity = findByAuthDataEmail(email);
+        log.info("role id was found");
+        return userEntity.getAuthdata().getRoleEntity().getId();
+
+    }
+
+    @Override
     public List<UserEntity> findAdmins() {
         log.info("getting all admins");
         return userEntityRepo.findAllByAuthdata_RoleEntity_Id(0);
