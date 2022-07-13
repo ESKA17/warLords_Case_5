@@ -22,6 +22,7 @@ public class UserInformation {
     private String city;
     @Column(name = "school" )
     private String school;
+
     @Column(name = "IIN")
     private String IIN;
     @Column(name = "phone_number")

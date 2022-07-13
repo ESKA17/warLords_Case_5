@@ -1,5 +1,6 @@
 package com.example.mycli.services;
 
+import com.example.mycli.entity.RoleEntity;
 import com.example.mycli.exceptions.AccountBadRequest;
 import com.example.mycli.exceptions.AccountNotFound;
 import com.example.mycli.exceptions.AuthenticationFailed;
@@ -153,6 +154,11 @@ public class UserInformationServiceImpl implements UserInformationService {
         }
         log.info("majors sent");
         return out;
+    }
+
+    @Override
+    public void getUsersRoleById(Long id, HttpServletRequest httpServletRequest) {
+
     }
 
 }

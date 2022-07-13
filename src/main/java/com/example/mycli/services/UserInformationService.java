@@ -1,5 +1,6 @@
 package com.example.mycli.services;
 
+import com.example.mycli.entity.RoleEntity;
 import com.example.mycli.model.Majors;
 import com.example.mycli.model.ScreeningRequest;
 import com.example.mycli.entity.UserInformation;
@@ -16,4 +17,6 @@ public interface UserInformationService {
     void changeFullName(String fullName, HttpServletRequest httpServletRequest);
 
     List<Integer> getMajors(HttpServletRequest httpServletRequest);
+
+    void getUsersRoleById(Long id, HttpServletRequest httpServletRequest);
 }
