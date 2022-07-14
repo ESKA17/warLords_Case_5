@@ -63,7 +63,7 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         log.info("retrieving connections status one ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity userEntity = userService.findByAuthDataEmail(email);
-        List<Connection> connectionList = connectionRepo.findAllByUserIDAndConnectionStatus(
+        List<Connection> connectionList = connectionRepo.findAllByFriendIDAndConnectionStatus(
                 userEntity.getId(), 1);
         List<Long> out = new ArrayList<>();
         for (Connection connection: connectionList) {
@@ -79,7 +79,7 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         log.info("retrieving connections status two ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity userEntity = userService.findByAuthDataEmail(email);
-        List<Connection> connectionList = connectionRepo.findAllByUserIDAndConnectionStatus(
+        List<Connection> connectionList = connectionRepo.findAllByFriendIDAndConnectionStatus(
                 userEntity.getId(), 2);
         List<Long> out = new ArrayList<>();
         for (Connection connection: connectionList) {
