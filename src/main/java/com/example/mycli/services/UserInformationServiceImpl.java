@@ -10,13 +10,9 @@ import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Field;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static com.example.mycli.model.SubjectType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -120,6 +116,15 @@ public class UserInformationServiceImpl implements UserInformationService {
         UserEntity userEntity = userService.findByAuthDataEmail(email);
         log.info("full name was retrieved");
         return userEntity.getFullName();
+    }
+
+    @Override
+    public List<SubjectType> getMajorsJSON(HttpServletRequest httpServletRequest) {
+        log.info("getting majors ...");
+        String email = userService.getEmailFromToken(httpServletRequest);
+        UserEntity userEntity = userService.findByAuthDataEmail(email);
+        List<SubjectType> subjectTypeList = userEntity.getSubjectTypeList();
+        return subjectTypeList;
     }
 
 }
