@@ -28,15 +28,21 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         log.info("starting matching ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity poster = userService.findByAuthDataEmail(email);
-        Connection connection = Connection.builder()
-                .userID(poster.getId())
-                .friendID(matchID)
-                .sseEmitter(emitterService.addEmitter())
-                .connectionStatus(1)
-                .messageHistory("")
-                .build();
-        connectionRepo.save(connection);
-        log.info("users matched \u2665\u2665\u2665");
+        if (connectionRepo.findByFriendIDAndUserID(poster.getId(), matchID).isEmpty()){
+            Connection connection = Connection.builder()
+                    .userID(poster.getId())
+                    .friendID(matchID)
+                    .sseEmitter(emitterService.addEmitter())
+                    .connectionStatus(1)
+                    .messageHistory("")
+                    .build();
+            connectionRepo.save(connection);
+            log.info("users matched \u2665\u2665\u2665");
+        } else {
+            log.info("users were already matched matched \u2665\u2665\u2665");
+        }
+
+
     }
 
     @Override
@@ -99,6 +105,7 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         Connection connection = connectionRepo.findByFriendIDAndUserID(poster.getId(), matchID)
                 .orElseThrow(() -> new AccountNotFound("connection between users "+ matchID + " and " +
                         poster.getId() + " was not found"));
+        connectionRepo.delete(connection);
         connection.setConnectionStatus(2);
         connectionRepo.save(connection);
         log.info("users matched \u2665\u2665\u2665");
