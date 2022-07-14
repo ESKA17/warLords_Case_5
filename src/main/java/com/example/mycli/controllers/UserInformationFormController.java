@@ -2,6 +2,7 @@ package com.example.mycli.controllers;
 
 import com.example.mycli.entity.UserInformation;
 import com.example.mycli.model.Majors;
+import com.example.mycli.model.SubjectType;
 import com.example.mycli.model.UserInfoResponse;
 import com.example.mycli.services.UserInformationService;
 import com.example.mycli.model.ScreeningRequest;
@@ -48,7 +49,10 @@ public class UserInformationFormController {
     public List<Integer> getMajors(HttpServletRequest httpServletRequest) {
         return userInformationService.getMajors(httpServletRequest);
     }
-
+    @GetMapping("/majorsJSON")
+    public List<SubjectType> getMajorsJSON(HttpServletRequest httpServletRequest) {
+        return userInformationService.getMajorsJSON(httpServletRequest);
+    }
     @PostMapping("/name")
     public ResponseEntity<String> changeFullName(@RequestParam String fullName,
                                              HttpServletRequest httpServletRequest) {

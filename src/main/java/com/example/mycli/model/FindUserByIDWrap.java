@@ -12,6 +12,6 @@ import java.util.List;
 @Setter
 public class FindUserByIDWrap {
     private String fullName;
-    private List<Integer> subjectList;
+    private List<SubjectType> subjectList;
     private String university;
 }

@@ -4,7 +4,6 @@ import com.example.mycli.entity.Connection;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.AccountBadRequest;
 import com.example.mycli.exceptions.AccountNotFound;
-import com.example.mycli.model.FindAllReturnIdWrap;
 import com.example.mycli.repository.ConnectionRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,35 +58,34 @@ public class ConnectionsServiceImpl implements ConnectionsService {
     }
 
     @Override
-    public FindAllReturnIdWrap getConnectionsStatusOne(HttpServletRequest httpServletRequest) {
+    public List<UserEntity> getConnectionsStatusOne(HttpServletRequest httpServletRequest) {
         log.info("retrieving connections status one ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity userEntity = userService.findByAuthDataEmail(email);
         List<Connection> connectionList = connectionRepo.findAllByFriendIDAndConnectionStatus(
                 userEntity.getId(), 1);
-        List<Long> out = new ArrayList<>();
+        List<UserEntity> out = new ArrayList<>();
         for (Connection connection: connectionList) {
-            out.add(connection.getFriendID());
+            out.add(userService.findUserByID(connection.getFriendID()));
         }
-        FindAllReturnIdWrap findAllReturnIdWrap = new FindAllReturnIdWrap(out);
         log.info("connections with status 1 were retrieved: " + connectionList);
-        return findAllReturnIdWrap;
+        return out;
     }
 
     @Override
-    public FindAllReturnIdWrap getConnectionsStatusTwo(HttpServletRequest httpServletRequest) {
+    public List<UserEntity> getConnectionsStatusTwo(HttpServletRequest httpServletRequest) {
         log.info("retrieving connections status two ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity userEntity = userService.findByAuthDataEmail(email);
         List<Connection> connectionList = connectionRepo.findAllByFriendIDAndConnectionStatus(
                 userEntity.getId(), 2);
-        List<Long> out = new ArrayList<>();
+        List<UserEntity> out = new ArrayList<>();
         for (Connection connection: connectionList) {
-            out.add(connection.getFriendID());
+            out.add(userService.findUserByID(connection.getFriendID()));
         }
-        FindAllReturnIdWrap findAllReturnIdWrap = new FindAllReturnIdWrap(out);
+//        FindAllReturnIdWrap findAllReturnIdWrap = new FindAllReturnIdWrap(out);
         log.info("connections with status 2 were retrieved: " + out);
-        return findAllReturnIdWrap;
+        return out;
     }
 
     @Override
@@ -98,8 +96,7 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         log.info("starting matching ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity poster = userService.findByAuthDataEmail(email);
-        UserEntity accepter =  userService.findUserByID(matchID);
-        Connection connection = connectionRepo.findByFriendIDAndUserID(matchID, poster.getId())
+        Connection connection = connectionRepo.findByFriendIDAndUserID(poster.getId(), matchID)
                 .orElseThrow(() -> new AccountNotFound("connection between users "+ matchID + " and " +
                         poster.getId() + " was not found"));
         connection.setConnectionStatus(2);

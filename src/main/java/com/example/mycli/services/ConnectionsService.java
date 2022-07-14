@@ -1,8 +1,9 @@
 package com.example.mycli.services;
 
-import com.example.mycli.model.FindAllReturnIdWrap;
+import com.example.mycli.entity.UserEntity;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 public interface ConnectionsService {
     void matchFromMentee(Long matchID, HttpServletRequest httpServletRequest);
@@ -11,9 +12,9 @@ public interface ConnectionsService {
 
     void breakMatchByID(Long posterID, Long accepterID);
 
-    FindAllReturnIdWrap getConnectionsStatusOne(HttpServletRequest httpServletRequest);
+    List<UserEntity> getConnectionsStatusOne(HttpServletRequest httpServletRequest);
 
-    FindAllReturnIdWrap getConnectionsStatusTwo(HttpServletRequest httpServletRequest);
+    List<UserEntity> getConnectionsStatusTwo(HttpServletRequest httpServletRequest);
 
     void matchFromMentor(Long matchID, HttpServletRequest httpServletRequest);
 }

@@ -20,4 +20,6 @@ public interface UserInformationService {
 
 
     String getFullName(HttpServletRequest httpServletRequest);
+
+    List<SubjectType> getMajorsJSON(HttpServletRequest httpServletRequest);
 }
