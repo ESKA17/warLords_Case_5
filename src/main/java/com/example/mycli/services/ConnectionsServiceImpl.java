@@ -28,7 +28,7 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         log.info("starting matching ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity poster = userService.findByAuthDataEmail(email);
-        if (connectionRepo.findByFriendIDAndUserID(poster.getId(), matchID).isEmpty()){
+        if (connectionRepo.findByFriendIDAndUserID(matchID, poster.getId()).isEmpty()){
             Connection connection = Connection.builder()
                     .userID(poster.getId())
                     .friendID(matchID)
