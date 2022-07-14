@@ -33,6 +33,8 @@ public class MyCliApplication implements CommandLineRunner {
     private final CreateEmptyMenteesService createEmptyMenteesService;
     @Autowired
     private final CreateEmptyConnection createEmptyConnection;
+    @Autowired
+    private final CreateEmptyPost createEmptyPost;
 
     public static void main(String[] args)  {
         SpringApplication.run(MyCliApplication.class);
@@ -44,6 +46,7 @@ public class MyCliApplication implements CommandLineRunner {
         createEmptyMentorsService.createEmptyMentors();
         createEmptyMenteesService.createEmptyMentees();
         createEmptyConnection.createConnection();
+        createEmptyPost.createPost();
 //        storageService.init();
     }
 }
