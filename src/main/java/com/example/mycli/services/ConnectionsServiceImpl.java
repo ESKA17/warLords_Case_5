@@ -98,8 +98,7 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         log.info("starting matching ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity poster = userService.findByAuthDataEmail(email);
-        UserEntity accepter =  userService.findUserByID(matchID);
-        Connection connection = connectionRepo.findByFriendIDAndUserID(matchID, poster.getId())
+        Connection connection = connectionRepo.findByFriendIDAndUserID(poster.getId(), matchID)
                 .orElseThrow(() -> new AccountNotFound("connection between users "+ matchID + " and " +
                         poster.getId() + " was not found"));
         connection.setConnectionStatus(2);
