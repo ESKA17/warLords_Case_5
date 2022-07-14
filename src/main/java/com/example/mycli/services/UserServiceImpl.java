@@ -174,11 +174,10 @@ public class UserServiceImpl implements UserService{
     public FindUserByIDWrap findUserByIDInWrap(Long id) {
         log.info("finding user by id and creating FindUserByIDWrap ... ");
         UserEntity userEntity = findUserByID(id);
-        List<Integer> subjectList = Utils.fromSubjectTypeToInteger(userEntity.getSubjectTypeList());
         FindUserByIDWrap findUserByIDWrap = FindUserByIDWrap.builder()
                 .fullName(userEntity.getFullName())
                 .university(userEntity.getUserInformation().getUniversity())
-                .subjectList(subjectList)
+                .subjectList(userEntity.getSubjectTypeList())
                 .build();
         log.info("wrap was prepared");
         return findUserByIDWrap;
