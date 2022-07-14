@@ -28,4 +28,6 @@ public interface UserService {
     FindAllReturnIdWrap findAllReturnID();
     Integer findRoleEntity(HttpServletRequest httpServletRequest);
     FindUserByIDWrap findUserByIDInWrap(Long id);
+
+    List<UserEntity> findAllMentors();
 }
