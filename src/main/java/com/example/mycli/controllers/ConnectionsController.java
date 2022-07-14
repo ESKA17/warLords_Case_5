@@ -45,6 +45,14 @@ public class ConnectionsController {
     public List<UserEntity> getAllConnectionsStatusTwo(HttpServletRequest httpServletRequest) {
         return connectionsService.getConnectionsStatusTwo(httpServletRequest);
     }
+    @GetMapping("/show_connections_mentor_mobile")
+    public FindAllReturnIdWrap getAllConnectionsStatusOneMobile(HttpServletRequest httpServletRequest) {
+        return connectionsService.getConnectionsStatusOneMobile(httpServletRequest);
+    }
+    @GetMapping("/show_connections_both_mobile")
+    public FindAllReturnIdWrap getAllConnectionsStatusTwoMobile(HttpServletRequest httpServletRequest) {
+        return connectionsService.getConnectionsStatusTwoMobile(httpServletRequest);
+    }
 
 
 
