@@ -15,8 +15,7 @@ import java.util.List;
 @Entity
 public class Connection {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "con_en")
-    @SequenceGenerator(name = "con_en", sequenceName = "con_en", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "user_id")
     private Long userID;

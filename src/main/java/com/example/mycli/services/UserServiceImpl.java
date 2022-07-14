@@ -216,9 +216,4 @@ public class UserServiceImpl implements UserService{
             throw new AuthenticationFailed("token is null");
         }
     }
-    @Override
-    public List<UserEntity> findAllMentors(){
-        log.info("getting all mentors");
-        return userEntityRepo.findAllByAuthdata_RoleEntity_Id(1);
-    }
 }
