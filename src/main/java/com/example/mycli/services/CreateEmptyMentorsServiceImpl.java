@@ -52,6 +52,7 @@ public class CreateEmptyMentorsServiceImpl implements CreateEmptyMentorsService 
                     .phoneNumber("877777777")
                     .school("NIS Almaty")
                     .university("KBTU")
+                    .aboutMe("Ya v solo pishu back")
 //                    .id(1L)
                     .IIN("01012312839")
                     .build();
@@ -86,6 +87,7 @@ public class CreateEmptyMentorsServiceImpl implements CreateEmptyMentorsService 
                 .school("NIS Nur-Sultan")
 //                .id(2L)
                 .university("NU")
+                .aboutMe("I am a fan of Ed Sheeran")
                 .IIN("000121212")
                 .build();
         userRamazan.setUserInformation(RamazanInfo);
@@ -117,6 +119,7 @@ public class CreateEmptyMentorsServiceImpl implements CreateEmptyMentorsService 
                 .city("Semey")
                 .phoneNumber("8123123123")
                 .school("NIS Semey")
+                .aboutMe("I am a tiktoker")
 //                .id(3L)
                 .university("NU")
                 .IIN("000121212")
@@ -150,6 +153,7 @@ public class CreateEmptyMentorsServiceImpl implements CreateEmptyMentorsService 
                 .city("Almaty")
                 .phoneNumber("8123123123")
                 .school("NIS Almaty")
+                .aboutMe("I worked at TCO but now I am IOS developer")
 //                .id(4L)
                 .university("NU")
                 .IIN("123123123")

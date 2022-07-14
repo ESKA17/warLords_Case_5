@@ -53,6 +53,7 @@ public class CreateEmptyMenteesServiceImpl implements CreateEmptyMenteesService 
                     .school("NIS Astana")
                     .university("Wisconsin")
 //                    .id(1L)
+                    .aboutMe("I am 7th grade student")
                     .IIN("01012312839")
                     .build();
             userSabit.setUserInformation(SabitInfo);
@@ -86,6 +87,7 @@ public class CreateEmptyMenteesServiceImpl implements CreateEmptyMenteesService 
                 .school("NIS Aqtau")
 //                .id(2L)
                 .university("ENU")
+                .aboutMe("I love Elfbars")
                 .IIN("000121212")
                 .build();
         userNauryzbay.setUserInformation(NauryzbayInfo);
@@ -119,6 +121,7 @@ public class CreateEmptyMenteesServiceImpl implements CreateEmptyMenteesService 
                 .school("NIS Almaty")
 //                .id(3L)
                 .university("Satbayev")
+                .aboutMe("I love and hate elfbars at the same time")
                 .IIN("000121212")
                 .build();
         userBaglan.setUserInformation(BaglanInfo);
@@ -152,6 +155,7 @@ public class CreateEmptyMenteesServiceImpl implements CreateEmptyMenteesService 
                 .school("NIS Astana")
 //                .id(4L)
                 .university("NU")
+                .aboutMe("My husband is Dr. Strange")
                 .IIN("123123123")
                 .build();
         userDana.setUserInformation(danaInfo);
