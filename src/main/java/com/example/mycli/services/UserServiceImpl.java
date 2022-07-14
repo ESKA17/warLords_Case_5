@@ -176,7 +176,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public FindUserByIDWrap findUserByIDInWrap(Long id) {
         log.info("finding user by id and creating FindUserByIDWrap ... ");
-        UserEntity userEntity= findUserByID(id);
+        UserEntity userEntity = findUserByID(id);
         List<Integer> subjectList = Utils.fromSubjectTypeToInteger(userEntity.getSubjectTypeList());
         FindUserByIDWrap findUserByIDWrap = FindUserByIDWrap.builder()
                 .fullName(userEntity.getFullName())
@@ -216,5 +216,10 @@ public class UserServiceImpl implements UserService{
         } else {
             throw new AuthenticationFailed("token is null");
         }
+    }
+    @Override
+    public List<UserEntity> findAllMentors(){
+        log.info("getting all mentors");
+        return userEntityRepo.findAllByAuthdata_RoleEntity_Id(1);
     }
 }

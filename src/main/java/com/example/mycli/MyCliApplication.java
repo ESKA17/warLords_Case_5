@@ -34,5 +34,6 @@ public class MyCliApplication implements CommandLineRunner {
     public void run(String... arg0) {
         templatesService.initRoles();
         createAdminService.createAdmin();
+//        storageService.init();
     }
 }
