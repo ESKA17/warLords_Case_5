@@ -80,7 +80,7 @@ public class ConnectionsServiceImpl implements ConnectionsService {
     }
     @Override
     public FindAllReturnIdWrap getConnectionsStatusOneMobile(HttpServletRequest httpServletRequest) {
-        log.info("retrieving connections status one ...");
+        log.info("retrieving connections status one mobile ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity userEntity = userService.findByAuthDataEmail(email);
         List<Connection> connectionList = connectionRepo.findAllByFriendIDAndConnectionStatus(
@@ -90,7 +90,7 @@ public class ConnectionsServiceImpl implements ConnectionsService {
             out.add(userService.findUserByID(connection.getUserID()).getId());
         }
         FindAllReturnIdWrap findAllReturnIdWrap = new FindAllReturnIdWrap(out);
-        log.info("connections with status 1 were retrieved: " + connectionList);
+        log.info("connections with status 1 mobile were retrieved: " + connectionList);
         return findAllReturnIdWrap;
     }
 
@@ -99,11 +99,22 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         log.info("retrieving connections status two ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity userEntity = userService.findByAuthDataEmail(email);
-        List<Connection> connectionList = connectionRepo.findAllByFriendIDAndConnectionStatus(
-                userEntity.getId(), 2);
+        List<Connection> connectionList;
+        if (userEntity.getAuthdata().getRoleEntity().getId() == 1) {
+            connectionList = connectionRepo.findAllByFriendIDAndConnectionStatus(
+                    userEntity.getId(), 2);
+        } else {
+            connectionList = connectionRepo.findAllByUserIDAndConnectionStatus(
+                    userEntity.getId(), 2);
+        }
         List<UserEntity> out = new ArrayList<>();
         for (Connection connection: connectionList) {
-            out.add(userService.findUserByID(connection.getUserID()));
+
+            if (userEntity.getAuthdata().getRoleEntity().getId() == 1) {
+                out.add(userService.findUserByID(connection.getFriendID()));
+            } else {
+                out.add(userService.findUserByID(connection.getUserID()));
+            }
         }
 //        FindAllReturnIdWrap findAllReturnIdWrap = new FindAllReturnIdWrap(out);
         log.info("connections with status 2 were retrieved: " + out);
@@ -112,17 +123,28 @@ public class ConnectionsServiceImpl implements ConnectionsService {
 
     @Override
     public FindAllReturnIdWrap getConnectionsStatusTwoMobile(HttpServletRequest httpServletRequest) {
-        log.info("retrieving connections status two ...");
+        log.info("retrieving connections status two mobile ...");
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity userEntity = userService.findByAuthDataEmail(email);
-        List<Connection> connectionList = connectionRepo.findAllByFriendIDAndConnectionStatus(
-                userEntity.getId(), 2);
+        List<Connection> connectionList;
+        if (userEntity.getAuthdata().getRoleEntity().getId() == 1) {
+            connectionList = connectionRepo.findAllByFriendIDAndConnectionStatus(
+                    userEntity.getId(), 2);
+        } else {
+            connectionList = connectionRepo.findAllByUserIDAndConnectionStatus(
+                    userEntity.getId(), 2);
+        }
         List<Long> out = new ArrayList<>();
         for (Connection connection: connectionList) {
-            out.add(userService.findUserByID(connection.getUserID()).getId());
+
+            if (userEntity.getAuthdata().getRoleEntity().getId() == 1) {
+                out.add(userService.findUserByID(connection.getFriendID()).getId());
+            } else {
+                out.add(userService.findUserByID(connection.getUserID()).getId());
+            }
         }
         FindAllReturnIdWrap findAllReturnIdWrap = new FindAllReturnIdWrap(out);
-        log.info("connections with status 2 were retrieved: " + out);
+        log.info("connections with status 2 mobile were retrieved: " + out);
         return findAllReturnIdWrap;
     }
 
