@@ -103,7 +103,7 @@ public class ConnectionsServiceImpl implements ConnectionsService {
                 userEntity.getId(), 2);
         List<UserEntity> out = new ArrayList<>();
         for (Connection connection: connectionList) {
-            out.add(userService.findUserByID(connection.getFriendID()));
+            out.add(userService.findUserByID(connection.getUserID()));
         }
 //        FindAllReturnIdWrap findAllReturnIdWrap = new FindAllReturnIdWrap(out);
         log.info("connections with status 2 were retrieved: " + out);
@@ -119,7 +119,7 @@ public class ConnectionsServiceImpl implements ConnectionsService {
                 userEntity.getId(), 2);
         List<Long> out = new ArrayList<>();
         for (Connection connection: connectionList) {
-            out.add(userService.findUserByID(connection.getFriendID()).getId());
+            out.add(userService.findUserByID(connection.getUserID()).getId());
         }
         FindAllReturnIdWrap findAllReturnIdWrap = new FindAllReturnIdWrap(out);
         log.info("connections with status 2 were retrieved: " + out);
