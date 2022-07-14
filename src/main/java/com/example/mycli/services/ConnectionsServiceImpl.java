@@ -4,6 +4,7 @@ import com.example.mycli.entity.Connection;
 import com.example.mycli.entity.UserEntity;
 import com.example.mycli.exceptions.AccountBadRequest;
 import com.example.mycli.exceptions.AccountNotFound;
+import com.example.mycli.model.FindAllReturnIdWrap;
 import com.example.mycli.repository.ConnectionRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -77,6 +78,21 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         log.info("connections with status 1 were retrieved: " + connectionList);
         return out;
     }
+    @Override
+    public FindAllReturnIdWrap getConnectionsStatusOneMobile(HttpServletRequest httpServletRequest) {
+        log.info("retrieving connections status one ...");
+        String email = userService.getEmailFromToken(httpServletRequest);
+        UserEntity userEntity = userService.findByAuthDataEmail(email);
+        List<Connection> connectionList = connectionRepo.findAllByFriendIDAndConnectionStatus(
+                userEntity.getId(), 1);
+        List<Long> out = new ArrayList<>();
+        for (Connection connection: connectionList) {
+            out.add(userService.findUserByID(connection.getUserID()).getId());
+        }
+        FindAllReturnIdWrap findAllReturnIdWrap = new FindAllReturnIdWrap(out);
+        log.info("connections with status 1 were retrieved: " + connectionList);
+        return findAllReturnIdWrap;
+    }
 
     @Override
     public List<UserEntity> getConnectionsStatusTwo(HttpServletRequest httpServletRequest) {
@@ -92,6 +108,22 @@ public class ConnectionsServiceImpl implements ConnectionsService {
 //        FindAllReturnIdWrap findAllReturnIdWrap = new FindAllReturnIdWrap(out);
         log.info("connections with status 2 were retrieved: " + out);
         return out;
+    }
+
+    @Override
+    public FindAllReturnIdWrap getConnectionsStatusTwoMobile(HttpServletRequest httpServletRequest) {
+        log.info("retrieving connections status two ...");
+        String email = userService.getEmailFromToken(httpServletRequest);
+        UserEntity userEntity = userService.findByAuthDataEmail(email);
+        List<Connection> connectionList = connectionRepo.findAllByFriendIDAndConnectionStatus(
+                userEntity.getId(), 2);
+        List<Long> out = new ArrayList<>();
+        for (Connection connection: connectionList) {
+            out.add(userService.findUserByID(connection.getFriendID()).getId());
+        }
+        FindAllReturnIdWrap findAllReturnIdWrap = new FindAllReturnIdWrap(out);
+        log.info("connections with status 2 were retrieved: " + out);
+        return findAllReturnIdWrap;
     }
 
     @Override
