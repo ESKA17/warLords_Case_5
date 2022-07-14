@@ -100,7 +100,7 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity userEntity = userService.findByAuthDataEmail(email);
         List<Connection> connectionList;
-        if (userEntity.getAuthdata().getRoleEntity().getId() == 2) {
+        if (userEntity.getAuthdata().getRoleEntity().getId() == 1) {
             connectionList = connectionRepo.findAllByFriendIDAndConnectionStatus(
                     userEntity.getId(), 2);
         } else {
@@ -109,11 +109,10 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         }
         List<UserEntity> out = new ArrayList<>();
         for (Connection connection: connectionList) {
-
-            if (userEntity.getAuthdata().getRoleEntity().getId() == 2) {
-                out.add(userService.findUserByID(connection.getFriendID()));
-            } else {
+            if (userEntity.getAuthdata().getRoleEntity().getId() == 1) {
                 out.add(userService.findUserByID(connection.getUserID()));
+            } else {
+                out.add(userService.findUserByID(connection.getFriendID()));
             }
         }
 //        FindAllReturnIdWrap findAllReturnIdWrap = new FindAllReturnIdWrap(out);
@@ -127,7 +126,7 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         String email = userService.getEmailFromToken(httpServletRequest);
         UserEntity userEntity = userService.findByAuthDataEmail(email);
         List<Connection> connectionList;
-        if (userEntity.getAuthdata().getRoleEntity().getId() == 2) {
+        if (userEntity.getAuthdata().getRoleEntity().getId() == 1) {
             connectionList = connectionRepo.findAllByFriendIDAndConnectionStatus(
                     userEntity.getId(), 2);
         } else {
@@ -137,10 +136,10 @@ public class ConnectionsServiceImpl implements ConnectionsService {
         List<Long> out = new ArrayList<>();
         for (Connection connection: connectionList) {
 
-            if (userEntity.getAuthdata().getRoleEntity().getId() == 2) {
-                out.add(userService.findUserByID(connection.getFriendID()).getId());
-            } else {
+            if (userEntity.getAuthdata().getRoleEntity().getId() == 1) {
                 out.add(userService.findUserByID(connection.getUserID()).getId());
+            } else {
+                out.add(userService.findUserByID(connection.getFriendID()).getId());
             }
         }
         FindAllReturnIdWrap findAllReturnIdWrap = new FindAllReturnIdWrap(out);
