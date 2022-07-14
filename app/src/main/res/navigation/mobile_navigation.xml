@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_news">
+
+    <fragment
+        android:id="@+id/navigation_news"
+        android:name="kz.jusan.tinderformentors.presentation.fragments.news.NewsFragment"
+        android:label="@string/title_news"
+        tools:layout="@layout/fragment_news" />
+
+    <fragment
+        android:id="@+id/navigation_tinder"
+        android:name="kz.jusan.tinderformentors.presentation.fragments.tinder.TinderFragment"
+        android:label="@string/title_tinder"
+        tools:layout="@layout/fragment_tinder" />
+
+    <fragment
+        android:id="@+id/navigation_requests"
+        android:name="kz.jusan.tinderformentors.presentation.fragments.requests.RequestsFragment"
+        android:label="@string/title_matches"
+        tools:layout="@layout/fragment_requests" >
+        <action
+            android:id="@+id/action_navigation_requests_to_chatFragment"
+            app:destination="@id/chatFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="email"
+                app:argType="string" />
+            <argument
+                android:name="fullName"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="kz.jusan.tinderformentors.presentation.fragments.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="kz.jusan.tinderformentors.presentation.fragments.requests.chat.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat">
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <argument
+            android:name="fullName"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

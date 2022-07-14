@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TextView
+        android:id="@+id/tvSchoolName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="none"
+        android:fontFamily="@font/helveticaneue"
+        android:maxLines="3"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:scrollHorizontally="false"
+        android:textSize="16sp"
+        tools:text="Школа физико-математического направления г.Кокшетау" />
+
+</LinearLayout>
+

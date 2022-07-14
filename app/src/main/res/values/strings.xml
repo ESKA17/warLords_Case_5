@@ -1,0 +1,95 @@
+<resources>
+    <string name="app_name">TinderForMentors</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="logo">Logo</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="username_or_email">Почта</string>
+    <string name="password">Пароль</string>
+    <string name="login">Войти</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="name">Имя</string>
+    <string name="username">Логин</string>
+    <string name="email">Почта</string>
+    <string name="confirm_password">Подтвердите пароль</string>
+    <string name="available_to_be_mentor_mentee">Мой гендер:</string>
+    <string name="error_checkbox">Please choose at least one of the following options.\n You may change it later</string>
+    <string name="mentor">Ментор</string>
+    <string name="mentee">Подопечный (Mentee)</string>
+    <string name="both">И то и другое</string>
+    <string name="registration_header">Регистрация</string>
+    <string name="title_news">Объявления</string>
+    <string name="title_tinder">Мэтчи</string>
+    <string name="title_chat">Чат</string>
+    <string name="title_matches">Запросы</string>
+    <string name="title_profile">Профиль</string>
+    <string name="title_activity_registration_details">RegistrationDetailsActivity</string>
+    <string name="registration_details">Анкета</string>
+    <string name="city">Город</string>
+    <string name="school">Школа</string>
+    <string name="id_number">ИИН</string>
+    <string name="graduation_year">Год окончания</string>
+    <string name="phone">Телефон</string>
+    <string name="university">Университет</string>
+    <string name="math">Математика</string>
+    <string name="physics">Физика</string>
+    <string name="chemistry">Химия</string>
+    <string name="biology">Биолоия</string>
+    <string name="informatics">Информатика</string>
+    <string name="history">История</string>
+    <string name="choose_subjects">Выберите Предметы:</string>
+    <string name="date_of_birth">Дата рождения</string>
+    <string name="save">Сохранить</string>
+    <string name="about_me">Обо мне</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="lorem_ipsum_shorter">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="education">Образование</string>
+    <string name="nazarbayev_university">Nazarbayev University</string>
+    <string name="years">2015-2020</string>
+    <string name="mechanical_engineering">Mechanical Engineering</string>
+    <string name="my_name">Batyrkhan Tokmyrza</string>
+    <string name="add_post_button">Add Post button</string>
+    <string name="write_message">Начните писать...</string>
+    <string name="add_post">Добавить объявление</string>
+
+    <string-array name="nis_schools">
+        <item>Международная школа г. Нур-Султан</item>
+        <item>Школа физико-математического направления г.Нур-Султан</item>
+        <item>Интеллектуальная школа г. Нур-Султан</item>
+        <item>Школа физико-математического направления г.Кокшетау</item>
+        <item>Школа физико-математического направления г. Талдыкорган</item>
+        <item>Школа физико-математического направления г.Семей</item>
+        <item>Школа физико-математического направления г. Уральск</item>
+        <item>Школа химико-биологического направления г. Усть-Каменогорск</item>
+        <item>Школа физико-математического направления г.Актобе</item>
+        <item>Школа химико-биологического направления г.Караганда</item>
+        <item>Школа химико-биологического направления г.Шымкент</item>
+        <item>Школа физико-математического направления г.Шымкент</item>
+        <item>Школа физико-математического направления г.Тараз</item>
+        <item>Школа химико-биологического направления г.Кызылорда</item>
+        <item>Школа химико-биологического направления г.Павлодар</item>
+        <item>Школа химико-биологического направления г.Атырау</item>
+        <item>Школа физико-математического направления в г. Алматы</item>
+        <item>Школа физико-математического направления г.Костанай</item>
+        <item>Школа химико-биологического направления г.Петропавловск</item>
+        <item>Школа химико-биологического направления г.Алматы</item>
+        <item>Школа химико-биологического направления г. Актау</item>
+        <item>Школа химико-биологического направления г.Туркестан</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="type_your_message">Type your message...</string>
+    <string name="send_message">Send Message</string>
+    <string name="report_this_user">Пожаловаться на данного пользователя?</string>
+    <string name="report_dialog_text_cancel">Отмена</string>
+    <string name="report_dialog_text_yes">Да</string>
+</resources>
