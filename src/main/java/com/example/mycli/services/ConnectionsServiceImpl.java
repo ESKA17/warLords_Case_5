@@ -72,7 +72,7 @@ public class ConnectionsServiceImpl implements ConnectionsService {
                 userEntity.getId(), 1);
         List<UserEntity> out = new ArrayList<>();
         for (Connection connection: connectionList) {
-            out.add(userService.findUserByID(connection.getFriendID()));
+            out.add(userService.findUserByID(connection.getUserID()));
         }
         log.info("connections with status 1 were retrieved: " + connectionList);
         return out;
