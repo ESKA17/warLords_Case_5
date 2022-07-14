@@ -26,6 +26,11 @@ public class MyCliApplication implements CommandLineRunner {
     private final TemplatesService templatesService;
     @Autowired
     private final CreateAdminService createAdminService;
+    @Autowired
+    private final CreateEmptyMentorsService createEmptyMentorsService;
+
+    @Autowired
+    private final CreateEmptyMenteesService createEmptyMenteesService;
 
     public static void main(String[] args)  {
         SpringApplication.run(MyCliApplication.class);
@@ -34,6 +39,8 @@ public class MyCliApplication implements CommandLineRunner {
     public void run(String... arg0) {
         templatesService.initRoles();
         createAdminService.createAdmin();
+        createEmptyMentorsService.createEmptyMentors();
+        createEmptyMenteesService.createEmptyMentees();
 //        storageService.init();
     }
 }

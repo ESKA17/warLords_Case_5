@@ -29,5 +29,4 @@ public interface UserService {
     Integer findRoleEntity(HttpServletRequest httpServletRequest);
     FindUserByIDWrap findUserByIDInWrap(Long id);
 
-    List<UserEntity> findAllMentors();
 }

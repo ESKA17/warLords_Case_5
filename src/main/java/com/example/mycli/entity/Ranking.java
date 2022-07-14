@@ -2,10 +2,7 @@ package com.example.mycli.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
@@ -16,6 +13,8 @@ import javax.persistence.Table;
 @Table(name = "ranking_table")
 public class Ranking {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ranking_en")
+    @SequenceGenerator(name = "ranking_en", sequenceName = "ranking_en", allocationSize = 1)
     private Long id;
     @Column(name = "overal_ranking", nullable = false)
     private Integer overallRanking;

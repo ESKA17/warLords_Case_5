@@ -13,7 +13,8 @@ import javax.persistence.*;
 public class AuthData {
 
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "authdata_en")
+        @SequenceGenerator(name = "authdata_en", sequenceName = "authdata_en", allocationSize = 1)
         @Column(name = "id", nullable = false)
         private Long id;
 
