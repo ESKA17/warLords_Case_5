@@ -15,13 +15,15 @@ import java.time.LocalDate;
 @Table(name = "user_info_table")
 public class UserInformation {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "info_en")
+    @SequenceGenerator(name = "info_en", sequenceName = "info_en", allocationSize = 1)
     @Column(name = "id")
     private Long id;
     @Column(name = "city")
     private String city;
     @Column(name = "school" )
     private String school;
+
     @Column(name = "IIN")
     private String IIN;
     @Column(name = "phone_number")
@@ -33,14 +35,15 @@ public class UserInformation {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
+    @Column(name = "about_me")
+    private String aboutMe;
+
     @Override
     public String toString() {
         return "UserInformation{" +
                 "id=" + id +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", city='" + city + '\'' +
-                ", school='" + school + '\'' +
-                ", university='" + university + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", IIN=" + IIN +
                 '}';
